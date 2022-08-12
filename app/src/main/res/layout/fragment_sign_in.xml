@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_gradient_background">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Sign In"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+        android:id="@+id/skip_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/size_10dp"
+        android:layout_marginTop="@dimen/size_10dp"
+        android:layout_marginEnd="@dimen/size_10dp"
+        android:layout_marginBottom="@dimen/size_10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/size_12dp"
+        android:text="@string/skip_login"
+        android:textColor="@color/grayLight"
+        android:textSize="@dimen/text_14sp"
+        android:textStyle="bold"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/shop_brand_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/size_30dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:layout_above="@+id/custom_login_layout">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/app_logo"
+            android:layout_width="@dimen/size_100dp"
+            android:layout_height="@dimen/size_30dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_launcher" />
+
+        <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10dp"
+            android:text="@string/app_moto"
+            android:textSize="@dimen/text_14sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary2" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/custom_login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/size_20dp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_marginEnd="@dimen/size_20dp"
+        android:layout_marginBottom="@dimen/size_20dp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/size_10dp"
+        app:cardElevation="@dimen/size_1dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/login_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_20dp"
+                android:background="@drawable/bg_input_field"
+                android:padding="@dimen/size_10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/icon_login_email"
+                    android:layout_width="@dimen/size_15dp"
+                    android:layout_height="@dimen/size_15dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_email_64"
+                    android:tint="@color/colorBlackSemiTransparent" />
+
+                <EditText
+                    android:id="@+id/input_login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/size_15dp"
+                    android:layout_toEndOf="@+id/icon_login_email"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorBlackSemiTransparent"
+                    android:textSize="@dimen/text_15sp"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/login_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_15dp"
+                android:background="@drawable/bg_input_field"
+                android:padding="@dimen/size_10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/icon_login_password"
+                    android:layout_width="@dimen/size_15dp"
+                    android:layout_height="@dimen/size_15dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_lock_64"
+                    android:textSize="@dimen/text_15sp"
+                    android:tint="@color/colorBlackSemiTransparent" />
+
+                <EditText
+                    android:id="@+id/input_login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/size_15dp"
+                    android:layout_toEndOf="@+id/icon_login_password"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/colorBlackSemiTransparent"
+                    android:textSize="@dimen/text_15sp"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:id="@+id/txt_forgot_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/size_15dp"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:layout_weight=".55"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:padding="@dimen/size_10dp"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_12sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_custom_login"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/size_35dp"
+                    android:layout_marginEnd="@dimen/size_5dp"
+                    android:layout_marginBottom="@dimen/size_7dp"
+                    android:layout_weight=".45"
+                    android:background="@drawable/btn_blue_flat"
+                    android:padding="@dimen/size_10dp"
+                    android:text="@string/login"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                android:id="@+id/txt_create_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/size_5dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/size_7dp"
+                android:text="@string/create_account"
+                android:textColor="@color/colorPrimary2"
+                android:textSize="@dimen/text_13sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/error_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/size_16dp"
+            android:textColor="@color/danger"
+            android:visibility="invisible" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+    <LinearLayout
+        android:id="@+id/social_login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/size_20dp"
+        android:layout_marginEnd="@dimen/size_20dp"
+        android:layout_marginBottom="@dimen/size_40dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/fb_login_btn"
+                android:layout_width="@dimen/size_0dp"
+                android:layout_weight=".48"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingTop="@dimen/size_12dp"
+                android:layout_marginEnd="@dimen/size_10dp"
+                android:paddingBottom="@dimen/size_12dp"
+                android:textSize="@dimen/text_12sp"
+                app:com_facebook_login_text="@string/facebook_cap"
+                app:com_facebook_logout_text="@string/sign_out" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/gp_login_btn"
+                android:layout_width="@dimen/size_0dp"
+                android:layout_weight=".52"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                app:buttonSize="wide" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

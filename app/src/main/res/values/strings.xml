@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">PastPapersKenya</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_moto">Revision Made Easy</string>
+    <string name="create_account">Create Account</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="already_have_account">Already have an Account</string>
+    <string name="skip_login">Skip</string>
+    <string name="forgot_password">Forgot Pasword</string>
+    <string name="login">Login</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="facebook_cap">Login with Facebook</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="no_more_results">No more results...</string>
+    <string name="account_info">Account Info</string>
+
+
+    <string name="facebook_app_id">198294105088316</string>
+    <string name="fb_login_protocol_scheme">fb198294105088316</string>
+    <string name="facebook_client_token">20128624fd79b02a7b7d11333bab4c0d</string>
+    <string name="follow">Follow</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="downloads">Downloads</string>
+    <string name="profile">Profile</string>
+    <string name="text_success">Success</string>
+    <string name="text_ok">OK</string>
+    <string name="text_error">Error</string>
+    <string name="text_info">Info</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_yes">Yes</string>
+    <string name="category_text_placeholder">Category</string>
+    <string name="logout">Logout</string>
+    <string name="country">Country</string>
+    <string name="county">County</string>
+    <string name="save">Save and Proceed</string>
+    <string name="mpesa_phone_no">0700000000</string>
+    <string name="billing_phone_no">Mpesa Enabled Contact</string>
+    <string name="changePassword">Change Password</string>
+
+
+</resources>

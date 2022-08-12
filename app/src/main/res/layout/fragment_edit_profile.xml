@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.main.MainActivity"
+    android:background="@color/splashGradEnd">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/placeholder"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleTextAppearance="@style/TransparentText">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/ivProfileImageP"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="85dp"
+                android:background="@color/disabledGray"
+                android:backgroundTint="@color/disabledGray"
+                android:elevation="12dp"
+                android:scaleType="center"
+                app:fabSize="normal"
+                app:srcCompat="@drawable/ic_outline_person_24" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:id="@+id/linearLayout"
+                android:background="@drawable/splash_gradient_background">
+
+                <ImageView
+                    android:layout_width="@dimen/size_100dp"
+                    android:layout_height="@dimen/size_100dp"
+                    app:srcCompat="@drawable/ic_outline_person_24" />
+
+
+            </LinearLayout>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="20dp"
+                android:background="@color/splashGradEnd">
+
+               <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change background"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                   android:textColor="@color/black"/>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/black"
+                    android:layout_marginEnd="@dimen/size_10dp"
+                    android:layout_marginStart="@dimen/size_10dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Change profile"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedscroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/size_50dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/size_10dp"
+                android:layout_margin="@dimen/size_16dp">
+
+
+
+                    <Button
+                        android:id="@+id/btn_change_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/changePassword"
+                        style="@android:style/Widget.Button"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/button_follow"
+                        android:layout_gravity="start"
+                        android:layout_marginEnd="@dimen/size_10dp"
+                        android:layout_marginStart="@dimen/size_10dp"
+                        android:paddingEnd="@dimen/size_16dp"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:textSize="@dimen/text_16sp"/>
+
+                    <Button
+                        android:id="@+id/btn_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/logout"
+                        style="@android:style/Widget.Button"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/button_logout"
+                        android:layout_marginEnd="@dimen/size_10dp"
+                        android:layout_gravity="end"
+                        android:paddingEnd="@dimen/size_16dp"
+                        android:paddingStart="@dimen/size_16dp"
+                        android:textSize="@dimen/text_16sp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_15dp"
+                android:layout_marginEnd="@dimen/size_15dp"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/rotate_progress"
+                    android:layout_width="@dimen/size_50dp"
+                    android:layout_height="@dimen/size_50dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:progress_color="@color/colorProgress" />
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/first_name"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+
+                <RelativeLayout
+                    android:id="@+id/billing_first_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_first_name"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_user_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <EditText
+                        android:id="@+id/input_billing_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_first_name"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/first_name"
+                        android:inputType="text|textCapWords"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorBlackSemiTransparent"
+                        android:textSize="@dimen/text_16sp"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/last_name"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+                <RelativeLayout
+                    android:id="@+id/billing_last_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_last_name"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_user_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <EditText
+                        android:id="@+id/input_billing_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_last_name"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/last_name"
+                        android:inputType="text|textCapWords"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorBlackSemiTransparent"
+                        android:textSize="@dimen/text_16sp"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/email"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+                <RelativeLayout
+                    android:id="@+id/billing_email_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_email"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_email_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <EditText
+                        android:id="@+id/input_billing_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_email"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/email"
+                        android:inputType="text|textEmailAddress"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorBlackSemiTransparent"
+                        android:textSize="@dimen/text_16sp"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/billing_phone_no"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+
+                <RelativeLayout
+                    android:id="@+id/billing_phone_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_phone"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_phone_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <EditText
+                        android:id="@+id/input_billing_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_phone"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/mpesa_phone_no"
+                        android:inputType="text|phone"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/colorBlackSemiTransparent"
+                        android:textSize="@dimen/text_16sp"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/country"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+
+                <RelativeLayout
+                    android:id="@+id/billing_country_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_country"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_state_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_country">
+
+                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                            android:id="@+id/input_billing_country"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/country"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlackSemiTransparent"
+                            android:textSize="@dimen/text_16sp"
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_12dp"
+                            android:layout_height="@dimen/size_12dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_caret_down_64"
+                            android:tint="@color/grayLight" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_5dp"
+                    android:text="@string/country"
+                    android:textSize="@dimen/text_12sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="normal" />
+
+                <RelativeLayout
+                    android:id="@+id/billing_state_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@drawable/bg_input_field"
+                    android:padding="@dimen/size_12dp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/billing_icon_state"
+                        android:layout_width="@dimen/size_16dp"
+                        android:layout_height="@dimen/size_16dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_country_64"
+                        android:tint="@color/colorBlackSemiTransparent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_15dp"
+                        android:layout_toEndOf="@+id/billing_icon_state">
+
+                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                            android:id="@+id/input_billing_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/county"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/colorBlackSemiTransparent"
+                            android:textSize="@dimen/text_16sp"
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextInputErrorAppearance" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/size_12dp"
+                            android:layout_height="@dimen/size_12dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_caret_down_64"
+                            android:tint="@color/grayLight" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:id="@+id/save_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_45dp"
+                    android:background="@color/colorPrimary2"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/size_10dp"
+                    android:paddingBottom="@dimen/size_10dp"
+                    android:text="@string/save"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

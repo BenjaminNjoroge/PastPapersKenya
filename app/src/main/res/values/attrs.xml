@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="colorPrimaryLight" format="color" />
+    <attr name="colorAccentLight" format="color" />
+
+    <declare-styleable name="RotateProgress">
+        <attr name="progress_width" format="dimension"/>
+        <attr name="progress_color" format="color"/>
+        <attr name="shadow_position" format="integer"/>
+        <attr name="progress_speed" format="integer"/>
+    </declare-styleable>
+
+</resources>

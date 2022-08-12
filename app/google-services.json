@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "346798231053",
+    "firebase_url": "https://pastpaperskenya-default-rtdb.firebaseio.com",
+    "project_id": "pastpaperskenya",
+    "storage_bucket": "pastpaperskenya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346798231053:android:839a7defffa070ad2e4f44",
+        "android_client_info": {
+          "package_name": "com.pastpaperskenya.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346798231053-s0n8nr0r5vq9e26i96q5herhoum3idjv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pastpaperskenya.app",
+            "certificate_hash": "5492288f171d51e80888c3895ea9263827555874"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXx44xxym1JeF5E-7piLxsqgUdX-wEezY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346798231053-c8b8uepp9tes54v99qj2brhegf6c9mc0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
