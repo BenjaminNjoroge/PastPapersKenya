@@ -24,6 +24,7 @@
     <string name="facebook_app_id">198294105088316</string>
     <string name="fb_login_protocol_scheme">fb198294105088316</string>
     <string name="facebook_client_token">20128624fd79b02a7b7d11333bab4c0d</string>
+
     <string name="follow">Follow</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="home">Home</string>
@@ -45,6 +46,7 @@
     <string name="mpesa_phone_no">0700000000</string>
     <string name="billing_phone_no">Mpesa Enabled Contact</string>
     <string name="changePassword">Change Password</string>
+    <string name="your_web_client_id">346798231053-ia551409ra0l115k2kn9h09cg080nhci.apps.googleusercontent.com</string>
 
 
 </resources>

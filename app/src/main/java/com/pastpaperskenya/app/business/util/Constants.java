@@ -20,13 +20,18 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String BASE_AUTH = "?consumer_key=" + CONSUMER_KEY + "&consumer_secret=" + CONSUMER_SECRET;
 
 
+    public static final int RC_GOOGLE_IN= 9002;
+
     //KEY CONSTANT
+    public static final String FIREBASE_DATABASE_COLLECTION_USER= "users";
+    public static final String FIREBASE_DATABASE_COLLECTION_PAYMENTS= "payments";
     public static final String KEY_ID = "id";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_FIRSTNAME = "first_name";
     public static final String KEY_LASTNAME = "last_name";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_PROFILE_PHOTO= "profile_photo";
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_PRODUCT_ID = "product_id";
@@ -105,10 +110,6 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String API_DATA_CURRENCY = "data/currencies/current/" + BASE_AUTH;
     public static final String API_CURRENCY_SYMBOL = "data/currencies/" + "{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_DOWNLOAD = BASE_URL + "customers/" + "{" + KEY_ID + "}" + "/downloads/" + BASE_AUTH;
-
-
-    public static final String API_PAYPAL_BRAINTREE = SITE_URL + PAYPAL_URL;
-    public static final String API_STRIPE_PAYMENT = SITE_URL + STRIPE_URL;
 
 
     //SlUG CONSTANT

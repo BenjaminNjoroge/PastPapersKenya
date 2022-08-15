@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.use_case
+package com.pastpaperskenya.app.business.services.auth
 
 import com.google.firebase.auth.FirebaseUser
 
@@ -13,4 +13,5 @@ interface BaseAuthenticator {
     fun logout(): FirebaseUser?
 
     fun getCurrentUser(): FirebaseUser?
+
 }

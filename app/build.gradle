@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -60,6 +62,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha01"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.0-alpha01"
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.lifecycle:lifecycle-compiler:2.6.0-alpha01"
 
     //coroutines
@@ -78,6 +81,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-installations-ktx'
 
     // Facebook dependency
     implementation 'com.facebook.android:facebook-android-sdk:14.0.0'
@@ -86,7 +91,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1"
 
     //network bound resource
-    implementation 'io.github.hadiyarajesh:flower:2.0.3'
+    //implementation 'io.github.hadiyarajesh:flower:2.0.3'
 
     //dex
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -96,7 +101,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
     implementation "com.google.code.gson:gson:2.9.0"
-
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1"
 
     //room
     implementation "androidx.room:room-runtime:2.4.2"
@@ -106,6 +112,9 @@ dependencies {
     //di
     implementation "com.google.dagger:hilt-android:2.40.5"
     kapt "com.google.dagger:hilt-compiler:2.40.5"
+
+    //logging
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -1,12 +1,13 @@
-package com.pastpaperskenya.app.business.use_case
+package com.pastpaperskenya.app.business.services.auth
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class Authenticator: BaseAuthenticator {
+class AuthenticatorImpl: BaseAuthenticator {
 
+    private  val TAG = "Authenticator"
     override suspend fun registerUser(email: String, password: String): FirebaseUser? {
         Firebase.auth.createUserWithEmailAndPassword(email, password).await()
         return Firebase.auth.currentUser
@@ -29,4 +30,5 @@ class Authenticator: BaseAuthenticator {
     override fun getCurrentUser(): FirebaseUser? {
         return Firebase.auth.currentUser
     }
+
 }

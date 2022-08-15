@@ -1,15 +1,7 @@
 package com.pastpaperskenya.app.business.repository.auth
 
-import androidx.lifecycle.LiveData
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.Customer
-import com.pastpaperskenya.app.business.use_case.BaseAuthenticator
-import com.pastpaperskenya.app.business.util.Result
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import com.pastpaperskenya.app.business.services.auth.BaseAuthenticator
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(private val authenticator: BaseAuthenticator):FirebaseRepository {
@@ -34,6 +26,7 @@ class FirebaseRepositoryImpl @Inject constructor(private val authenticator: Base
         authenticator.sendResetPassword(email)
         return true
     }
+
 
 
 }

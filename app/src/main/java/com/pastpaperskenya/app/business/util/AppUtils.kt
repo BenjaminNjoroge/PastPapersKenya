@@ -11,8 +11,15 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.hadiyarajesh.flower.Resource
 import kotlinx.coroutines.flow.Flow
+
+fun sanitizePhoneNumber(phone: String): String{
+    return when{
+        phone.startsWith("0") -> phone.replaceFirst("^0".toRegex(), "254")
+        phone.startsWith("+") -> phone.replaceFirst("^\\+".toRegex(), "")
+        else -> phone
+    }
+}
 
 fun View.hide(){
     this.visibility= View.INVISIBLE
@@ -26,8 +33,8 @@ fun View.show(){
 fun Fragment.snackbar(message: String)=
     Snackbar.make(this.requireActivity().window.decorView.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
 
-fun Fragment.toast(@StringRes res: Int){
-    Toast.makeText(this.requireContext(), requireActivity().getText(res), Toast.LENGTH_SHORT).show()
+fun Fragment.toast(res: String){
+    Toast.makeText(this.requireActivity(), res, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.hideKeyboard() {
@@ -47,7 +54,7 @@ fun Activity.isConnected(): Boolean {
     var status= false
     val connectionManager= getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-        if(connectionManager!= null && connectionManager.activeNetwork!=null && connectionManager.getNetworkCapabilities(connectionManager.activeNetwork) !=null){
+        if(connectionManager?.activeNetwork != null && connectionManager.getNetworkCapabilities(connectionManager.activeNetwork) !=null){
             status= true
         }
     } else{

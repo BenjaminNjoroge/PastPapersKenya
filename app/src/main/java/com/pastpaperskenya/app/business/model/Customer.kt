@@ -43,15 +43,6 @@ data class Customer (
     val avatar_url: String,
 
     @SerializedName("billing")
-    val billingAddress: BillingAddress,
-
-    @Exclude
-    val isAuthenticated: Boolean,
-
-    @Exclude
-    val isNew: Boolean,
-
-    @Exclude
-    val isCreated: Boolean
+    val billingAddress: BillingAddress
 
 )
