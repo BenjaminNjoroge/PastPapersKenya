@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.business.use_case
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 
 interface BaseAuthenticator {
@@ -13,4 +14,8 @@ interface BaseAuthenticator {
     fun logout(): FirebaseUser?
 
     fun getCurrentUser(): FirebaseUser?
+
+    suspend fun signInWithGoogle(credential: AuthCredential): FirebaseUser?
+
+    suspend fun signInWithFacebook(credential: AuthCredential):FirebaseUser?
 }

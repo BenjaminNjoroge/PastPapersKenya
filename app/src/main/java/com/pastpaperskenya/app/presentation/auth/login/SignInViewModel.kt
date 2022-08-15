@@ -6,10 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
@@ -35,31 +33,6 @@ class SignInViewModel @Inject constructor (private val repository: FirebaseRepos
     val authEventsFlow= eventsChannel.receiveAsFlow()
 
 
-    fun firebaseSignInWithGoogle(idToken: String){
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            if(it.isSuccessful){
-                _firebaseUser.postValue(auth.currentUser)
-            }else{
-                _firebaseUser.value= null
-            }
-        }
-    }
-
-    fun firebaseSignInWithFacebook(idToken: String){
-        val credential = FacebookAuthProvider.getCredential(idToken)
-        //Log.d(TAG, "firebaseSignInWithFacebook: "+ credential.toString())
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            if(it.isSuccessful){
-                _firebaseUser.postValue(auth.currentUser)
-            }else{
-                _firebaseUser.value= null
-            }
-        }
-    }
-
-
-
     fun signIn(email: String, password:String)= viewModelScope.launch {
         when{
             email.isEmpty()->{
@@ -75,6 +48,29 @@ class SignInViewModel @Inject constructor (private val repository: FirebaseRepos
 
     }
 
+    fun signInWithGoogle(authCredential: AuthCredential)= viewModelScope.launch {
+        try {
+            val user= repository.signInWithGoogle(authCredential)
+            user?.let {
+                _firebaseUser.postValue(it)
+                eventsChannel.send(AuthEvents.Message("Login Success"))
+            }
+        } catch (e: ApiException){
+            eventsChannel.send(AuthEvents.Error(e.message.toString()))
+        }
+    }
+
+    fun signInWithFacebook(authCredential: AuthCredential)= viewModelScope.launch {
+        try {
+            val user= repository.signInWithFacebook(authCredential)
+            user?.let {
+                _firebaseUser.postValue(it)
+                eventsChannel.send(AuthEvents.Message("Login Success"))
+            }
+        }catch (e: ApiException){
+            eventsChannel.send(AuthEvents.Error(e.message.toString()))
+        }
+    }
 
 
     private fun actualSignInUser(email: String, password: String) = viewModelScope.launch {
@@ -82,7 +78,7 @@ class SignInViewModel @Inject constructor (private val repository: FirebaseRepos
             val user= repository.signInWithEmailPassword(email, password)
             user?.let {
                 _firebaseUser.postValue(it)
-                eventsChannel.send(AuthEvents.Error("Login Success"))
+                eventsChannel.send(AuthEvents.Message("Login Success"))
             }
         } catch (e: Exception){
             eventsChannel.send(AuthEvents.Error(e.message.toString()))

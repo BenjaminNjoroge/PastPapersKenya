@@ -24,6 +24,7 @@
     <string name="facebook_app_id">198294105088316</string>
     <string name="fb_login_protocol_scheme">fb198294105088316</string>
     <string name="facebook_client_token">20128624fd79b02a7b7d11333bab4c0d</string>
+
     <string name="follow">Follow</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="home">Home</string>

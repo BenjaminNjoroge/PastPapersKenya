@@ -27,6 +27,7 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String KEY_LASTNAME = "last_name";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
+    public static final String KEY_PROFILE_PHOTO= "profile_photo";
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_PRODUCT_ID = "product_id";

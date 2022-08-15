@@ -26,8 +26,8 @@ fun View.show(){
 fun Fragment.snackbar(message: String)=
     Snackbar.make(this.requireActivity().window.decorView.findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
 
-fun Fragment.toast(@StringRes res: Int){
-    Toast.makeText(this.requireContext(), requireActivity().getText(res), Toast.LENGTH_SHORT).show()
+fun Fragment.toast(res: String){
+    Toast.makeText(this.requireContext(), res, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.hideKeyboard() {

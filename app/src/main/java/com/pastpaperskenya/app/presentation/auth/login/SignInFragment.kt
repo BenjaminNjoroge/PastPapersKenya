@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.presentation.auth.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,31 +13,36 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.FacebookSdk
+import com.facebook.*
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentSignInBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
+import java.util.*
+
 
 @AndroidEntryPoint
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private val TAG = "SignInFragment"
+
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
@@ -44,8 +50,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     private val viewModel : SignInViewModel by activityViewModels()
     private var _binding : FragmentSignInBinding? = null
     private val binding get() = _binding
+
     private lateinit var email: String
     private lateinit var password:String
+
+    private lateinit var fbemail: String
+    private lateinit var fbUsername: String
+    private lateinit var fbProfilePhoto: String
 
 
     companion object{
@@ -61,6 +72,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     ): View? {
         _binding = FragmentSignInBinding.inflate(inflater , container , false)
 
+        auth= FirebaseAuth.getInstance()
         initGoogleSignInClient()
         initFacebookLogin()
         userInput()
@@ -108,18 +120,52 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             }
 
             fbLoginBtn.setOnClickListener {
-                fbLoginBtn.setReadPermissions("email", "public_profile")
-                fbLoginBtn.registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
+                LoginManager.getInstance().logInWithReadPermissions(requireActivity(), Arrays.asList("email", "public_profile"))
+                LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
                     override fun onCancel() {
 
                     }
 
                     override fun onError(error: FacebookException) {
-                        TODO("Not yet implemented")
+                        toast(error.message.toString())
                     }
 
                     override fun onSuccess(result: LoginResult) {
-                        viewModel.firebaseSignInWithFacebook(result.accessToken.token)
+                        val idToken= result.accessToken.token
+                        toast(idToken)
+                        val credential= FacebookAuthProvider.getCredential(idToken)
+                        viewModel.signInWithFacebook(credential)
+
+                        val request= GraphRequest.newMeRequest(result.accessToken, object : GraphRequest.GraphJSONObjectCallback{
+                            override fun onCompleted(obj: JSONObject?, response: GraphResponse?) {
+                                if(obj != null){
+                                    try {
+                                        fbUsername = obj.getString("name")
+                                        fbemail = obj.getString("email")
+                                        val fbUserID: String = obj.getString("id")
+                                        fbProfilePhoto= obj.getString("https://graph.facebook.com/"+ fbUserID + "/picture?type=large")
+
+                                        disconnectFromFacebook()
+
+                                        // do action after Facebook login success
+                                        // or call your API
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    } catch (e: NullPointerException) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }
+
+                        })
+
+                        val parameters = Bundle()
+                        parameters.putString(
+                            "fields",
+                            "id, name, email, gender, birthday"
+                        )
+                        request.parameters = parameters
+                        request.executeAsync()
                     }
 
                 })
@@ -127,6 +173,22 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
     }
 
+    fun disconnectFromFacebook() {
+        if (AccessToken.getCurrentAccessToken() == null) {
+            return  // already logged out
+        }
+        GraphRequest(
+            AccessToken.getCurrentAccessToken(),
+            "/me/permissions/",
+            null,
+            HttpMethod.DELETE,
+            object : GraphRequest.Callback {
+                override fun onCompleted(graphResponse: GraphResponse) {
+                    LoginManager.getInstance().logOut()
+                }
+            })
+            .executeAsync()
+    }
 
     private fun listenToChannels(){
         viewLifecycleOwner.lifecycleScope.launch {
@@ -167,23 +229,21 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
     }
 
-    @Deprecated("Deprecated in Java", ReplaceWith(
-        "super.onActivityResult(requestCode, resultCode, data)",
-        "androidx.fragment.app.Fragment"
-    )
-    )
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
 
+        callbackManager.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_GOOGLE_IN){
-             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+        if (requestCode == RC_GOOGLE_IN && resultCode== Activity.RESULT_OK){
+            val task= GoogleSignIn.getSignedInAccountFromIntent(data)
+            val idToken= task.result.idToken
+
             try {
                 val googleSignInAccount= task.getResult(ApiException::class.java)
                 if(googleSignInAccount!=null){
-                    Toast.makeText(requireContext(), googleSignInAccount.idToken, Toast.LENGTH_SHORT).show()
-                    viewModel.firebaseSignInWithGoogle(googleSignInAccount.idToken!!)
+                    val credential= GoogleAuthProvider.getCredential(idToken,null)
+                    viewModel.signInWithGoogle(credential)
                 }
             } catch (e: ApiException){
                 Toast.makeText(requireActivity(), e.message.toString(), Toast.LENGTH_SHORT).show()
@@ -193,6 +253,9 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private fun launchActivity() {
         val intent= Intent(context, MainActivity::class.java)
+        intent.putExtra(Constants.KEY_EMAIL, fbemail)
+        intent.putExtra(Constants.KEY_USERNAME, fbUsername)
+        intent.putExtra(Constants.KEY_PROFILE_PHOTO, fbProfilePhoto)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

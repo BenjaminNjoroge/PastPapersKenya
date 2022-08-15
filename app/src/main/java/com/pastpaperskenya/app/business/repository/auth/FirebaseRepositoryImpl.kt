@@ -1,6 +1,7 @@
 package com.pastpaperskenya.app.business.repository.auth
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -33,6 +34,14 @@ class FirebaseRepositoryImpl @Inject constructor(private val authenticator: Base
     override suspend fun sendResetPassword(email: String): Boolean {
         authenticator.sendResetPassword(email)
         return true
+    }
+
+    override suspend fun signInWithGoogle(authCredential: AuthCredential): FirebaseUser? {
+        return authenticator.signInWithGoogle(authCredential)
+    }
+
+    override suspend fun signInWithFacebook(authCredential: AuthCredential): FirebaseUser? {
+        return authenticator.signInWithFacebook(authCredential)
     }
 
 
