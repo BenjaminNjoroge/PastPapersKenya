@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.databinding.FragmentChangePasswordBinding
 import com.pastpaperskenya.app.databinding.FragmentResetPasswordBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
@@ -71,11 +72,11 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
     }
 
     private fun registerObservers(){
-        viewModel.firebaseUser.observe(viewLifecycleOwner, { user->
-            user?.let{
+        viewModel.firebaseUser.observe(viewLifecycleOwner) { user ->
+            user?.let {
                 launchActivity()
             }
-        })
+        }
     }
 
     private fun userInput(){
@@ -83,6 +84,8 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             btnResetPassword.setOnClickListener {
                 progressBar.isVisible = true
                 email= inputAccountEmail.text.toString().trim()
+
+                hideKeyboard()
                 viewModel.resetPassword(email)
             }
             txtAccountLogin.setOnClickListener {

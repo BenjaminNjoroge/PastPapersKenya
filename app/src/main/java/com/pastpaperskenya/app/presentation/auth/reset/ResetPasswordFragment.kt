@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.databinding.FragmentResetPasswordBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,11 +73,13 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
     private fun userInput(){
         binding.apply {
             btnResetPassword.setOnClickListener {
+                hideKeyboard()
                 progressBar.isVisible = true
                 email= inputAccountEmail.text.toString().trim()
                 viewModel.resetPassword(email)
             }
             txtAccountLogin.setOnClickListener {
+                hideKeyboard()
                 progressBar.isInvisible= true
                 findNavController().navigate(R.id.action_resetPasswordFragment_to_signInFragment)
             }

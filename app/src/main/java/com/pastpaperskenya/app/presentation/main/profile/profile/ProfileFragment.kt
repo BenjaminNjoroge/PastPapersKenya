@@ -29,7 +29,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun clickListeners(){
-        findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+        binding.apply {
+            editButton.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+            }
+        }
     }
 
 

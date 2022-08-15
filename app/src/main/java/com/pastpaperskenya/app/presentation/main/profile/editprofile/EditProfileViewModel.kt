@@ -28,6 +28,7 @@ class EditProfileViewModel @Inject constructor(private val repository: FirebaseR
             user?.let {
                 _eventsChannel.send(AuthEvents.Message("logout failure"))
             }?: _eventsChannel.send(AuthEvents.Message("Logout Success"))
+
             getCurrentUser()
 
         } catch (e: Exception){
@@ -35,7 +36,7 @@ class EditProfileViewModel @Inject constructor(private val repository: FirebaseR
         }
     }
 
-    fun getCurrentUser()= viewModelScope.launch {
+    private fun getCurrentUser()= viewModelScope.launch {
         val user= repository.getCurrentUser()
         _firebaseUser.postValue(user)
     }

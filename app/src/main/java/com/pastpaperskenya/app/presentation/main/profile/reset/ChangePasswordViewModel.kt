@@ -60,7 +60,7 @@ class ChangePasswordViewModel @Inject constructor(private val repository: Fireba
         }
     }
 
-    fun getCurrentUser()= viewModelScope.launch {
+    private fun getCurrentUser()= viewModelScope.launch {
         val user= repository.getCurrentUser()
         _firebaseUser.postValue(user)
     }

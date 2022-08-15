@@ -56,11 +56,14 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun registerObservers(){
-        viewModel.firebaseUser.observe(viewLifecycleOwner, { user->
-            user?.let {
+        viewModel.firebaseUser.observe(viewLifecycleOwner) { user ->
+            if(user!= null){
+                //do nothing
+            }else{
                 launchActivity()
             }
-        })
+
+        }
     }
 
     private fun listenToChannels(){

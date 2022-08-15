@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.Result
+import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.business.util.snackbar
 import com.pastpaperskenya.app.databinding.FragmentSignUpBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -56,6 +57,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 password= binding.inputAccountPassword.text.toString().trim()
                 confirmPassword= binding.inputConfirmAccountPassword.text.toString().trim()
 
+                hideKeyboard()
                 progressBar.isVisible= true
                 viewModel.register(email, password, confirmPassword)
 
