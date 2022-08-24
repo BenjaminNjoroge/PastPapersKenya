@@ -46,7 +46,7 @@ private val userService: UserService) :ViewModel() {
             email.isEmpty()->{
                 eventsChannel.send(AuthEvents.ErrorCode(3))
             }
-            password.isEmpty()->{
+            password.isEmpty() ->{
                 eventsChannel.send(AuthEvents.ErrorCode(4))
             }
             password!=confirmPassword || confirmPassword.isEmpty()->{

@@ -16,8 +16,4 @@ interface FirebaseRepository {
 
     suspend fun sendResetPassword(email : String) : Boolean
 
-    suspend fun signInWithGoogle(authCredential: AuthCredential): FirebaseUser?
-
-    suspend fun signInWithFacebook(authCredential: AuthCredential):FirebaseUser?
-
 }
