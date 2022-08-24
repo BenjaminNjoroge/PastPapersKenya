@@ -22,8 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor
-    (private val repository: FirebaseRepository,
-     private val userService: UserService): ViewModel(){
+    (private val repository: FirebaseRepository): ViewModel(){
 
     private  val TAG = "SignInViewModel"
 

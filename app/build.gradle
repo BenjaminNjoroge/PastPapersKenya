@@ -5,6 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'kotlinx-serialization'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -83,6 +84,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-installations-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // Facebook dependency
     implementation 'com.facebook.android:facebook-android-sdk:14.0.0'

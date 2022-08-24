@@ -1,6 +1,7 @@
 package com.pastpaperskenya.app.business.services.auth
 
 import com.pastpaperskenya.app.business.model.UserDetails
+import kotlinx.coroutines.flow.Flow
 
 interface UserService {
 
@@ -14,7 +15,7 @@ interface UserService {
                                    country: String?,
                                    county: String?)
 
-    suspend fun getUserDetails(userId: String):UserDetails
+    suspend fun getUserDetails(userId: String): UserDetails?
 
     suspend fun updateUserFcmToken(userId: String)
 }

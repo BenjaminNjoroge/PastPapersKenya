@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.UserDetails
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,21 +22,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: ProfileViewModel by activityViewModels()
     private var _binding: FragmentProfileBinding?= null
     private val binding get() = _binding!!
-    private lateinit var fbemail: String
-    private lateinit var fbUsername: String
-    private lateinit var fbProfilePhoto: String
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseUser: String
 
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAuth= FirebaseAuth.getInstance()
+        firebaseUser= firebaseAuth.currentUser?.uid.toString()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding= FragmentProfileBinding.inflate(inflater, container, false)
 
-        requireActivity().intent.extras?.apply {
-            fbemail= this.getString(Constants.KEY_EMAIL).toString()
-            fbUsername= this.getString(Constants.KEY_USERNAME).toString()
-            fbProfilePhoto= this.getString(Constants.KEY_PROFILE_PHOTO).toString()
-        }
+        registerObservers()
         clickListeners()
         return binding.root
     }
@@ -44,6 +50,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
             }
         }
+    }
+
+    private fun registerObservers(){
+        viewModel.userProfile.observe(viewLifecycleOwner, Observer {
+            binding.tvUserNameP.text= it.firstname + " "+ it.lastname
+            binding.tvEmailP.text= it.email
+            binding.tvPhone.text= it.phone
+            binding.tvLastname.text= it.lastname
+            binding.tvFirstname.text= it.firstname
+            binding.tvCountry.text= it.country
+            binding.tvCounty.text= it.county
+        })
+
+
     }
 
 
