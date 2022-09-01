@@ -1,14 +1,12 @@
 package com.pastpaperskenya.app.business.services.auth
 
-import com.pastpaperskenya.app.business.model.UserDetails
-import kotlinx.coroutines.flow.Flow
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 
 interface UserService {
 
     suspend fun saveUserDetails(userDetails: UserDetails)
 
-    suspend fun updateUserDetails( userId:String,
-                                   email: String?,
+    suspend fun updateUserDetails( userId: String,
                                    phone: String?,
                                    firstname: String?,
                                    lastname: String?,

@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.auth
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable

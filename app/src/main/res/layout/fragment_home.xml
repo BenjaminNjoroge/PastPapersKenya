@@ -6,51 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.pastpaperskenya.app.presentation.main.MainActivity">
 
-    <TextView
-        android:id="@+id/textView41"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Clicking pay will charge Ksh. 1 to your real M-Pesa account and pay to a Safaricom test account. The money will be automatically refunded by Safaricom the following day."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-
-        <EditText
-            android:id="@+id/et_payMpesa_mobilerNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:maxLength="12"
-            android:text="254"
-            android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/textView41"/>
-
-    <EditText
-        android:id="@+id/et_payMpesa_amount"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:maxLength="12"
-        android:text="1"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/et_payMpesa_mobilerNumber"/>
-
-    <Button
-        android:id="@+id/btn_payMpesa_pay"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Pay"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_payMpesa_amount" />
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ProgressBar
         android:id="@+id/pbLoading"

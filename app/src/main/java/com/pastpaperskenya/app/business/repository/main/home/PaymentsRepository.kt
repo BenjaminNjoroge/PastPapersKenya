@@ -1,9 +1,10 @@
-package com.pastpaperskenya.app.business.repository.main
+package com.pastpaperskenya.app.business.repository.main.home
 
-import com.pastpaperskenya.app.business.model.ResourceOne
-import com.pastpaperskenya.app.business.model.ApiResponse
+import com.pastpaperskenya.app.business.util.sealedclasses.ResourceOne
+import com.pastpaperskenya.app.business.model.auth.ApiResponse
 
 interface PaymentsRepository {
+
     suspend fun makeLnmoRequest(
         amount: Int,
         phone:String,

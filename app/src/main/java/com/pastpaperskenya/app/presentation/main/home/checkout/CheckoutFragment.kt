@@ -1,21 +1,15 @@
 package com.pastpaperskenya.app.presentation.main.home.checkout
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.ResourceOne
+import com.pastpaperskenya.app.business.util.sealedclasses.ResourceOne
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.builders.FragmentComponentBuilder
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {

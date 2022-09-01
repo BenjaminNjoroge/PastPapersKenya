@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.auth
 
 import android.os.Parcelable
 import android.util.Log

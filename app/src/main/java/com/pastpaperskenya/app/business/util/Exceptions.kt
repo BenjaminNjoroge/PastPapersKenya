@@ -1,7 +1,7 @@
 package com.pastpaperskenya.app.business.util
 
-import com.pastpaperskenya.app.business.model.ResourceOne
-import com.pastpaperskenya.app.business.model.ApiResponse
+import com.pastpaperskenya.app.business.util.sealedclasses.ResourceOne
+import com.pastpaperskenya.app.business.model.auth.ApiResponse
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
 import timber.log.Timber

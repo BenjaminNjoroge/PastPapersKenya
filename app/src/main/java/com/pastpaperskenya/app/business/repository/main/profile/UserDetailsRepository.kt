@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.repository.main
+package com.pastpaperskenya.app.business.repository.main.profile
 
 interface UserDetailsRepository {
 

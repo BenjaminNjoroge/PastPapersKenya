@@ -42,14 +42,19 @@
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/content_edit_profile.xml" value="0.22" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/content_profile.xml" value="0.1" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_change_password.xml" value="0.14945652173913043" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_download.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_edit_profile.xml" value="0.22" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_home.xml" value="0.18177083333333333" />
-        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_profile.xml" value="0.22" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_reset_password.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_reset_password2.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_sign_in.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_sign_up.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/fragment_wish_list.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/item_home_category.xml" value="0.14010416666666667" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/item_home_category_layout.xml" value="0.1" />
+        <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/item_tab_layout.xml" value="0.1578125" />
         <entry key="..\:/Users/Benja/AndroidStudioProjects/PastPapersKenya4/app/src/main/res/layout/layout_edit_profile.xml" value="0.19947916666666668" />
       </map>
     </option>

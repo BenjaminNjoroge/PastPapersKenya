@@ -1,19 +1,11 @@
 package com.pastpaperskenya.app.presentation.auth.login
 
-import android.app.Application
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.*
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.pastpaperskenya.app.business.model.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.services.auth.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

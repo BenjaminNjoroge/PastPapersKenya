@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.UserDetails
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.services.auth.UserService

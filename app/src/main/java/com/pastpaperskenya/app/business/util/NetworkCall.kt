@@ -1,6 +1,6 @@
 package com.pastpaperskenya.app.business.util
 
-import com.pastpaperskenya.app.business.model.ResourceOne
+import com.pastpaperskenya.app.business.util.sealedclasses.ResourceOne
 
 
 @Suppress("TooGenericExceptionCaught")

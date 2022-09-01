@@ -13,13 +13,11 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String CONSUMER_SECRET = BuildConfig.CONSUMER_SECRET;
 
     private static final String API_URL = "wp-json/wc/v3/";    //Don't change api url
-    private static final String PAYPAL_URL = "paypal/paypal.php"; //Don't change api url
-    private static final String STRIPE_URL = "stripe/stripe.php"; //Don't change api url
     public static final String BASE_URL = SITE_URL + API_URL;
 
     public static final String BASE_AUTH = "?consumer_key=" + CONSUMER_KEY + "&consumer_secret=" + CONSUMER_SECRET;
 
-
+    public static final String PAYMENTS_URL= "https://us-central1-pastpaperskenya.cloudfunctions.net/payments/";
     public static final int RC_GOOGLE_IN= 9002;
 
     //KEY CONSTANT
@@ -91,7 +89,7 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String API_CUSTOMER = BASE_URL + "customers/" + BASE_AUTH;
     public static final String API_PRODUCTS = BASE_URL + "products/" + BASE_AUTH;
     public static final String API_PRODUCT_DETAIL = BASE_URL + "products/" + "{" + KEY_ID + "}" + BASE_AUTH;
-    public static final String API_PRODUCT_CATEGORIES = BASE_URL + "products/categories/" + BASE_AUTH;
+    public static final String API_PRODUCT_CATEGORIES = "products/categories/" + BASE_AUTH;
     public static final String API_PRODUCT_TAGS = BASE_URL + "products/tags/" + BASE_AUTH;
     public static final String API_PRODUCT_TAGS_ID = BASE_URL + "products/tags/" + "{" + KEY_ID +"}" + BASE_AUTH;
     public static final String API_PRODUCT_FILTER_TAGS = BASE_URL + "products/" + BASE_AUTH;

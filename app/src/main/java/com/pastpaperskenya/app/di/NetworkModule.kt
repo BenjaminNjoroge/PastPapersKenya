@@ -1,6 +1,8 @@
 package com.pastpaperskenya.app.di
 
+import com.pastpaperskenya.app.business.services.main.CategoryService
 import com.pastpaperskenya.app.business.services.payment.PaymentsService
+import com.pastpaperskenya.app.business.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +20,9 @@ import javax.inject.Singleton
 
 object NetworkModule {
 
-    private const val PAYMENTS_URL= "https://us-central1-pastpaperskenya.cloudfunctions.net/payments/"
+    private const val PAYMENTS_URL= Constants.PAYMENTS_URL
 
+    private const val BASE_URL= Constants.BASE_URL
 
     @Singleton
     @Provides
@@ -37,17 +41,31 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit=
+    @Named("payments")
+    fun providePaymentsRetrofit(okHttpClient: OkHttpClient): Retrofit=
         Retrofit.Builder()
             .baseUrl(PAYMENTS_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
-
+    @Singleton
+    @Provides
+    @Named("base")
+    fun provideBaseRetrofit(okHttpClient: OkHttpClient): Retrofit=
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
 
     @Singleton
     @Provides
-    fun providesPaymentService(retrofit: Retrofit): PaymentsService =
+    fun providesPaymentService(@Named("payments") retrofit: Retrofit): PaymentsService =
         retrofit.create(PaymentsService::class.java)
+
+    @Singleton
+    @Provides
+    fun providesCategoryService(@Named("base") retrofit: Retrofit): CategoryService=
+        retrofit.create(CategoryService::class.java)
 }

@@ -1,7 +1,7 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.auth
 
-import com.google.firebase.firestore.Exclude
 import com.google.gson.annotations.SerializedName
+import com.pastpaperskenya.app.business.model.BillingAddress
 
 
 data class Customer (

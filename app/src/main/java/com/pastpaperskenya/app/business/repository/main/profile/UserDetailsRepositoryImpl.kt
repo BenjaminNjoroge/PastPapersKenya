@@ -1,6 +1,6 @@
-package com.pastpaperskenya.app.business.repository.main
+package com.pastpaperskenya.app.business.repository.main.profile
 
-import com.pastpaperskenya.app.business.model.UserDetails
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.services.auth.UserService
 import javax.inject.Inject
 

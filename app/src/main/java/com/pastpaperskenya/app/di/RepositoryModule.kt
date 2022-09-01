@@ -1,11 +1,16 @@
 package com.pastpaperskenya.app.di
 
-import com.google.firebase.auth.FirebaseAuth
+import com.pastpaperskenya.app.business.cache.CategoryDao
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepositoryImpl
-import com.pastpaperskenya.app.business.repository.main.*
+import com.pastpaperskenya.app.business.repository.main.home.HomeRepository
+import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepository
+import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepositoryImpl
+import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.services.auth.UserService
+import com.pastpaperskenya.app.business.services.main.CategoryRemoteDataSource
+import com.pastpaperskenya.app.business.services.main.CategoryService
 import com.pastpaperskenya.app.business.services.payment.PaymentsService
 import dagger.Module
 import dagger.Provides
@@ -31,10 +36,21 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesProfileRepository(userService: UserService): ProfileRepository{
-        return ProfileRepositoryImpl(userService)
-    }
+    fun providesProfileRepository(userService: UserService): ProfileRepository =
+         ProfileRepositoryImpl(userService)
+
+
+    fun providesEditProfileRepository(userService: UserService): EditProfileRepository =
+        EditProfileRepositoryImpl(userService)
+
 
     @Provides
-    fun providesPaymentRepository(paymentsService: PaymentsService): PaymentsRepository = PaymentsRepositoryImpl(paymentsService)
+    fun providesPaymentRepository(paymentsService: PaymentsService): PaymentsRepository =
+        PaymentsRepositoryImpl(paymentsService)
+
+    @Provides
+    fun providesHomeCategoryRepository(categoryRemoteDataSource: CategoryRemoteDataSource, localDataSource: CategoryDao): HomeRepository =
+         HomeRepository(categoryRemoteDataSource, localDataSource)
+
+
 }

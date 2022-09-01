@@ -1,21 +1,12 @@
 package com.pastpaperskenya.app.business.services.auth
 
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.installations.FirebaseInstallations
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
-import com.pastpaperskenya.app.business.model.UserDetails
-import com.pastpaperskenya.app.business.model.UserDetails.Companion.toUserDetails
+import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.auth.UserDetails.Companion.toUserDetails
 import com.pastpaperskenya.app.business.model.lipanampesa.DatabaseKeys
 import com.pastpaperskenya.app.business.util.Constants
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class UserServiceImpl : UserService {
@@ -26,21 +17,27 @@ class UserServiceImpl : UserService {
 
     override suspend fun updateUserDetails(
         userId: String,
-        email: String?,
         phone: String?,
         firstname: String?,
         lastname: String?,
         country: String?,
         county: String?
     ) {
-        val userDetailsMap= mapOf(
-            DatabaseKeys.User.firstname to firstname,
-            DatabaseKeys.User.lastname to lastname,
-            DatabaseKeys.User.phone to phone,
-            DatabaseKeys.User.county to county,
-            DatabaseKeys.User.country to country
+        val user= hashMapOf(
+            "phone" to phone,
+            "firstname" to firstname,
+            "lastname" to lastname,
+            "country" to country,
+            "county" to county
         )
-        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(userDetailsMap)
+
+        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(
+            user as Map<String, Any>
+        ). addOnSuccessListener { result->
+            //Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener { e->
+            //Toast.makeText(context, e+ " unable to update", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override suspend fun getUserDetails(userId: String): UserDetails? {
