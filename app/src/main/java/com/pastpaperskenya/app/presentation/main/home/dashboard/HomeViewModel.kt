@@ -20,12 +20,12 @@ class HomeViewModel @Inject constructor(
     val category: LiveData<NetworkResult<List<Category>>> = _categoryResponse
 
     init {
-        fetchCategories()
+        fetchCategories(0)
     }
 
-    private fun fetchCategories(){
+    private fun fetchCategories(parent: Int){
         viewModelScope.launch {
-            homeRepository.getCategories().collect{
+            homeRepository.getCategories(parent).collect{
                 _categoryResponse.postValue(it)
             }
         }

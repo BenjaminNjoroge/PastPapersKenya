@@ -7,9 +7,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface CategoryService {
-    @GET(API_PRODUCT_CATEGORIES)
 
+    @GET(API_PRODUCT_CATEGORIES)
     suspend fun getCategories(
-        //@Query ("parent") parent: Int
+        @Query ("parent") parent: Int
     ): List<Category>
 }
