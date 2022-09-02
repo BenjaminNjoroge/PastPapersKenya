@@ -1,6 +1,5 @@
 package com.pastpaperskenya.app.di
 
-import com.pastpaperskenya.app.business.cache.CategoryDao
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.home.HomeRepository
@@ -9,7 +8,6 @@ import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepositoryI
 import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.services.auth.UserService
-import com.pastpaperskenya.app.business.services.main.CategoryRemoteDataSource
 import com.pastpaperskenya.app.business.services.main.CategoryService
 import com.pastpaperskenya.app.business.services.payment.PaymentsService
 import dagger.Module
@@ -49,8 +47,8 @@ object RepositoryModule {
         PaymentsRepositoryImpl(paymentsService)
 
     @Provides
-    fun providesHomeCategoryRepository(categoryRemoteDataSource: CategoryRemoteDataSource, localDataSource: CategoryDao): HomeRepository =
-         HomeRepository(categoryRemoteDataSource, localDataSource)
+    fun providesHomeCategoryRepository(categoryService: CategoryService): HomeRepository =
+         HomeRepository(categoryService)
 
 
 }

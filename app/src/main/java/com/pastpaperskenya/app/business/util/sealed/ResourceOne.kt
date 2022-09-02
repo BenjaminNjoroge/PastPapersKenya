@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.util.sealedclasses
+package com.pastpaperskenya.app.business.util.sealed
 
 import com.pastpaperskenya.app.business.model.auth.ApiResponse
 

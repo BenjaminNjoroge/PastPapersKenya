@@ -68,4 +68,6 @@ object NetworkModule {
     @Provides
     fun providesCategoryService(@Named("base") retrofit: Retrofit): CategoryService=
         retrofit.create(CategoryService::class.java)
+
+
 }

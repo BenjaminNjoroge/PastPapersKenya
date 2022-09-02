@@ -17,17 +17,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.Category
-import com.pastpaperskenya.app.business.util.sealedclasses.Resource
-import com.pastpaperskenya.app.presentation.main.ClickListener
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), HomeAdapter.CategoryClickListener {
+class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
 
     private val viewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding?= null
     private val binding get() = _binding!!
+
+
     private lateinit var homeAdapter: HomeAdapter
 
     override fun onCreateView(
@@ -51,19 +52,18 @@ class HomeFragment : Fragment(), HomeAdapter.CategoryClickListener {
     }
 
     private fun setupObservers() {
-        viewModel.categories.observe(viewLifecycleOwner){
-            when(it.status){
-                Resource.Status.SUCCESS->{
-                    binding.pbLoading.visibility= View.GONE
-                    if (!it.data.isNullOrEmpty()){
-                        homeAdapter.setItems(it.data as ArrayList<Category>)
-                    }
+        viewModel.category.observe(viewLifecycleOwner){
+            when(it){
+                is NetworkResult.Loading->{
+                    binding.pbLoading.isVisible= it.loading
                 }
-                Resource.Status.ERROR->{
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                is NetworkResult.Error->{
+                    binding.pbLoading.isVisible= false
+                    Toast.makeText(requireContext(), it.error,Toast.LENGTH_SHORT).show()
                 }
-                Resource.Status.LOADING->{
-                    binding.pbLoading.visibility= View.VISIBLE
+                is NetworkResult.Success->{
+                    homeAdapter.setItems(it.data as ArrayList<Category>)
+                    binding.pbLoading.isVisible= false
                 }
             }
         }

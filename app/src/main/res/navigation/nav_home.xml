@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/subCategoryFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.subcategory.SubCategoryFragment"
-        android:label="fragment_sub_category"
+        android:label="SubCategory"
         tools:layout="@layout/fragment_sub_category" >
         <action
             android:id="@+id/action_subCategoryFragment_to_productsFragment"

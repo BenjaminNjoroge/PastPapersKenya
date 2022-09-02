@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.pastpaperskenya.app.business.util.sealedclasses.ResourceOne
+import com.pastpaperskenya.app.business.util.sealed.ResourceOne
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint

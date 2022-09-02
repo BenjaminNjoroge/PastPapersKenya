@@ -30,7 +30,6 @@ data class Category (
     val display: String?,
 
     @SerializedName("image")
-    @TypeConverters(Converters::class)
     val image: CategoryImage?,
 
     @SerializedName("menu_order")

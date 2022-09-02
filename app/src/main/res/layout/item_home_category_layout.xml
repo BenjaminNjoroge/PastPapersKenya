@@ -9,10 +9,9 @@
         android:padding="@dimen/size_3dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/category_image_layout"
+            android:id="@+id/category_cardview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/size_5dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
