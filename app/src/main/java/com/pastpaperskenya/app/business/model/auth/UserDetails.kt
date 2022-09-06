@@ -8,13 +8,14 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserDetails(
-    val userId:String,
+    val userId:String?,
     val email: String?,
     val phone: String?,
     val firstname: String?,
     val lastname: String?,
     val country: String?,
-    val county: String?
+    val county: String?,
+    val userServerId: String?
 ) : Parcelable{
 
     companion object{
@@ -27,7 +28,8 @@ data class UserDetails(
                 val lastname= getString("lastname")
                 val country= getString("country")
                 val county= getString("county")
-                return UserDetails(userId!!, email, phone, firstname, lastname, country, county)
+                val userServerId= getString("userServerId")
+                return UserDetails(userId!!, email, phone, firstname, lastname, country, county, userServerId)
 
             } catch (e: Exception){
                 Log.e(TAG, "Error converting user profile", e)

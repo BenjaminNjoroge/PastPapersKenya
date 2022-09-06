@@ -23,7 +23,10 @@ import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
@@ -45,6 +48,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var phone: String
     private lateinit var country: String
     private lateinit var county: String
+    private lateinit var userServerId: String
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userId: String
@@ -107,9 +111,11 @@ class EditProfileFragment : Fragment() {
         firstname= binding.inputBillingFirstName.text.toString()
         lastname= binding.inputBillingLastName.text.toString()
         binding.inputBillingEmail.keyListener= null
+        phone= binding.inputBillingPhone.text.toString()
         email= binding.inputBillingEmail.text.toString()
         country= binding.inputBillingCountry.text.toString()
         county= binding.inputBillingCounty.text.toString()
+        userServerId= ""
 
         clickListeners()
     }
@@ -125,14 +131,12 @@ class EditProfileFragment : Fragment() {
             }
             saveAddress.setOnClickListener {
                 binding.rotateProgress.isVisible= true
-                viewModel.updateUserDetails(userId, phone, firstname, lastname, country, county)
+                viewModel.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
                 binding.rotateProgress.isVisible= false
             }
 
             ivProfileImageP.setOnClickListener{
                 ImagePicker.with(requireActivity())
-                    .compress(1024)
-                    .maxResultSize(1080,1080)
                     .createIntent { intent->
                         startForProfileImageResult.launch(intent)
                     }
@@ -140,8 +144,7 @@ class EditProfileFragment : Fragment() {
 
             backgroundProfile.setOnClickListener {
                 ImagePicker.with(requireActivity())
-                    .compress(1024)
-                    .maxResultSize(1080,1080)
+
                     .createIntent { intent->
                         startForBackgroundImageResult.launch(intent)
                     }

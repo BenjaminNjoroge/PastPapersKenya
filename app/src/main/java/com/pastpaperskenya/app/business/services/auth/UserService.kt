@@ -11,7 +11,8 @@ interface UserService {
                                    firstname: String?,
                                    lastname: String?,
                                    country: String?,
-                                   county: String?)
+                                   county: String?,
+                                   userServerId: String?)
 
     suspend fun getUserDetails(userId: String): UserDetails?
 

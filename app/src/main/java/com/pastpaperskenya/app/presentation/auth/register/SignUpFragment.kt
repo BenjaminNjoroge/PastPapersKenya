@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.databinding.FragmentSignUpBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -67,7 +67,8 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
                 hideKeyboard()
                 progressBar.isVisible= true
-                viewModel.register(email, phone, firstname, lastname, country, county, password, confirmPassword)
+
+                viewModel.fieldsChecker(email, firstname, lastname, password, confirmPassword)
 
             }
             txtAccountLogin.setOnClickListener {
@@ -79,11 +80,26 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     }
 
     private fun registerObservers(){
-        viewModel.firebaseUser.observe(viewLifecycleOwner, { user->
+
+        viewModel.userResponse.observe(viewLifecycleOwner){ response->
+            if(response.isSuccessful){
+                val userServerId= response.body()?.id
+                viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
+
+                viewModel.registerUserWithFirebase(email, phone, firstname, lastname, country, county, password,
+                    userServerId.toString()
+                )
+            } else{
+                Toast.makeText(requireContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.firebaseUser.observe(viewLifecycleOwner) { user->
             user?.let {
                 launchActivity()
             }
-        })
+        }
+
     }
 
     private fun listenToChannels(){

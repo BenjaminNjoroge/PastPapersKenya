@@ -19,6 +19,7 @@ class HomeViewModel @Inject constructor(
     private var _categoryResponse= MutableLiveData<NetworkResult<List<Category>>>()
     val category: LiveData<NetworkResult<List<Category>>> = _categoryResponse
 
+
     init {
         fetchCategories(0)
     }

@@ -14,8 +14,9 @@ class UserDetailsRepositoryImpl @Inject constructor
         firstname: String,
         lastname: String,
         county: String,
-        country: String
+        country: String,
+        userServerId: String
     ) {
-        userService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county))
+        userService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county, userServerId))
     }
 }

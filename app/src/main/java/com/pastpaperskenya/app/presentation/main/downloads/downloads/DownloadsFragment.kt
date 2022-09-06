@@ -5,56 +5,70 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.Category
+import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
+import com.pastpaperskenya.app.databinding.FragmentDownloadBinding
+import com.pastpaperskenya.app.presentation.main.home.dashboard.HomeAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DownloadsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DownloadsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+@AndroidEntryPoint
+class DownloadsFragment : Fragment(), DownloadsAdapter.ItemClickListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private  var _binding: FragmentDownloadBinding?=null
+    private val binding get() = _binding!!
+
+    private val viewModel: DownloadsViewModel by activityViewModels()
+    private lateinit var downloadsAdapter: DownloadsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_downloads, container, false)
+    ): View {
+
+        _binding= FragmentDownloadBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DownloadsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DownloadsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        downloadsAdapter= DownloadsAdapter(this)
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
+        binding.recyclerview.adapter= downloadsAdapter
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewModel.downloads.observe(viewLifecycleOwner){
+            when(it){
+                is NetworkResult.Loading->{
+                    binding.pbLoading.isVisible= it.loading
+                }
+                is NetworkResult.Error->{
+                    binding.pbLoading.isVisible= false
+                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
+                }
+                is NetworkResult.Success->{
+                    binding.pbLoading.isVisible= false
+                    downloadsAdapter.setItems(requireContext(), it.data as ArrayList<Download>)
                 }
             }
+        }
     }
+
+    override fun onItemClickGetPosition(path: String) {
+        TODO("Not yet implemented")
+    }
+
+
 }

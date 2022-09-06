@@ -23,6 +23,7 @@ import com.pastpaperskenya.app.BuildConfig;
     //KEY CONSTANT
     public static final String FIREBASE_DATABASE_COLLECTION_USER= "users";
     public static final String FIREBASE_DATABASE_COLLECTION_PAYMENTS= "payments";
+    public static final String USER_SERVER_ID="userServerId";
     public static final String KEY_ID = "id";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_FIRSTNAME = "first_name";

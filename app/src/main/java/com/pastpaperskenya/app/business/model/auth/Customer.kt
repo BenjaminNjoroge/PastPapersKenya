@@ -1,8 +1,6 @@
 package com.pastpaperskenya.app.business.model.auth
 
 import com.google.gson.annotations.SerializedName
-import com.pastpaperskenya.app.business.model.BillingAddress
-
 
 data class Customer (
 
@@ -10,39 +8,51 @@ data class Customer (
     val id: Int,
 
     @SerializedName("date_created")
-    val date_created: String,
+    val date_created: String?,
 
     @SerializedName("date_created_gmt")
-    val date_created_gmt: String,
+    val date_created_gmt: String?,
 
     @SerializedName("date_modified")
-    val date_modified: String,
+    val date_modified: String?,
 
     @SerializedName("date_modified_gmt")
-    val date_modified_gmt: String,
+    val date_modified_gmt: String?,
 
     @SerializedName("email")
-    val email: String,
+    val email: String?,
 
     @SerializedName("first_name")
-    val first_name: String,
+    val firstname: String?,
 
     @SerializedName("last_name")
-    val last_name: String,
+    val lastname: String?,
 
     @SerializedName("username")
-    val username: String,
+    val username: String?,
 
     @SerializedName("password")
-    val password: String,
+    val password: String?,
 
     @SerializedName("role")
-    val role: String,
+    val role: String?,
 
     @SerializedName("avatar_url")
-    val avatar_url: String,
+    val image: String?,
 
     @SerializedName("billing")
-    val billingAddress: BillingAddress
+    val billingAddress: BillingAddress?
 
-)
+) {
+    class BillingAddress (
+        val firstname: String,
+        val lastname: String,
+        val company: String,
+        val address: String,
+        val city: String,
+        val state: String,
+        val country: String,
+        val email: String,
+        val phone: String
+            )
+}

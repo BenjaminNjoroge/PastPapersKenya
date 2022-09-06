@@ -44,8 +44,8 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateUserDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String, )= viewModelScope.launch {
-        userService.updateUserDetails(userId, phone, firstname, lastname, country, county)
+    fun updateUserDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:String)= viewModelScope.launch {
+        userService.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
     }
 
     fun logout()= viewModelScope.launch {

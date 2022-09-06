@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.Category
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -71,7 +72,7 @@ class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
 
     override fun onClick(categoryId: Int) {
         findNavController().navigate(R.id.action_homeFragment_to_subCategoryFragment)
-        bundleOf("id" to categoryId)
+        bundleOf(Constants.KEY_ID to categoryId)
     }
 
 

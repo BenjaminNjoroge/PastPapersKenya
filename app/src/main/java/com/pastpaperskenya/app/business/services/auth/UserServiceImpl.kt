@@ -12,7 +12,11 @@ import kotlinx.coroutines.tasks.await
 class UserServiceImpl : UserService {
 
     override suspend fun saveUserDetails(userDetails: UserDetails) {
-        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userDetails.userId).set(userDetails).await()
+        userDetails.userId?.let {
+            Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(
+                it
+            ).set(userDetails).await()
+        }
     }
 
     override suspend fun updateUserDetails(
@@ -21,14 +25,16 @@ class UserServiceImpl : UserService {
         firstname: String?,
         lastname: String?,
         country: String?,
-        county: String?
+        county: String?,
+        userServerId: String?
     ) {
         val user= hashMapOf(
             "phone" to phone,
             "firstname" to firstname,
             "lastname" to lastname,
             "country" to country,
-            "county" to county
+            "county" to county,
+            "userServerId" to userServerId
         )
 
         Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(

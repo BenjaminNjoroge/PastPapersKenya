@@ -1,7 +1,8 @@
 package com.pastpaperskenya.app.business.repository.auth
 
-import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
+import com.pastpaperskenya.app.business.model.auth.Customer
+import retrofit2.Response
 
 
 interface FirebaseRepository {
@@ -15,5 +16,9 @@ interface FirebaseRepository {
     fun getCurrentUser() : FirebaseUser?
 
     suspend fun sendResetPassword(email : String) : Boolean
+
+    suspend fun createUser(email: String, firstname: String, lastname: String, password: String): Response<Customer>
+
+    suspend fun getUser(email: String): Response<List<Customer>>
 
 }

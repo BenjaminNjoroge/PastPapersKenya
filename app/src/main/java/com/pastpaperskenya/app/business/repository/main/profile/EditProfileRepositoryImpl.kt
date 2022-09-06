@@ -17,9 +17,10 @@ class EditProfileRepositoryImpl @Inject constructor (private val userService: Us
         lastname: String,
         phone: String,
         country: String,
-        county: String
+        county: String,
+        userServerId: String
     ) {
-        userService.updateUserDetails(userId, phone, firstname, lastname, country, county)
+        userService.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
     }
 
 

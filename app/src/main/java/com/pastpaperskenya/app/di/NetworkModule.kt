@@ -1,6 +1,6 @@
 package com.pastpaperskenya.app.di
 
-import com.pastpaperskenya.app.business.services.main.CategoryService
+import com.pastpaperskenya.app.business.services.main.RetrofitService
 import com.pastpaperskenya.app.business.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.util.Constants
 import dagger.Module
@@ -11,7 +11,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -66,8 +65,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesCategoryService(@Named("base") retrofit: Retrofit): CategoryService=
-        retrofit.create(CategoryService::class.java)
-
+    fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitService=
+        retrofit.create(RetrofitService::class.java)
 
 }

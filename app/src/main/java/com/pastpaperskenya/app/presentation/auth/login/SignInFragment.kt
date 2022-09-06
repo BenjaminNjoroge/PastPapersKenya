@@ -83,7 +83,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
                 hideKeyboard()
                 progressBar.isVisible= true
-                viewModel.signIn(email, password)
+                viewModel.fieldsChecker(email, password)
             }
             txtCreateAccount.setOnClickListener {
                 findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
@@ -131,6 +131,16 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun registerObservers(){
+
+        viewModel.userResponse.observe(viewLifecycleOwner){ response->
+
+                if (response.isSuccessful){
+                    viewModel.actualSignInUser(email, password)
+                } else{
+                    Toast.makeText(requireContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show()
+                }
+        }
+
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
             user?.let {
                 launchActivity()
