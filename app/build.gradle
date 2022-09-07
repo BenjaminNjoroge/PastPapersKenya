@@ -101,7 +101,6 @@ dependencies {
 
     //downloader and viewer
     implementation project(':prdownloader')
-    implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
 
     //dex
     implementation 'androidx.multidex:multidex:2.0.1'
