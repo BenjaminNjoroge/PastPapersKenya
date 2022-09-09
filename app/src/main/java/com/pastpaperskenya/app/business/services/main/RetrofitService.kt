@@ -35,6 +35,6 @@ interface RetrofitService {
     //for download
     @GET(API_DOWNLOAD)
     suspend fun getDownloads(
-        @Path("id") id: Int
+        @Path("id") id: Int?
     ): List<Download>
 }

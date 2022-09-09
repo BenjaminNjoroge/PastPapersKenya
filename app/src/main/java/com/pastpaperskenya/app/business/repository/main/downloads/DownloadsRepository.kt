@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class DownloadsRepository@Inject constructor(private val retrofitService: RetrofitService){
 
-    suspend fun getDownloads(id: Int) = flow{
+    suspend fun getDownloads(id: Int?) = flow{
         emit(NetworkResult.Loading(true))
 
         val downloadsResponse= retrofitService.getDownloads(id)
