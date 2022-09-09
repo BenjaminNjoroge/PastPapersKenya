@@ -66,8 +66,8 @@ object RepositoryModule {
         SubCategoryRepository(retrofitService)
 
     @Provides
-    fun providesDownloadsRepository(retrofitService: RetrofitService): DownloadsRepository =
-        DownloadsRepository(retrofitService)
+    fun providesDownloadsRepository(retrofitService: RetrofitService, userService: UserService): DownloadsRepository =
+        DownloadsRepository(retrofitService, userService)
 
 
 }

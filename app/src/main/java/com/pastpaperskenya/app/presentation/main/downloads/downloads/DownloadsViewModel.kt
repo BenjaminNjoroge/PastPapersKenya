@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
 import com.pastpaperskenya.app.business.util.Constants
@@ -15,17 +17,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DownloadsViewModel @Inject constructor(
-    private val downloadsRepository: DownloadsRepository,
-    private val datastore: DataStoreRepository
+    private val downloadsRepository: DownloadsRepository
 ): ViewModel() {
 
     private var _downloads = MutableLiveData<NetworkResult<List<Download>>>()
     val downloads: LiveData<NetworkResult<List<Download>>> = _downloads
 
+
     init {
+
+        val firebaseAuth= FirebaseAuth.getInstance()
+        val user= firebaseAuth.currentUser?.uid
+
         viewModelScope.launch {
-            val id= datastore.getValue(Constants.USER_SERVER_ID)
-            fetchDownloads(id?.toInt())
+            val id= downloadsRepository.getUserDetails(user!!)
+            fetchDownloads(id?.userServerId?.toInt())
         }
     }
 
