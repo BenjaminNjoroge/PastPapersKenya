@@ -1,32 +1,33 @@
 package com.pastpaperskenya.app.presentation.main.downloads.downloads
 
+import android.R.attr
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.Category
 import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentDownloadBinding
-import com.pastpaperskenya.app.presentation.main.home.dashboard.HomeAdapter
+import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class DownloadsFragment : Fragment(), DownloadsAdapter.ItemClickListener {
+class DownloadsFragment : Fragment(){
 
     private  var _binding: FragmentDownloadBinding?=null
     private val binding get() = _binding!!
 
     private val viewModel: DownloadsViewModel by activityViewModels()
-    private lateinit var downloadsAdapter: DownloadsAdapter
+    private lateinit var downloadsAdapter: DownloadAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +42,23 @@ class DownloadsFragment : Fragment(), DownloadsAdapter.ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        downloadsAdapter= DownloadsAdapter(this)
+        downloadsAdapter= DownloadAdapter(requireContext())
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         binding.recyclerview.adapter= downloadsAdapter
+
+        downloadsAdapter.setItemClickListener(object : ViewItemListener{
+            override fun onItemClickGetName(path: String?) {
+                val dirPath= DownloadUtils.getRootDirPath(context)
+                val intent = Intent(context, ViewPfdActivity::class.java)
+                Log.e("path", dirPath + "/" + attr.path)
+                intent.putExtra("filepath", dirPath + "/" + attr.path)
+                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                startActivity(intent)
+                //findNavController().navigate(R.id.action_downloadsFragment_to_viewFragment)
+
+            }
+
+        })
 
         setupObservers()
     }
@@ -65,10 +80,5 @@ class DownloadsFragment : Fragment(), DownloadsAdapter.ItemClickListener {
             }
         }
     }
-
-    override fun onItemClickGetPosition(path: String) {
-        TODO("Not yet implemented")
-    }
-
 
 }

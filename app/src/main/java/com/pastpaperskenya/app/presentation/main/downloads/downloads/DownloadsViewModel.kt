@@ -25,7 +25,9 @@ class DownloadsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val id= datastore.getValue(Constants.USER_SERVER_ID)
-            fetchDownloads(id!!.toInt())
+            if (id != null) {
+                fetchDownloads(id.toInt())
+            }
         }
     }
 

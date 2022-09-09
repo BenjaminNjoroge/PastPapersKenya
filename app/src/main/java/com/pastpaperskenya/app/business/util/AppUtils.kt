@@ -71,7 +71,7 @@ fun Context.hideKeyboard(view: View) {
 }
 
 @RequiresApi(Build.VERSION_CODES.M)
-fun Activity.isConnected(): Boolean {
+fun Context.isConnected(): Boolean {
     var status= false
     val connectionManager= getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
