@@ -28,7 +28,8 @@ interface RetrofitService {
     //for home page
     @GET(API_PRODUCT_CATEGORIES)
     suspend fun getParentCategories(
-        @Query ("parent") parent: Int
+        @Query ("parent") parent: Int,
+        @Query ("exclude") slider: ArrayList<Int>
     ): List<Category>
 
     @GET(API_PRODUCT_CATEGORIES)

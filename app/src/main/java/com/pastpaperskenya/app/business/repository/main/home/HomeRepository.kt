@@ -9,9 +9,9 @@ class HomeRepository @Inject constructor(
     private val categoryService: RetrofitService,
 ) {
 
-    suspend fun getCategories(parent: Int)= flow{
+    suspend fun getCategories(parent: Int, slider: ArrayList<Int>)= flow{
         emit(NetworkResult.Loading(true))
-        val categoryResponse= categoryService.getParentCategories(parent)
+        val categoryResponse= categoryService.getParentCategories(parent, slider)
         emit(NetworkResult.Success(categoryResponse))
     }.catch { e->
         emit(NetworkResult.Error(e.message ?:"Unknown Error"))

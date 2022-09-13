@@ -25,13 +25,13 @@ class HomeViewModel @Inject constructor(
 
 
     init {
-        fetchCategories(0)
+        fetchCategories(0, arrayListOf(1032))
         sliderImages(1032)
     }
 
-    private fun fetchCategories(parent: Int){
+    private fun fetchCategories(parent: Int, slider: ArrayList<Int>){
         viewModelScope.launch {
-            homeRepository.getCategories(parent).collect{
+            homeRepository.getCategories(parent, slider).collect{
                 _categoryResponse.postValue(it)
 
             }
