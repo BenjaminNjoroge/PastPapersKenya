@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.business.model.Download
 import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
-import com.pastpaperskenya.app.databinding.FragmentDownloadBinding
+import com.pastpaperskenya.app.databinding.FragmentDownloadsBinding
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DownloadsFragment : Fragment(){
 
-    private  var _binding: FragmentDownloadBinding?=null
+    private  var _binding: FragmentDownloadsBinding?=null
     private val binding get() = _binding!!
 
     private val viewModel: DownloadsViewModel by activityViewModels()
@@ -34,7 +34,7 @@ class DownloadsFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View {
 
-        _binding= FragmentDownloadBinding.inflate(inflater, container, false)
+        _binding= FragmentDownloadsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -54,7 +54,6 @@ class DownloadsFragment : Fragment(){
                 intent.putExtra("filepath", dirPath + "/" + attr.path)
                 intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 startActivity(intent)
-                //findNavController().navigate(R.id.action_downloadsFragment_to_viewFragment)
 
             }
 

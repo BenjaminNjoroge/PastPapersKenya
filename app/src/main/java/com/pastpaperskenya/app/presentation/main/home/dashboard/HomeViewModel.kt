@@ -13,21 +13,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository,
+
 ) : ViewModel() {
 
     private var _categoryResponse= MutableLiveData<NetworkResult<List<Category>>>()
     val category: LiveData<NetworkResult<List<Category>>> = _categoryResponse
 
+    private var _sliderImages= MutableLiveData<NetworkResult<List<Category>>>()
+    val sliderImages: LiveData<NetworkResult<List<Category>>> = _sliderImages
+
 
     init {
         fetchCategories(0)
+        sliderImages(1032)
     }
 
     private fun fetchCategories(parent: Int){
         viewModelScope.launch {
             homeRepository.getCategories(parent).collect{
                 _categoryResponse.postValue(it)
+            }
+        }
+    }
+
+    private fun sliderImages(parent:Int){
+        viewModelScope.launch {
+            homeRepository.getSliderCategories(parent).collect{
+                _sliderImages.postValue(it)
             }
         }
     }

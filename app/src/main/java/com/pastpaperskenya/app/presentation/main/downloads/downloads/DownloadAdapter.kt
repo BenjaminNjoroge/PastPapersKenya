@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.downloader.*
 import com.facebook.FacebookSdk.getApplicationContext
@@ -43,11 +44,9 @@ import java.io.File
     override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
         holder.actionButton.setOnClickListener(null)
         holder.actionButton.isEnabled = true
-        holder.wrapperImageView.setOnClickListener(null)
-        holder.wrapperImageView.isEnabled = true
         holder.statusTextView.visibility = View.GONE
         holder.progressBar.visibility = View.GONE
-        holder.titleTextView.setText(arrayList[position].file.name)
+        holder.titleTextView.setText(arrayList[position].product_name)
 
         val isfile = File(context.cacheDir, arrayList[position].file.name)
         if (!isfile.exists()) {
@@ -110,22 +109,19 @@ import java.io.File
                             holder.statusTextView.visibility = View.GONE
                         }
                         .start(object : OnDownloadListener {
+
                             override fun onDownloadComplete() {
                                 holder.actionButton.isEnabled = false
-                                //buttonCancelOne.setEnabled(false);
-                                holder.progressTextView.text = ""
-                                holder.progressBar.progress = 0
+                                holder.actionButton.visibility= View.GONE
+                                holder.statusTextView.visibility = View.VISIBLE
                                 holder.progressBar.visibility = View.GONE
-                                holder.statusTextView.text = ""
-                                holder.statusTextView.visibility = View.GONE
-                                holder.actionButton.setText(R.string.download)
+                                holder.descriptionBar.visibility= View.VISIBLE
                                 if (isfile.exists()) {
-                                    holder.statusTextView.setText(R.string.view)
-                                    holder.statusTextView.visibility = View.VISIBLE
-                                    holder.wrapperImageView.setImageBitmap(pdfToBitmap(isfile))
+                                    holder.descriptionBar.visibility= View.VISIBLE
+                                    holder.wrapperImage.setImageBitmap(pdfToBitmap(isfile))
                                 } else {
-                                    holder.statusTextView.text = ""
-                                    holder.statusTextView.visibility = View.GONE
+                                    holder.statusTextView.text = "Error"
+                                    holder.statusTextView.visibility = View.VISIBLE
                                     holder.progressBar.visibility = View.GONE
                                 }
                             }
@@ -156,11 +152,12 @@ import java.io.File
 //                }
             })
         } else if (isfile.exists()) {
-            holder.statusTextView.setText(R.string.view)
+            holder.descriptionBar.visibility= View.VISIBLE
             holder.progressTextView.text = ""
             holder.progressBar.visibility = View.GONE
+            holder.actionButton.visibility= View.GONE
             holder.statusTextView.visibility = View.VISIBLE
-            holder.wrapperImageView.setImageBitmap(pdfToBitmap(isfile))
+            holder.wrapperImage.setImageBitmap(pdfToBitmap(isfile))
         }
     }
 
@@ -177,7 +174,10 @@ import java.io.File
         val actionButton: Button = itemView.findViewById(R.id.actionButton)
         val timeRemainingTextView: TextView = itemView.findViewById(R.id.remaining_TextView)
         val downloadedBytesPerSecondTextView: TextView = itemView.findViewById(R.id.downloadSpeedTextView)
-        val wrapperImageView: ImageView = itemView.findViewById(R.id.wrapperImage)
+         val descriptionBar: LinearLayout= itemView.findViewById(R.id.descriptionBar)
+         val cardview: CardView= itemView.findViewById(R.id.cardview)
+         val wrapperImage: ImageView= itemView.findViewById(R.id.wrapperImage)
+
 
         override fun onClick(view: View) {
             itemClickListener.onItemClickGetName(
@@ -186,9 +186,11 @@ import java.io.File
         }
 
         init {
-            statusTextView.setOnClickListener(this)
-            wrapperImageView.setOnClickListener(this)
             titleTextView.setOnClickListener(this)
+            cardview.setOnClickListener(this)
+            descriptionBar.setOnClickListener(this)
+            wrapperImage.setOnClickListener(this)
+
         }
     }
 

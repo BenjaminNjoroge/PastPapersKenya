@@ -30,7 +30,7 @@ class DownloadsViewModel @Inject constructor(
         val user= firebaseAuth.currentUser?.uid
 
         viewModelScope.launch {
-            val id= downloadsRepository.getUserDetails(user!!)
+            val id= user?.let { downloadsRepository.getUserDetails(it) }
             fetchDownloads(id?.userServerId?.toInt())
         }
     }

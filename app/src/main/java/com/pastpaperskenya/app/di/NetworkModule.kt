@@ -68,4 +68,5 @@ object NetworkModule {
     fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitService=
         retrofit.create(RetrofitService::class.java)
 
+
 }

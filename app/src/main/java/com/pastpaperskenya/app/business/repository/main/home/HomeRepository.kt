@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val categoryService: RetrofitService
+    private val categoryService: RetrofitService,
 ) {
 
     suspend fun getCategories(parent: Int)= flow{
@@ -15,5 +15,13 @@ class HomeRepository @Inject constructor(
         emit(NetworkResult.Success(categoryResponse))
     }.catch { e->
         emit(NetworkResult.Error(e.message ?:"Unknown Error"))
+    }
+
+    suspend fun getSliderCategories(parent: Int)= flow{
+        emit(NetworkResult.Loading(true))
+        val sliderImage= categoryService.getSliderCategories(parent)
+        emit(NetworkResult.Success(sliderImage))
+    }.catch { e->
+        emit(NetworkResult.Error(e.message ?: "Unknown Error"))
     }
 }

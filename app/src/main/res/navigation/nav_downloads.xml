@@ -10,17 +10,7 @@
         android:name="com.pastpaperskenya.app.presentation.main.downloads.downloads.DownloadsFragment"
         android:label="Downloads"
         tools:layout="@layout/fragment_downloads" >
-        <action
-            android:id="@+id/action_downloadsFragment_to_viewFragment"
-            app:destination="@id/viewFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_in_right" />
+
     </fragment>
-    <fragment
-        android:id="@+id/viewFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewFragment"
-        android:label="View"
-        tools:layout="@layout/fragment_view" />
+
 </navigation>

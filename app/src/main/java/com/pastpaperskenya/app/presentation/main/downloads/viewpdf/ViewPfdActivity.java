@@ -17,6 +17,9 @@ import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.listener.OnPageErrorLi
 import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.scroll.DefaultScrollHandle;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -49,9 +52,9 @@ public class ViewPfdActivity extends AppCompatActivity
             Timber.e(pdfName);
             //new DownloadFilesTask().execute(pdfName, String.valueOf(flag));
             pdfView.setVisibility(View.VISIBLE);
-            File file = new File(pdfName);
+            //File file = new File(pdfName);
 
-            /*File file = new File(getCacheDir(), pdfName);
+            File file = new File(getCacheDir(), pdfName);
             if (!file.exists()) {
                 InputStream asset = null;
                 try {
@@ -70,7 +73,7 @@ public class ViewPfdActivity extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }*/
+            }
 
             pdfView.fromFile(file)
                     .enableSwipe(true)

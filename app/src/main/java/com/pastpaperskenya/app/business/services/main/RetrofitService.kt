@@ -31,6 +31,11 @@ interface RetrofitService {
         @Query ("parent") parent: Int
     ): List<Category>
 
+    @GET(API_PRODUCT_CATEGORIES)
+    suspend fun getSliderCategories(
+        @Query ("parent") parent: Int
+    ): List<Category>
+
 
     //for download
     @GET(API_DOWNLOAD)
