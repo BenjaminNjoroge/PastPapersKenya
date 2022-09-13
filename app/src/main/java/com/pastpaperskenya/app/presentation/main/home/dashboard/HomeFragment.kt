@@ -18,6 +18,7 @@ import com.pastpaperskenya.app.business.model.Category
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentHomeBinding
+import com.smarteist.autoimageslider.SliderView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -77,13 +78,20 @@ class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
                     binding.sliderShimmerView.isVisible= it.loading
                 }
                 is NetworkResult.Success->{
-                    binding.sliderShimmerView.visibility= View.GONE
-                    binding.sliderViewpager.visibility= View.VISIBLE
-                    binding.sliderIndicator.visibility= View.VISIBLE
 
-                    sliderAdapter= ImageSliderAdapter(requireContext(), it.data)
-                    binding.sliderViewpager.adapter= sliderAdapter
-                    binding.sliderIndicator.setViewPager(binding.sliderViewpager)
+                    binding.sliderShimmerView.visibility= View.GONE
+                    binding.homeCard.visibility= View.VISIBLE
+                    binding.imageSlider.visibility= View.VISIBLE
+
+                    sliderAdapter= ImageSliderAdapter(requireContext(),
+                        it.data as ArrayList<Category>)
+
+                    binding.imageSlider.autoCycleDirection= SliderView.LAYOUT_DIRECTION_LTR
+                    binding.imageSlider.setSliderAdapter(sliderAdapter)
+                    binding.imageSlider.scrollTimeInSec = 3
+                    binding.imageSlider.isAutoCycle = true
+                    binding.imageSlider.startAutoCycle()
+
                 }
                 is NetworkResult.Error->{
                     Toast.makeText(requireContext(), it.error,Toast.LENGTH_SHORT).show()

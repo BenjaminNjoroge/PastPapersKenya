@@ -33,6 +33,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             homeRepository.getCategories(parent).collect{
                 _categoryResponse.postValue(it)
+
             }
         }
     }
