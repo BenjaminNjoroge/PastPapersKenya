@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.Category
 import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
+import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentHomeBinding
 import com.smarteist.autoimageslider.SliderView
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
+class HomeFragment : Fragment(){
 
     private val viewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding?= null
@@ -46,7 +46,7 @@ class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeAdapter= HomeAdapter(this)
+        homeAdapter= HomeAdapter()
         val gridLayoutManager= GridLayoutManager(requireContext(), 3, LinearLayoutManager.VERTICAL, false)
         binding.recyclerview.layoutManager= gridLayoutManager
         binding.recyclerview.adapter= homeAdapter
@@ -55,56 +55,52 @@ class HomeFragment : Fragment(),  HomeAdapter.ClickListener{
     }
 
     private fun setupObservers() {
-        viewModel.category.observe(viewLifecycleOwner){
-            when(it){
-                is NetworkResult.Loading->{
-                    binding.pbLoading.isVisible= it.loading
+        viewModel.response.observe(viewLifecycleOwner){
+            when(it.status){
+                 Resource.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    if (!it.data.isNullOrEmpty()) homeAdapter.submitList(it.data)
                 }
-                is NetworkResult.Error->{
-                    binding.pbLoading.isVisible= false
-                    Toast.makeText(requireContext(), it.error,Toast.LENGTH_SHORT).show()
+                 Resource.Status.ERROR->{
+                    Toast.makeText(requireContext(), it.message,Toast.LENGTH_SHORT).show()
                 }
-                is NetworkResult.Success->{
-                    homeAdapter.setItems(it.data as ArrayList<Category>)
-                    binding.pbLoading.isVisible= false
+                 Resource.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
                 }
             }
         }
 
-        viewModel.sliderImages.observe(viewLifecycleOwner){
-
-            when(it){
-                is NetworkResult.Loading->{
-                    binding.sliderShimmerView.isVisible= it.loading
-                }
-                is NetworkResult.Success->{
-
-                    binding.sliderShimmerView.visibility= View.GONE
-                    binding.homeCard.visibility= View.VISIBLE
-                    binding.imageSlider.visibility= View.VISIBLE
-
-                    sliderAdapter= ImageSliderAdapter(requireContext(),
-                        it.data as ArrayList<Category>)
-
-                    binding.imageSlider.autoCycleDirection= SliderView.LAYOUT_DIRECTION_LTR
-                    binding.imageSlider.setSliderAdapter(sliderAdapter)
-                    binding.imageSlider.scrollTimeInSec = 3
-                    binding.imageSlider.isAutoCycle = true
-                    binding.imageSlider.startAutoCycle()
-
-                }
-                is NetworkResult.Error->{
-                    Toast.makeText(requireContext(), it.error,Toast.LENGTH_SHORT).show()
-                }
-            }
-
-        }
+//        viewModel.sliderImages.observe(viewLifecycleOwner){
+//
+//            when(it){
+//                is Resource.Loading->{
+//                    binding.sliderShimmerView.isVisible= it.loading
+//                }
+//                is Resource.Success->{
+//
+//                    binding.sliderShimmerView.visibility= View.GONE
+//                    binding.homeCard.visibility= View.VISIBLE
+//                    binding.imageSlider.visibility= View.VISIBLE
+//
+//                    sliderAdapter= ImageSliderAdapter(requireContext(),
+//                        it.data as ArrayList<Category>)
+//
+//                    binding.imageSlider.autoCycleDirection= SliderView.LAYOUT_DIRECTION_LTR
+//                    binding.imageSlider.setSliderAdapter(sliderAdapter)
+//                    binding.imageSlider.scrollTimeInSec = 3
+//                    binding.imageSlider.isAutoCycle = true
+//                    binding.imageSlider.startAutoCycle()
+//
+//                }
+//                is Resource.Error->{
+//                    Toast.makeText(requireContext(), it.error,Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//        }
     }
 
-    override fun onClick(categoryId: Int) {
-        findNavController().navigate(R.id.action_homeFragment_to_subCategoryFragment)
-        bundleOf(Constants.KEY_ID to categoryId)
-    }
+
 
 
 }

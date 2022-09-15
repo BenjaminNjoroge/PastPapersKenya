@@ -47,14 +47,14 @@ public class ViewPfdActivity extends AppCompatActivity
         progressDialog= findViewById(R.id.progressBar);
 
         if (bundle != null) {
-            if (bundle.containsKey("filepath"))
-                pdfName = bundle.getString("filepath");
+
+            pdfName = bundle.getString("filepath");
             Timber.e(pdfName);
             //new DownloadFilesTask().execute(pdfName, String.valueOf(flag));
             pdfView.setVisibility(View.VISIBLE);
-            //File file = new File(pdfName);
+            File file = new File(pdfName);
 
-            File file = new File(getCacheDir(), pdfName);
+            /*File file = new File(getCacheDir(), pdfName);
             if (!file.exists()) {
                 InputStream asset = null;
                 try {
@@ -74,7 +74,7 @@ public class ViewPfdActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-
+*/
             pdfView.fromFile(file)
                     .enableSwipe(true)
                     .defaultPage(pageNumber)

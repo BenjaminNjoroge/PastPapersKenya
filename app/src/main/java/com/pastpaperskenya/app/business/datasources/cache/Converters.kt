@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.cache
+package com.pastpaperskenya.app.business.datasources.cache
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson

@@ -30,7 +30,7 @@ public final class DownloadUtils {
         File file = new File(context.getCacheDir(),"/");
         if(!file.exists()){
             if (!file.mkdir()){
-                Toast.makeText(context, "Error occured during offline download", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error occurred during offline download", Toast.LENGTH_SHORT).show();
             }
         }
         File fileWithinMyDir = new File(file, "");

@@ -2,39 +2,51 @@ package com.pastpaperskenya.app.presentation.main.home.dashboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.business.model.Category
 import com.pastpaperskenya.app.databinding.ItemHomeCategoryLayoutBinding
 
 
-class HomeAdapter constructor(private val listener: ClickListener): RecyclerView.Adapter<HomeViewHolder>() {
+class HomeAdapter : ListAdapter<Category, HomeAdapter.ViewHolder>(CategoryComparator()){
 
-
-    interface ClickListener{
-        fun onClick(categoryId: Int)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding= ItemHomeCategoryLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
-    private val categories= ArrayList<Category>()
-
-    fun setItems(categories: ArrayList<Category>){
-        this.categories.clear()
-        this.categories.addAll(categories)
-        notifyDataSetChanged()
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currentItem= getItem(position)
+        if (currentItem != null){
+            holder.bind(currentItem)
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val binding: ItemHomeCategoryLayoutBinding = ItemHomeCategoryLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HomeViewHolder(binding, listener)
+    class ViewHolder(private val binding: ItemHomeCategoryLayoutBinding): RecyclerView.ViewHolder(binding.root){
+
+        fun bind(category: Category){
+            binding.apply {
+                categoryTitle.text= category.name
+                Glide.with(binding.root).load(category.image?.src).into(categoryImage)
+            }
+        }
+
     }
 
-    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) =
-        holder.bind(categories[position])
+    class CategoryComparator: DiffUtil.ItemCallback<Category>(){
 
+        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    override fun getItemCount(): Int {
-        return categories.size
+        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+            return oldItem== newItem
+        }
+
     }
+
 
 
 }
