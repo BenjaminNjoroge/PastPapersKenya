@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.business.model.Download
 import com.pastpaperskenya.app.business.util.DownloadUtils
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
+import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentDownloadsBinding
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,34 +50,36 @@ class DownloadsFragment : Fragment(){
             override fun onItemClickGetName(path: String?) {
                 val dirPath= DownloadUtils.getRootDirPath(context)
                 val intent = Intent(context, ViewPfdActivity::class.java)
+                val bundle = Bundle()
                 Log.e("path", dirPath + "/" + attr.path)
-                intent.putExtra("filepath", dirPath + "/" + attr.path)
+                bundle.putString("filepath", dirPath + "/" + path)
                 intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                intent.putExtras(bundle)
                 startActivity(intent)
 
             }
 
         })
 
-        setupObservers()
+        //setupObservers()
     }
 
-    private fun setupObservers() {
-        viewModel.downloads.observe(viewLifecycleOwner){
-            when(it){
-                is NetworkResult.Loading->{
-                    binding.pbLoading.isVisible= it.loading
-                }
-                is NetworkResult.Error->{
-                    binding.pbLoading.isVisible= false
-                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
-                }
-                is NetworkResult.Success->{
-                    binding.pbLoading.isVisible= false
-                    downloadsAdapter.setItems(requireContext(), it.data as ArrayList<Download>)
-                }
-            }
-        }
-    }
+//    private fun setupObservers() {
+//        viewModel.downloads.observe(viewLifecycleOwner){
+//            when(it){
+//                is Resource.Loading->{
+//                    binding.pbLoading.isVisible= it.loading
+//                }
+//                is Resource.Error->{
+//                    binding.pbLoading.isVisible= false
+//                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
+//                }
+//                is Resource.Success->{
+//                    binding.pbLoading.isVisible= false
+//                    downloadsAdapter.setItems(requireContext(), it.data as ArrayList<Download>)
+//                }
+//            }
+//        }
+//    }
 
 }

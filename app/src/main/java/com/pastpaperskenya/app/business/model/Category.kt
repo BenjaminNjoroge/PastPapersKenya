@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import com.pastpaperskenya.app.business.cache.Converters
+import com.pastpaperskenya.app.business.datasources.cache.Converters
 
 @Entity(tableName = "categories")
 data class Category (

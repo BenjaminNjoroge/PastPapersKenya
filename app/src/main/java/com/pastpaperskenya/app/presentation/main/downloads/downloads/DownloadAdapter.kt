@@ -21,10 +21,11 @@ import java.io.File
 
   class DownloadAdapter(private var context: Context) :
      RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>() {
+
       private var arrayList=  ArrayList<Download>()
       private lateinit var dirPath: String
-    private lateinit var itemClickListener: ViewItemListener
-    private var downloadIdOne = 0
+      private lateinit var itemClickListener: ViewItemListener
+      private var downloadIdOne = 0
 
      fun setItems(context: Context, downloadList: ArrayList<Download>) {
         this.context = context
@@ -70,6 +71,7 @@ import java.io.File
                     }
                     dirPath = DownloadUtils.getRootDirPath(getApplicationContext())
                     val url = arrayList[position].download_url
+
                     downloadIdOne = PRDownloader.download(
                         url,
                         dirPath,

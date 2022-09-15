@@ -25,17 +25,17 @@ interface RetrofitService {
         @Query ("email") email: String
     ) : Response<List<Customer>>
 
-    //for home page
-    @GET(API_PRODUCT_CATEGORIES)
-    suspend fun getParentCategories(
-        @Query ("parent") parent: Int,
-        @Query ("exclude") slider: ArrayList<Int>
-    ): List<Category>
 
     @GET(API_PRODUCT_CATEGORIES)
-    suspend fun getSliderCategories(
-        @Query ("parent") parent: Int
-    ): List<Category>
+    suspend fun getRemoteCategory(
+        @Query ("parent") parent: Int,
+        @Query ("exclude") filter: ArrayList<Int>
+    ): Response<List<Category>>
+
+//    @GET(API_PRODUCT_CATEGORIES)
+//    suspend fun getSliderCategories(
+//        @Query ("parent") parent: Int
+//    ): Response<List<Category>>
 
 
     //for download
