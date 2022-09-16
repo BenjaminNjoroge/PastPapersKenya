@@ -1,7 +1,8 @@
 package com.pastpaperskenya.app.business.services.main
 
-import com.pastpaperskenya.app.business.model.Category
+import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.util.Constants.*
 import retrofit2.Response
@@ -27,15 +28,15 @@ interface RetrofitService {
 
 
     @GET(API_PRODUCT_CATEGORIES)
-    suspend fun getRemoteCategory(
+    suspend fun getRemoteHomeCategory(
         @Query ("parent") parent: Int,
         @Query ("exclude") filter: ArrayList<Int>
-    ): Response<List<Category>>
+    ): Response<List<HomeCategory>>
 
-//    @GET(API_PRODUCT_CATEGORIES)
-//    suspend fun getSliderCategories(
-//        @Query ("parent") parent: Int
-//    ): Response<List<Category>>
+    @GET(API_PRODUCT_CATEGORIES)
+    suspend fun getRemoteSliderCategory(
+        @Query ("parent") parent: Int
+    ): Response<List<SliderCategory>>
 
 
     //for download

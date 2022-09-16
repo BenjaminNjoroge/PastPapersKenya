@@ -1,14 +1,11 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.category
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
-import com.pastpaperskenya.app.business.datasources.cache.Converters
 
-@Entity(tableName = "categories")
-data class Category (
+@Entity(tableName = "homecategory")
+data class HomeCategory (
 
     @PrimaryKey
     @SerializedName("id")
@@ -38,4 +35,5 @@ data class Category (
     @SerializedName("count")
     val count: Int?
         )
+
 

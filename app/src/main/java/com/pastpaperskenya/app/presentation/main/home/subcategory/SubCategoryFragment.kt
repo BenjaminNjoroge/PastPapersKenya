@@ -5,16 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.Category
-import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentSubCategoryBinding
 import dagger.hilt.android.AndroidEntryPoint
 

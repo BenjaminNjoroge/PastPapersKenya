@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.category
 
 import com.google.gson.annotations.SerializedName
 

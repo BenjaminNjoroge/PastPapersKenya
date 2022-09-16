@@ -16,10 +16,16 @@ class HomeRepository @Inject constructor(
 
     private val categoryDao= appDatabase.categoryDao()
 
-    fun getCategory(parent: Int, filter: ArrayList<Int>)= networkBoundResource(
-        databaseQuery = {categoryDao.getLocalCategory()},
-        networkFetch = {remoteDatasource.getRemoteCategory(parent, filter)},
-        saveNetworkData = {categoryDao.insertCategories(it)}
+    fun getParentCategory(parent: Int, filter: ArrayList<Int>)= networkBoundResource(
+        databaseQuery = {categoryDao.getParentCategory()},
+        networkFetch = {remoteDatasource.getRemoteParentCategory(parent, filter)},
+        saveNetworkData = {categoryDao.insertParentCategory(it)}
+    )
+
+    fun getSliderCategory(parent: Int)= networkBoundResource(
+        databaseQuery = {categoryDao.getSliderCategory()},
+        networkFetch = {remoteDatasource.getRemoteSliderCategory(parent)},
+        saveNetworkData = {categoryDao.insertSliderCategory(it)}
     )
 
 }

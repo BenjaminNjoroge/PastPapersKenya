@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.Category
+import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.smarteist.autoimageslider.SliderViewAdapter
 
-class ImageSliderAdapter(private val context: Context, private var arrayList: ArrayList<Category>):
+class ImageSliderAdapter(private val context: Context, private var arrayList: ArrayList<SliderCategory>):
     SliderViewAdapter<ImageSliderAdapter.SliderViewHolder>() {
 
-    var sliderList: ArrayList<Category> = arrayList
+    var sliderList: ArrayList<SliderCategory> = arrayList
 
     class SliderViewHolder(itemView: View?) : SliderViewAdapter.ViewHolder(itemView) {
         var imageView: ImageView = itemView!!.findViewById(R.id.slider_image)

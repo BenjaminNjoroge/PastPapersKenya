@@ -3,7 +3,7 @@ package com.pastpaperskenya.app.business.datasources.cache
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.pastpaperskenya.app.business.model.CategoryImage
+import com.pastpaperskenya.app.business.model.category.CategoryImage
 
 
 class Converters {

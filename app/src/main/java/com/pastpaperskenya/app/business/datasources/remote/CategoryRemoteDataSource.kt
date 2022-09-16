@@ -7,7 +7,10 @@ class CategoryRemoteDataSource @Inject constructor(
     private val retrofitService: RetrofitService
 ) : BaseDataSource() {
 
-    suspend fun getRemoteCategory(parent:Int, filter: ArrayList<Int>)=
-        getResult { retrofitService.getRemoteCategory(parent, filter) }
+    suspend fun getRemoteParentCategory(parent:Int, filter: ArrayList<Int>)=
+        getResult { retrofitService.getRemoteHomeCategory(parent, filter) }
+
+    suspend fun getRemoteSliderCategory(parent:Int)=
+        getResult { retrofitService.getRemoteSliderCategory(parent) }
 
 }

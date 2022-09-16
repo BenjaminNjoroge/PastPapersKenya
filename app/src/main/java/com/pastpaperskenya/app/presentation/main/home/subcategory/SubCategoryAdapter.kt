@@ -3,7 +3,7 @@ package com.pastpaperskenya.app.presentation.main.home.subcategory
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.pastpaperskenya.app.business.model.Category
+import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.databinding.ItemSubCategoryLayoutBinding
 
 class SubCategoryAdapter(private val listener: ClickListener)
@@ -13,9 +13,9 @@ class SubCategoryAdapter(private val listener: ClickListener)
         fun onClick(categoryId: Int)
     }
 
-    private val categories= ArrayList<Category>()
+    private val categories= ArrayList<HomeCategory>()
 
-    fun setItems(items: ArrayList<Category>){
+    fun setItems(items: ArrayList<HomeCategory>){
         this.categories.clear()
         this.categories.addAll(items)
         notifyDataSetChanged()
