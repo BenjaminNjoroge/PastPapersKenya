@@ -15,7 +15,7 @@ interface CategoryDao {
     @Query("SELECT * FROM homecategory")
     fun getParentCategory() : LiveData<List<HomeCategory>>
 
-    @Query("SELECT * FROM subcategory WHERE parent= :parent")
+    @Query("SELECT * FROM subcategory WHERE parent= :parent ORDER BY name ASC")
     fun getSubCategory(parent:Int) : LiveData<List<SubCategory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -65,7 +65,7 @@ import java.io.File
           fun bind(item: Download){
               this.downloads= item
               binding.apply {
-                  titleTextView.setText(downloads.download_name)
+                  titleTextView.setText(downloads.product_name)
                   binding.progressBar.visibility= View.VISIBLE
                   downloadSpeedTextView.visibility= View.VISIBLE
                   progressTextView.visibility= View.GONE

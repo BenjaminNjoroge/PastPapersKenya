@@ -18,5 +18,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "PastPapersKenya"
-include ':app',':prdownloader'
+include ':app'
 
