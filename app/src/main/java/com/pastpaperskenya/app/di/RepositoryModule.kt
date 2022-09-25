@@ -2,7 +2,7 @@ package com.pastpaperskenya.app.di
 
 import android.app.Application
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
-import com.pastpaperskenya.app.business.datasources.remote.CategoryRemoteDataSource
+import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepositoryImpl
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
@@ -60,15 +60,15 @@ object RepositoryModule {
         PaymentsRepositoryImpl(paymentsService)
 
     @Provides
-    fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): CategoryRemoteDataSource = CategoryRemoteDataSource(retrofitService)
+    fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): RemoteDataSource = RemoteDataSource(retrofitService)
 
     @Provides
-    fun providesHomeCategoryRepository(remoteDataSource: CategoryRemoteDataSource, database: AppDatabase): HomeRepository =
+    fun providesHomeCategoryRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): HomeRepository =
          HomeRepository(remoteDataSource, database)
 
     @Provides
-    fun providesSubCategoryRepository(retrofitService: RetrofitService): SubCategoryRepository =
-        SubCategoryRepository(retrofitService)
+    fun providesSubCategoryRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): SubCategoryRepository =
+        SubCategoryRepository(remoteDataSource, database)
 
     @Provides
     fun providesDownloadsRepository(retrofitService: RetrofitService, userService: UserService): DownloadsRepository =

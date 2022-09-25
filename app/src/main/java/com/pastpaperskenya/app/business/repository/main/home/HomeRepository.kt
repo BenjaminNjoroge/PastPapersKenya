@@ -1,16 +1,12 @@
 package com.pastpaperskenya.app.business.repository.main.home
 
-import androidx.room.withTransaction
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
-import com.pastpaperskenya.app.business.datasources.remote.CategoryRemoteDataSource
-import com.pastpaperskenya.app.business.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.util.networkBoundResource
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
-    private val remoteDatasource: CategoryRemoteDataSource,
+    private val remoteDatasource: RemoteDataSource,
     private val appDatabase: AppDatabase
 ) {
 

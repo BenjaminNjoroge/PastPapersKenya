@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.Environment
+import android.os.StatFs
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -14,11 +16,10 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 fun sanitizePhoneNumber(phone: String): String{
     return when{
@@ -87,3 +88,18 @@ fun Context.isConnected(): Boolean {
 }
 
 
+fun getAvailableInternalStorage(): Long {
+    val path: File = Environment.getDataDirectory()
+    val stat = StatFs(path.path)
+    val blockSize: Long
+    val availableBlocks: Long
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        blockSize = stat.blockSizeLong
+        availableBlocks = stat.availableBlocksLong
+    } else {
+        blockSize = stat.blockSize.toLong()
+        availableBlocks = stat.availableBlocks.toLong()
+    }
+    return availableBlocks * blockSize
+}

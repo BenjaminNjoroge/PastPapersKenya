@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.business.repository.main.downloads
 
+import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.services.auth.UserService
 import com.pastpaperskenya.app.business.services.main.RetrofitService
@@ -12,17 +13,17 @@ class DownloadsRepository @Inject constructor(
     private val retrofitService: RetrofitService,
     private val userService: UserService){
 
-//    suspend fun getDownloads(id: Int?) = flow{
-//        emit(Resource.Loading(true))
-//
-//        val downloadsResponse= retrofitService.getDownloads(id)
-//        emit(Resource.Success(downloadsResponse))
-//    }.catch { e->
-//        emit(Resource.Error(e.message ?: "Unkwown error"))
-//    }
-//
-//    suspend fun getUserDetails(userId: String) : UserDetails?{
-//        return userService.getUserDetails(userId)
-//    }
+        suspend fun getDownloads(id: Int?) = flow{
+        emit(Resource.loading())
+
+        val downloadsResponse= retrofitService.getDownloads(id)
+        emit(Resource.success(downloadsResponse))
+    }.catch { e->
+        emit(Resource.error(e.message ?: "Unkwown error"))
+    }
+
+    suspend fun getUserDetails(userId: String) : UserDetails?{
+        return userService.getUserDetails(userId)
+    }
 
 }

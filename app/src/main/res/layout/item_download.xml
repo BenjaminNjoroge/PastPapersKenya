@@ -109,10 +109,11 @@
                     tools:text="10s"
                     android:textColor="@color/colorWhite"/>
 
-                <TextView
-                    android:id="@+id/status_textView"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/statusButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="?android:attr/borderlessButtonStyle"
                     android:textStyle="italic|bold"
                     android:layout_weight="1"
                     android:visibility="visible"

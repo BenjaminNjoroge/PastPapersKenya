@@ -14,6 +14,9 @@ import com.pastpaperskenya.app.databinding.ItemHomeCategoryLayoutBinding
 class HomeAdapter(private val listener: ClickListener) :
     ListAdapter<HomeCategory, HomeAdapter.ViewHolder>(CategoryComparator()){
 
+    interface ClickListener {
+        fun onItemClick(characterId: Int, title: String)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding= ItemHomeCategoryLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -46,7 +49,7 @@ class HomeAdapter(private val listener: ClickListener) :
         }
 
         override fun onClick(p0: View?) {
-            listener.onItemClick(homeCategory.id)
+            listener.onItemClick(homeCategory.id, homeCategory.name!!)
         }
 
     }

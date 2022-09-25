@@ -10,16 +10,16 @@ class Converters {
 
     var gson= Gson()
     @TypeConverter
-    fun toImageJson(categoryImage: CategoryImage): String? {
+    fun toImageJson(categoryImage: CategoryImage?): String? {
         return gson.toJson(
-            categoryImage, object : TypeToken<CategoryImage>(){}.type
+            categoryImage, object : TypeToken<CategoryImage?>(){}.type
         )
     }
 
     @TypeConverter
-    fun fromImageJson(image: String): CategoryImage? {
+    fun fromImageJson(image: String?): CategoryImage? {
         return gson.fromJson<CategoryImage>(
-            image, object :TypeToken<CategoryImage>(){}.type
+            image, object :TypeToken<CategoryImage?>(){}.type
         )
     }
 }

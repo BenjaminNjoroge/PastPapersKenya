@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), ClickListener{
+class HomeFragment : Fragment(), HomeAdapter.ClickListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding?= null
@@ -98,9 +98,9 @@ class HomeFragment : Fragment(), ClickListener{
         }
     }
 
-    override fun onItemClick(characterId: Int) {
-        findNavController().navigate(R.id.action_homeFragment_to_subCategoryFragment)
-        bundleOf(Constants.KEY_ID to characterId)
+    override fun onItemClick(characterId: Int, title:String) {
+        val bundle= bundleOf("id" to characterId, "title" to title)
+        findNavController().navigate(R.id.action_homeFragment_to_subCategoryFragment,bundle)
     }
 
 

@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class DownloadsFragment : Fragment(){
+class DownloadsFragment : Fragment(), DownloadAdapter.ClickListener{
 
     private  var _binding: FragmentDownloadsBinding?=null
     private val binding get() = _binding!!
@@ -42,44 +42,34 @@ class DownloadsFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        downloadsAdapter= DownloadAdapter(requireContext())
+        downloadsAdapter= DownloadAdapter(this)
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false)
         binding.recyclerview.adapter= downloadsAdapter
 
-        downloadsAdapter.setItemClickListener(object : ViewItemListener{
-            override fun onItemClickGetName(path: String?) {
-                val dirPath= DownloadUtils.getRootDirPath(context)
-                val intent = Intent(context, ViewPfdActivity::class.java)
-                val bundle = Bundle()
-                Log.e("path", dirPath + "/" + attr.path)
-                bundle.putString("filepath", dirPath + "/" + path)
-                intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                intent.putExtras(bundle)
-                startActivity(intent)
 
-            }
-
-        })
-
-        //setupObservers()
+        setupObservers()
     }
 
-//    private fun setupObservers() {
-//        viewModel.downloads.observe(viewLifecycleOwner){
-//            when(it){
-//                is Resource.Loading->{
-//                    binding.pbLoading.isVisible= it.loading
-//                }
-//                is Resource.Error->{
-//                    binding.pbLoading.isVisible= false
-//                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT).show()
-//                }
-//                is Resource.Success->{
-//                    binding.pbLoading.isVisible= false
-//                    downloadsAdapter.setItems(requireContext(), it.data as ArrayList<Download>)
-//                }
-//            }
-//        }
-//    }
+    override fun itemClick(position: Int, path: String) {
+        TODO("Not yet implemented")
+    }
+
+    private fun setupObservers(){
+        viewModel.downloads.observe(viewLifecycleOwner){
+            when(it.status){
+                Resource.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                Resource.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    if (!it.data.isNullOrEmpty()) downloadsAdapter.submitList(it.data)
+                }
+                Resource.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
 }

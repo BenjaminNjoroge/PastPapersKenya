@@ -17,24 +17,24 @@ class DownloadsViewModel @Inject constructor(
     private val downloadsRepository: DownloadsRepository
 ): ViewModel() {
 
-//    private var _downloads = MutableLiveData<Resource<List<Download>>>()
-//    val downloads: LiveData<Resource<List<Download>>> = _downloads
+    private var _downloads = MutableLiveData<Resource<List<Download>>>()
+    val downloads: LiveData<Resource<List<Download>>> = _downloads
 
 
-//    init {
-//
-//        val firebaseAuth= FirebaseAuth.getInstance()
-//        val user= firebaseAuth.currentUser?.uid
-//
-//        viewModelScope.launch {
-//            val id= user?.let { downloadsRepository.getUserDetails(it) }
-//            fetchDownloads(id?.userServerId?.toInt())
-//        }
-//    }
-//
-//    private fun fetchDownloads(id: Int?)= viewModelScope.launch {
-//        downloadsRepository.getDownloads(id).collect{
-//            _downloads.postValue(it)
-//        }
-//    }
+    init {
+
+        val firebaseAuth= FirebaseAuth.getInstance()
+        val user= firebaseAuth.currentUser?.uid
+
+        viewModelScope.launch {
+            val id= user?.let { downloadsRepository.getUserDetails(it) }
+            fetchDownloads(id?.userServerId!!.toInt())
+        }
+    }
+
+    private fun fetchDownloads(id: Int)= viewModelScope.launch {
+        downloadsRepository.getDownloads(id).collect{
+            _downloads.postValue(it)
+        }
+    }
 }

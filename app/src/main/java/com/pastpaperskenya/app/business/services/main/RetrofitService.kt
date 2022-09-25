@@ -4,6 +4,9 @@ import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.auth.Customer
+import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.util.Constants.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -38,6 +41,23 @@ interface RetrofitService {
         @Query ("parent") parent: Int
     ): Response<List<SliderCategory>>
 
+    @GET(API_PRODUCT_CATEGORIES)
+    suspend fun getRemoteSubCategory(
+        @Query ("parent") parent: Int,
+        @Query ("per_page") perpage: Int
+    ): Response<List<SubCategory>>
+
+    @GET(API_PRODUCT_TAGS)
+    suspend fun getProductTags(
+        @Query ("per_page") perpage: Int
+    ): Response<List<ProductTag>>
+
+
+    @GET(API_PRODUCTS)
+    suspend fun getProductList(
+        @Query ("per_page") perpage: Int,
+        @Query ("category") category: String
+    ): Response<List<Product>>
 
     //for download
     @GET(API_DOWNLOAD)
