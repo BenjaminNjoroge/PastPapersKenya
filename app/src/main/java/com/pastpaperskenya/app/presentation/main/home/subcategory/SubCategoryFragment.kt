@@ -57,13 +57,14 @@ class SubCategoryFragment : Fragment(), SubCategoryAdapter.ClickListener{
     private fun registerObservers(){
         subCategoryViewModel.category.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.SUCCESS->{
-                    binding.pbLoading.visibility=View.GONE
-                    if (!it.data.isNullOrEmpty()) subCategoryAdapter.submitList(it.data)
-                }
                 Resource.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
+                Resource.Status.SUCCESS->{
+                    binding.pbLoading.visibility=View.GONE
+                    if (!it.data.isNullOrEmpty()) subCategoryAdapter.submitList(it.data) else binding.pbLoading.visibility= View.VISIBLE
+                }
+
                 Resource.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()

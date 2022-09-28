@@ -4,43 +4,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_160dp"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/size_8dp"
     android:layout_marginStart="@dimen/size_8dp"
     android:layout_marginBottom="@dimen/size_8dp"
     android:layout_marginTop="@dimen/size_8dp"
     app:cardCornerRadius="@dimen/size_8dp"
-    app:cardElevation="@dimen/size_8dp"
-    android:id="@+id/cardview">
+    app:cardElevation="@dimen/size_8dp">
 
-    <ImageView
-        android:id="@+id/wrapperImage"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        />
+        android:layout_height="wrap_content"
+        android:id="@+id/relClick">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_gravity="bottom"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relLayout1"
-            android:background="@color/colorBlackSemiTransparent">
+            android:layout_height="@dimen/size_50dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/wrapperImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/download"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
-                android:layout_margin="@dimen/size_8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:max="100"
                 android:progress="0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/imgTxt"
+                android:visibility="gone"
                 android:progressDrawable="@drawable/progress_bar"
+                app:layout_constraintBottom_toBottomOf="@+id/wrapperImage"
                 />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relLayout1"
+            android:background="@color/colorBlackSemiTransparent">
+
 
             <LinearLayout
                 android:id="@+id/imgTxt"
@@ -75,7 +87,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/descriptionBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -91,6 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     tools:text="204 MB/s"
+                    android:visibility="invisible"
                     android:textColor="@color/colorWhite"/>
 
                 <TextView
@@ -99,6 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     tools:text="10%"
+                    android:visibility="invisible"
                     android:textColor="@color/colorWhite"/>
 
                 <TextView
@@ -107,17 +120,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     tools:text="10s"
+                    android:visibility="invisible"
                     android:textColor="@color/colorWhite"/>
 
-                <Button
-                    android:id="@+id/statusButton"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/status_button"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="?android:attr/borderlessButtonStyle"
                     android:textStyle="italic|bold"
                     android:layout_weight="1"
-                    android:visibility="visible"
-                    android:text="Status"
+                    android:visibility="invisible"
                     android:textColor="@color/colorWhite"/>
 
                 <Button
@@ -131,5 +143,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

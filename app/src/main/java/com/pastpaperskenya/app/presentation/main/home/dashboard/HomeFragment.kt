@@ -58,7 +58,7 @@ class HomeFragment : Fragment(), HomeAdapter.ClickListener {
             when(it.status){
                  Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
-                    if (!it.data.isNullOrEmpty()) homeAdapter.submitList(it.data)
+                    if (!it.data.isNullOrEmpty()) homeAdapter.submitList(it.data) else binding.pbLoading.visibility= View.VISIBLE
                 }
                  Resource.Status.ERROR->{
                     Toast.makeText(requireContext(), it.message,Toast.LENGTH_SHORT).show()

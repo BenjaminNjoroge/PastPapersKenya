@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.main.MainActivity"
     android:background="@color/colorWhite">
 
@@ -17,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="enterAlwaysCollapsed">
 
         </com.google.android.material.appbar.MaterialToolbar>
 

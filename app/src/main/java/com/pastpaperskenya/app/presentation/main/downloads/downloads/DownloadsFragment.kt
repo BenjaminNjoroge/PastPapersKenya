@@ -62,7 +62,7 @@ class DownloadsFragment : Fragment(), DownloadAdapter.ClickListener{
                 }
                 Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
-                    if (!it.data.isNullOrEmpty()) downloadsAdapter.submitList(it.data)
+                    if (!it.data.isNullOrEmpty()){ downloadsAdapter.submitList(it.data)} else binding.pbLoading.visibility=View.VISIBLE
                 }
                 Resource.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE

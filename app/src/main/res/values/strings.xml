@@ -61,6 +61,7 @@
     <string name="start" translatable="false">START</string>
     <string name="view" translatable="false">VIEW</string>
     <string name="failed_msg" translatable="false">FAILED</string>
+    <string name="pref_notification">Notification</string>
 
 
 </resources>

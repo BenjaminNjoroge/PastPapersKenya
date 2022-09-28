@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
@@ -15,11 +16,11 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
+
 
 fun sanitizePhoneNumber(phone: String): String{
     return when{
@@ -71,21 +72,7 @@ fun Context.hideKeyboard(view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
-fun Context.isConnected(): Boolean {
-    var status= false
-    val connectionManager= getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-        if(connectionManager.activeNetwork != null && connectionManager.getNetworkCapabilities(connectionManager.activeNetwork) !=null){
-            status= true
-        }
-    } else{
-        if (connectionManager.activeNetwork !=null){
-            status= true
-        }
-    }
-    return status
-}
+
 
 
 fun getAvailableInternalStorage(): Long {
@@ -102,4 +89,34 @@ fun getAvailableInternalStorage(): Long {
         availableBlocks = stat.availableBlocks.toLong()
     }
     return availableBlocks * blockSize
+}
+
+fun Context.isNetworkConnected(): Boolean {
+    var isConnected = false
+    val connectivityManager= getSystemService(AppCompatActivity.CONNECTIVITY_SERVICE) as ConnectivityManager
+    if (connectivityManager != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    isConnected = true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    isConnected = true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    isConnected = true
+                }
+            }
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            if (networkInfo != null) {
+                if (networkInfo.type == ConnectivityManager.TYPE_WIFI) {
+                    isConnected = true
+                } else if (networkInfo.type == ConnectivityManager.TYPE_MOBILE) {
+                    isConnected = true
+                }
+            }
+        }
+    }
+    return isConnected
 }
