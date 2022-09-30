@@ -13,10 +13,10 @@ import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepository
 import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.home.SubCategoryRepository
 import com.pastpaperskenya.app.business.repository.main.profile.*
-import com.pastpaperskenya.app.business.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.services.auth.UserService
-import com.pastpaperskenya.app.business.services.main.RetrofitService
-import com.pastpaperskenya.app.business.services.payment.PaymentsService
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +35,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesAuthRepository(authenticator: BaseAuthenticator,retrofitService: RetrofitService): FirebaseRepository{
+    fun providesAuthRepository(authenticator: BaseAuthenticator, retrofitService: RetrofitService): FirebaseRepository{
         return FirebaseRepositoryImpl(authenticator, retrofitService)
     }
 

@@ -1,6 +1,11 @@
 package com.pastpaperskenya.app.business.model.product
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "product")
 data class Product(
+    @PrimaryKey
     val id: Int,
     val name: String?,
     val slug: String?,

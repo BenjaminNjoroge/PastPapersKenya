@@ -6,8 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pastpaperskenya.app.R;
-import com.pastpaperskenya.app.business.model.Download;
+import com.pastpaperskenya.app.business.model.download.Download;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

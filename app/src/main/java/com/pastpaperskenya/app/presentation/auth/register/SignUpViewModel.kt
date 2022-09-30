@@ -10,7 +10,7 @@ import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
-import com.pastpaperskenya.app.business.services.auth.UserService
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

@@ -1,6 +1,12 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.download
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.pastpaperskenya.app.business.model.download.FileData
+
+@Entity(tableName = "downloads")
 data class Download(
+    @PrimaryKey
     val download_id: String,
     val download_url: String,
     val product_id: Int,

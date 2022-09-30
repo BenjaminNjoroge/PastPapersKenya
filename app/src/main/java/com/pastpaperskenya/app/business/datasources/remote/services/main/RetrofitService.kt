@@ -1,7 +1,7 @@
-package com.pastpaperskenya.app.business.services.main
+package com.pastpaperskenya.app.business.datasources.remote.services.main
 
 import com.pastpaperskenya.app.business.model.category.HomeCategory
-import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
@@ -52,12 +52,16 @@ interface RetrofitService {
         @Query ("per_page") perpage: Int
     ): Response<List<ProductTag>>
 
-
     @GET(API_PRODUCTS)
     suspend fun getProductList(
         @Query ("per_page") perpage: Int,
         @Query ("category") category: String
     ): Response<List<Product>>
+
+    @GET(API_PRODUCT_DETAIL)
+    suspend fun getProductDetail(
+        @Path("id") id: Int?
+    ): Response<Product>
 
     //for download
     @GET(API_DOWNLOAD)

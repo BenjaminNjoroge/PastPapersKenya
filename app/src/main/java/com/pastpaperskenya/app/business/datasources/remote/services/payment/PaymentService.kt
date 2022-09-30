@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.services.payment
+package com.pastpaperskenya.app.business.datasources.remote.services.payment
 
 import com.pastpaperskenya.app.business.model.lipanampesa.Payment
 

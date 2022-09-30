@@ -12,6 +12,9 @@ import com.pastpaperskenya.app.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +29,7 @@ public class DownloadUtils {
 
     public static String getRootDirPath(Context context) {
         /*if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {*/
-        File file = new File(context.getCacheDir(),"/");
+        File file = new File(context.getFilesDir(),"/");
         if(!file.exists()){
             if (!file.mkdir()){
                 Toast.makeText(context, "Error occurred during offline download", Toast.LENGTH_SHORT).show();
@@ -38,6 +41,32 @@ public class DownloadUtils {
             return context.getApplicationContext().getFilesDir().getAbsolutePath();
         }*/
     }
+
+    public static int getUniqueId(String url, String dirPath, String fileName) {
+
+        String string = url + File.separator + dirPath + File.separator + fileName;
+
+        byte[] hash;
+
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(string.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("NoSuchAlgorithmException", e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("UnsupportedEncodingException", e);
+        }
+
+        StringBuilder hex = new StringBuilder(hash.length * 2);
+
+        for (byte b : hash) {
+            if ((b & 0xFF) < 0x10) hex.append("0");
+            hex.append(Integer.toHexString(b & 0xFF));
+        }
+
+        return hex.toString().hashCode();
+
+    }
+
 
     public static String getProgressDisplayLine(long currentBytes, long totalBytes) {
         return getBytesToMBString(currentBytes) + "/" + getBytesToMBString(totalBytes);

@@ -10,7 +10,7 @@ class SubCategoryRepository @Inject constructor(
     private val appDatabase: AppDatabase
 ) {
 
-    private val categoryDao= appDatabase.categoryDao()
+    private val categoryDao= appDatabase.appDao()
 
     fun getSubCategory(parent:Int, perpage:Int)= networkBoundResource(
         databaseQuery = {categoryDao.getSubCategory(parent)},

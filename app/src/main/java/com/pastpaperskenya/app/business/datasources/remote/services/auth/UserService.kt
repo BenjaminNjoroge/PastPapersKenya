@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.services.auth
+package com.pastpaperskenya.app.business.datasources.remote.services.auth
 
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 

@@ -25,8 +25,10 @@ public class BaseApplication extends Application {
 
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
                 .setDatabaseEnabled(true)
+                .setReadTimeout(30_000)
+                .setConnectTimeout(30_000)
                 .build();
-        PRDownloader.initialize(this, config);
+        PRDownloader.initialize(getApplicationContext(), config);
 
     }
 

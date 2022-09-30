@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.model
+package com.pastpaperskenya.app.business.model.download
 
 data class FileData (
     val name: String,

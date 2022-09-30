@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.services.auth
+package com.pastpaperskenya.app.business.datasources.remote.services.auth
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

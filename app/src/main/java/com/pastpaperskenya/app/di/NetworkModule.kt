@@ -1,7 +1,7 @@
 package com.pastpaperskenya.app.di
 
-import com.pastpaperskenya.app.business.services.main.RetrofitService
-import com.pastpaperskenya.app.business.services.payment.PaymentsService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -65,7 +65,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitService=
+    fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitService =
         retrofit.create(RetrofitService::class.java)
 
 

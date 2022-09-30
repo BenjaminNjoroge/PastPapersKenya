@@ -1,7 +1,7 @@
 package com.pastpaperskenya.app.business.repository.main.profile
 
 import com.pastpaperskenya.app.business.model.auth.UserDetails
-import com.pastpaperskenya.app.business.services.auth.UserService
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
 import javax.inject.Inject
 
 class EditProfileRepositoryImpl @Inject constructor (private val userService: UserService):

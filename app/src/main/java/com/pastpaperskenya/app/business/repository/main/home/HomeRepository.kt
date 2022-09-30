@@ -10,7 +10,7 @@ class HomeRepository @Inject constructor(
     private val appDatabase: AppDatabase
 ) {
 
-    private val categoryDao= appDatabase.categoryDao()
+    private val categoryDao= appDatabase.appDao()
 
     fun getParentCategory(parent: Int, filter: ArrayList<Int>)= networkBoundResource(
         databaseQuery = {categoryDao.getParentCategory()},

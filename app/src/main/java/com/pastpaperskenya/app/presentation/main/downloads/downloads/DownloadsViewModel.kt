@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.pastpaperskenya.app.business.model.Download
+import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

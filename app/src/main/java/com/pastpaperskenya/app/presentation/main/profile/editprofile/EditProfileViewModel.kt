@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.services.auth.UserService
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val repository: FirebaseRepository,
-    private val userService: UserService) : ViewModel() {
+    private val userService: UserService
+) : ViewModel() {
 
     private val _loading= MutableLiveData(false)
     val loading get() = _loading

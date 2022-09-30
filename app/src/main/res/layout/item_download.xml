@@ -124,7 +124,7 @@
                     android:textColor="@color/colorWhite"/>
 
                 <TextView
-                    android:id="@+id/status_button"
+                    android:id="@+id/status_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textStyle="italic|bold"

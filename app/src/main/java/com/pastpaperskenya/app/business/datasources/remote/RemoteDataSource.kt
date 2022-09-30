@@ -1,6 +1,6 @@
 package com.pastpaperskenya.app.business.datasources.remote
 
-import com.pastpaperskenya.app.business.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
@@ -16,7 +16,8 @@ class RemoteDataSource @Inject constructor(
     suspend fun getRemoteSubCategory(parent:Int, perpage:Int)=
         getResult { retrofitService.getRemoteSubCategory(parent, perpage) }
 
-    suspend fun getRemoteDownloads(id: Int)=
-         retrofitService.getDownloads(id)
+    suspend fun getProductDetail(id: Int)=
+        getResult { retrofitService.getProductDetail(id)}
+
 
 }

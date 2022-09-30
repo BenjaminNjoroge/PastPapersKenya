@@ -2,14 +2,15 @@ package com.pastpaperskenya.app.business.repository.auth
 
 import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.auth.Customer
-import com.pastpaperskenya.app.business.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import retrofit2.Response
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(
     private val authenticator: BaseAuthenticator,
-    private val retrofitService: RetrofitService):FirebaseRepository {
+    private val retrofitService: RetrofitService
+):FirebaseRepository {
 
     override suspend fun signInWithEmailPassword(email: String, password: String): FirebaseUser? {
         return authenticator.loginUser(email, password)

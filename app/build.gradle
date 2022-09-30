@@ -104,6 +104,7 @@ dependencies {
     //circle indicator
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
+
     //downloader and viewer
     implementation 'com.mindorks.android:prdownloader:0.6.0'
 

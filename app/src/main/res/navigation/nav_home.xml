@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/productDetailFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -47,8 +47,8 @@
             android:id="@+id/action_productsFragment_to_cartFragment2"
             app:destination="@id/cartFragment2" />
         <action
-            android:id="@+id/action_productsFragment_to_placeOrderFragment2"
-            app:destination="@id/placeOrderFragment2" />
+            android:id="@+id/action_productsFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment2"
@@ -60,4 +60,15 @@
         android:name="com.pastpaperskenya.app.presentation.main.cart.placeorder.PlaceOrderFragment"
         android:label="fragment_place_order"
         tools:layout="@layout/fragment_place_order" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductDetailFragment"
+        android:label="ProductDetailFragment" >
+        <action
+            android:id="@+id/action_productDetailFragment_to_cartFragment2"
+            app:destination="@id/cartFragment2" />
+        <action
+            android:id="@+id/action_productDetailFragment_to_placeOrderFragment2"
+            app:destination="@id/placeOrderFragment2" />
+    </fragment>
 </navigation>
