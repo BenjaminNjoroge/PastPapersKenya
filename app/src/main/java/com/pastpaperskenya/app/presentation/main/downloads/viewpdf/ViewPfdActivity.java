@@ -4,28 +4,21 @@ package com.pastpaperskenya.app.presentation.main.downloads.viewpdf;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.pastpaperskenya.app.R;
-import com.pastpaperskenya.app.pdfviewer.PdfDocument;
-import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.PDFView;
-import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.listener.OnLoadCompleteListener;
-import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.listener.OnPageChangeListener;
-import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.listener.OnPageErrorListener;
-import com.pastpaperskenya.app.pdfviewer.androidpdfviewer.scroll.DefaultScrollHandle;
+import com.shockwave.pdfium.PdfDocument;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
-@AndroidEntryPoint
 public class ViewPfdActivity extends AppCompatActivity
         implements OnPageChangeListener, OnLoadCompleteListener,
         OnPageErrorListener {
@@ -33,23 +26,19 @@ public class ViewPfdActivity extends AppCompatActivity
     PDFView pdfView;
     Integer pageNumber = 0;
     String pdfName;
-    ProgressBar progressDialog;
     private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pdf);
-
-        pdfView=findViewById(R.id.pdfView);
+        pdfView=findViewById(R.id.pdfview);
         Bundle bundle = getIntent().getExtras();
 
-        progressDialog= findViewById(R.id.progressBar);
-
         if (bundle != null) {
-
-            pdfName = bundle.getString("filepath");
-            Timber.e(pdfName);
+            if (bundle.containsKey("filepath"))
+                pdfName = bundle.getString("filepath");
+            Log.e("pdfName====",pdfName);
             //new DownloadFilesTask().execute(pdfName, String.valueOf(flag));
             pdfView.setVisibility(View.VISIBLE);
             File file = new File(pdfName);
@@ -73,8 +62,8 @@ public class ViewPfdActivity extends AppCompatActivity
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-*/
+            }*/
+
             pdfView.fromFile(file)
                     .enableSwipe(true)
                     .defaultPage(pageNumber)
@@ -93,7 +82,7 @@ public class ViewPfdActivity extends AppCompatActivity
 
     @Override
     public void loadComplete(int nbPages) {
-        progressDialog.setVisibility(View.GONE);
+        //progressDialog.dismiss();
         PdfDocument.Meta meta = pdfView.getDocumentMeta();
         printBookmarksTree(pdfView.getTableOfContents(), "-");
     }

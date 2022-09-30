@@ -107,6 +107,8 @@ dependencies {
 
     //downloader and viewer
     implementation 'com.mindorks.android:prdownloader:0.6.0'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+
 
     //dex
     implementation 'androidx.multidex:multidex:2.0.1'
