@@ -22,7 +22,8 @@ import com.downloader.*
 import java.io.File
 import java.lang.Exception
 
-open class DownloadAdapter(private val context: Context, private val arrayList: List<Download>) : RecyclerView.Adapter<DownloadViewHolder>() {
+open class DownloadAdapter(private val context: Context, private val arrayList: List<Download>)
+    : RecyclerView.Adapter<DownloadViewHolder>() {
 
     var dirPath: String? = null
     private var itemClickListener: ViewItemListener? = null

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -88,6 +89,10 @@ class DownloadsFragment : Fragment(){
                 Resource.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
+                    downloadDataList= AppPreference.getInstance(context).downloadList as ArrayList<Download>;
+                    downloadsAdapter= DownloadAdapter(requireContext(), downloadDataList)
+                    setDownloadAdapter()
                 }
             }
         }
@@ -108,5 +113,6 @@ class DownloadsFragment : Fragment(){
         })
         downloadsAdapter.notifyDataSetChanged()
     }
+
 
 }
