@@ -50,6 +50,7 @@ class DownloadsFragment : Fragment(){
             downloadDataList= AppPreference.getInstance(context).getDownloadList() as ArrayList<Download>;
             if(downloadDataList!=null) {
                 if (downloadDataList.size > 0) {
+                    binding.pbLoading.visibility= View.GONE
                     AppPreference.getInstance(getContext()).setDownloadList(downloadDataList);
                     setDownloadAdapter();
                 }
