@@ -71,6 +71,7 @@
     <string name="buy_now">Buy Now</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="add_quantity">Add Quantity</string>
+    <string name="discount">Discount</string>
 
 
 </resources>
