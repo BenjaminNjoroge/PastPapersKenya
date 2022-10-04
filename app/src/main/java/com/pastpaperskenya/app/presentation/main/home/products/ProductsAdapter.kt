@@ -1,5 +1,7 @@
 package com.pastpaperskenya.app.presentation.main.home.products
 
+import android.annotation.SuppressLint
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +35,19 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
 
         private lateinit var product: Product
 
+            @SuppressLint("SetTextI18n")
             fun bind(product: Product){
                 this.product= product
 
                 Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImage)
                 binding.productTitle.text= product.name
+
+                val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
+                val newRegularPrice= product.regular_price?.toInt()!!
+
+                val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
+                binding.productDiscountPercent.text= percent
+                binding.productSalePrice.text= "Ksh "+product.sale_price
             }
 
         init {

@@ -38,6 +38,7 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
 
         val title= args.title
         (activity as MainActivity).supportActionBar?.title= title
+       // (activity as MainActivity).supportActionBar?.setCustomView(R.layout.products_toolbar_layout)
 
         return binding.root
     }

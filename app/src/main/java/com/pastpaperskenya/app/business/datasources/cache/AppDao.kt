@@ -7,6 +7,7 @@ import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.product.ProductCategory
 
 @Dao
 interface AppDao {

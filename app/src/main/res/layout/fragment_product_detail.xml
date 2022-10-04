@@ -95,7 +95,7 @@
 
                 <include
                     android:id="@+id/detail_toolbar"
-                    layout="@layout/details_toolbar_layout"
+                    layout="@layout/products_toolbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin" />

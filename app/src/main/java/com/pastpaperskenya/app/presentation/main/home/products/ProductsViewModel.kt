@@ -14,15 +14,15 @@ class ProductsViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private var _id= MutableLiveData<Int>()
+    private var _categoryId= MutableLiveData<Int>()
 
-    private var _products= _id.switchMap { id->
-        repository.getProducts(100, id)
+    private var _products= _categoryId.switchMap { categoryId->
+        repository.getProducts(100, categoryId)
     }
     val products: LiveData<Resource<List<Product>>> = _products
 
 
     fun start(id: Int){
-        _id.value= id
+        _categoryId.value= id
     }
 }
