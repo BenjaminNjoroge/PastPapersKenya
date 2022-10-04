@@ -55,13 +55,14 @@ interface RetrofitService {
     @GET(API_PRODUCTS)
     suspend fun getProductList(
         @Query ("per_page") perpage: Int,
-        @Query ("category") category: String
+        @Query ("category") category: Int
     ): Response<List<Product>>
 
     @GET(API_PRODUCT_DETAIL)
     suspend fun getProductDetail(
         @Path("id") id: Int?
     ): Response<Product>
+
 
     //for download
     @GET(API_DOWNLOAD)

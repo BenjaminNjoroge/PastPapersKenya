@@ -19,5 +19,8 @@ class RemoteDataSource @Inject constructor(
     suspend fun getProductDetail(id: Int)=
         getResult { retrofitService.getProductDetail(id)}
 
+    suspend fun getProducts(perpage: Int, category: Int)=
+        getResult { retrofitService.getProductList(perpage, category) }
+
 
 }

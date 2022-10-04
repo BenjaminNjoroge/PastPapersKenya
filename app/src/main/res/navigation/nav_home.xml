@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_home"
-    app:startDestination="@id/productDetailFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -43,12 +43,20 @@
         android:name="com.pastpaperskenya.app.presentation.main.home.products.ProductsFragment"
         android:label="fragment_products"
         tools:layout="@layout/fragment_products" >
+
         <action
             android:id="@+id/action_productsFragment_to_cartFragment2"
             app:destination="@id/cartFragment2" />
         <action
             android:id="@+id/action_productsFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+
+        <argument android:name="id"
+            app:argType="integer"/>
+
+        <argument android:name="title"
+            app:argType="string"/>
+
     </fragment>
     <fragment
         android:id="@+id/cartFragment2"

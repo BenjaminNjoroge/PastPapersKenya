@@ -13,7 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_bar"
+            android:layout_gravity="center"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -23,63 +27,13 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/primary_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimaryLight">
+            android:visibility="visible" />
 
-            <com.nshmura.recyclertablayout.RecyclerTabLayout
-                android:id="@+id/recycler_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/actionbar_height"
-                android:visibility="visible"
-                app:rtl_tabMaxWidth="300dp"
-                app:rtl_tabOnScreenLimit="3"
-                app:rtl_tabSelectedTextColor="@android:color/black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProduct"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/recycler_tab_layout"
-                android:visibility="visible">
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <!--<androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/primary_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />-->
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    android:layout_width="@dimen/size_35dp"
-                    android:layout_height="@dimen/size_35dp"
-                    android:layout_centerHorizontal="true"
-                    android:indeterminate="true"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/empty_list_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:orientation="vertical"
-                android:visibility="gone" />
-
-        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 

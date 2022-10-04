@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/parent_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/size_4dp"
+        app:cardElevation="@dimen/size_3dp"
+        app:cardUseCompatPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_3dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/product_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_140dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@color/placeholder" />
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:id="@+id/product_discount_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/product_image"
+                    android:layout_marginStart="@dimen/size_5dp"
+                    android:layout_marginBottom="@dimen/size_3dp"
+                    android:background="@color/danger"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/size_2dp"
+                    android:paddingEnd="@dimen/size_2dp"
+                    android:text="@string/text_placeholder"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_12sp"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                android:id="@+id/product_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_3dp"
+                android:layout_marginEnd="@dimen/size_3dp"
+                android:layout_marginBottom="@dimen/size_3dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@string/text_placeholder"
+                android:textSize="@dimen/text_14sp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:fontFamily="@font/neo_sans_pro_medium"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/size_3dp"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:id="@+id/product_regular_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_7dp"
+                    android:background="@drawable/strike_trough_text"
+                    android:maxLines="1"
+                    android:text="@string/text_placeholder"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_13sp"
+                    android:visibility="gone" />
+
+                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    android:id="@+id/product_sale_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_7dp"
+                    android:layout_toEndOf="@+id/product_regular_price"
+                    android:maxLines="1"
+                    android:text="@string/text_placeholder"
+                    android:textSize="@dimen/text_14sp"
+                    android:textColor="@color/colorAccent"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/checkCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBaseline="@+id/product_sale_price"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>

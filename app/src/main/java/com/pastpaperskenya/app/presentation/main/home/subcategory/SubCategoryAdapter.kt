@@ -15,10 +15,8 @@ class SubCategoryAdapter(private val listener: ClickListener)
     : ListAdapter<SubCategory, SubCategoryAdapter.SubCategoryViewHolder>(CategoryComparator()) {
 
     interface ClickListener{
-        fun onClick(categoryId: Int)
+        fun onClick(categoryId: Int, title: String)
     }
-
-    private val categories= ArrayList<SubCategory>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubCategoryViewHolder {
@@ -46,11 +44,12 @@ class SubCategoryAdapter(private val listener: ClickListener)
         }
 
         init {
-            binding.root.setOnClickListener(this)
+            binding.categoryImage.setOnClickListener(this)
+            binding.categoryTitle.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            listener.onClick(category.id)
+            listener.onClick(category.id, category.name.toString())
         }
 
     }

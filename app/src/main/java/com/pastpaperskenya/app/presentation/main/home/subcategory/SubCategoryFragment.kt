@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentSubCategoryBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -23,7 +26,6 @@ class SubCategoryFragment : Fragment(), SubCategoryAdapter.ClickListener{
     private val subCategoryViewModel: SubCategoryViewModel by viewModels()
 
     private val args: SubCategoryFragmentArgs by navArgs()
-
     private lateinit var subCategoryAdapter: SubCategoryAdapter
 
     override fun onCreateView(
@@ -73,8 +75,9 @@ class SubCategoryFragment : Fragment(), SubCategoryAdapter.ClickListener{
         }
     }
 
-    override fun onClick(categoryId: Int) {
-        TODO("Not yet implemented")
+    override fun onClick(categoryId: Int, title: String) {
+        val bundle= bundleOf("id" to categoryId, "title" to title)
+        findNavController().navigate(R.id.action_subCategoryFragment_to_productsFragment, bundle)
     }
 
 

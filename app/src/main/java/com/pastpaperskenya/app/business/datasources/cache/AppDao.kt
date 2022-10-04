@@ -26,6 +26,9 @@ interface AppDao {
     @Query("SELECT * FROM product WHERE id=:id")
     fun getProductDetail(id: Int): LiveData<Product>
 
+    @Query("SELECT * FROM product")
+    fun getProducts(): LiveData<List<Product>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertParentCategory(homeCategory: List<HomeCategory>)
 
@@ -40,6 +43,9 @@ interface AppDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductDetail(product: Product)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProducts(products: List<Product>)
 
 
 }
