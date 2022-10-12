@@ -8,10 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
+import com.pastpaperskenya.app.presentation.main.MainActivity
+import com.pastpaperskenya.app.presentation.main.home.products.ProductsFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,10 +25,8 @@ class ProductDetailFragment : Fragment() {
     private var _binding: FragmentProductDetailBinding?= null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val args: ProductDetailFragmentArgs by navArgs()
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +34,9 @@ class ProductDetailFragment : Fragment() {
     ): View {
 
         _binding= FragmentProductDetailBinding.inflate(inflater, container, false)
+
+        val title= args.title
+        (activity as MainActivity).supportActionBar?.title= title
 
         return binding.root
     }

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.util.DownloadUtils
@@ -27,7 +28,7 @@ class DownloadsFragment : Fragment(){
     private  var _binding: FragmentDownloadsBinding?=null
     private val binding get() = _binding!!
 
-    private val viewModel: DownloadsViewModel by activityViewModels()
+    private val viewModel: DownloadsViewModel by viewModels()
     private lateinit var downloadsAdapter: DownloadAdapter
 
     private lateinit var downloadDataList: ArrayList<Download>

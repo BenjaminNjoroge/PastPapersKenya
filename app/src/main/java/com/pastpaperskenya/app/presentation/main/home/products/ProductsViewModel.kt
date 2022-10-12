@@ -1,7 +1,9 @@
 package com.pastpaperskenya.app.presentation.main.home.products
 
 import androidx.lifecycle.*
+import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.repository.main.home.ProductsRepository
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ class ProductsViewModel @Inject constructor(
 
     private var _categoryId= MutableLiveData<Int>()
 
+
     private var _products= _categoryId.switchMap { categoryId->
         repository.getProducts(100, categoryId)
     }
@@ -24,5 +27,17 @@ class ProductsViewModel @Inject constructor(
 
     fun start(id: Int){
         _categoryId.value= id
+    }
+
+    fun addToCart(cart: Cart){
+        viewModelScope.launch {
+            repository.addProductToCart(cart)
+        }
+    }
+
+    fun removeFromCart(cart: Cart){
+        viewModelScope.launch {
+            repository.removeProductFromCart(cart)
+        }
     }
 }

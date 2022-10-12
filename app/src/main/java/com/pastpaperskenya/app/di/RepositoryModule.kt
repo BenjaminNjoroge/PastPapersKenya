@@ -17,6 +17,7 @@ import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAut
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
+import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,7 +61,8 @@ object RepositoryModule {
         PaymentsRepositoryImpl(paymentsService)
 
     @Provides
-    fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): RemoteDataSource = RemoteDataSource(retrofitService)
+    fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): RemoteDataSource =
+        RemoteDataSource(retrofitService)
 
     @Provides
     fun providesHomeCategoryRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): HomeRepository =
@@ -74,5 +76,8 @@ object RepositoryModule {
     fun providesDownloadsRepository(retrofitService: RetrofitService, userService: UserService): DownloadsRepository =
         DownloadsRepository(retrofitService, userService)
 
+    @Provides
+    fun providesCartRepository(database:AppDatabase): CartRepository=
+        CartRepository(database)
 
 }

@@ -5,12 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentProductsBinding
@@ -38,7 +41,6 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
 
         val title= args.title
         (activity as MainActivity).supportActionBar?.title= title
-       // (activity as MainActivity).supportActionBar?.setCustomView(R.layout.products_toolbar_layout)
 
         return binding.root
     }
@@ -79,9 +81,27 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
         }
     }
 
-    override fun onClick(id: Int) {
+    override fun onClick(id: Int, title: String?) {
+        val bundle= bundleOf("id" to id, "title" to title)
+        findNavController().navigate(R.id.action_productsFragment_to_productDetailFragment, bundle)
+    }
 
+    override fun addToCart(cart: Cart) {
+        viewModel.addToCart(cart)
+    }
+
+    override fun removeFromCart(cart: Cart) {
+        viewModel.removeFromCart(cart)
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
 }

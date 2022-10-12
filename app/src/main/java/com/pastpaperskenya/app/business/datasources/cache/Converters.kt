@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.pastpaperskenya.app.business.model.category.CategoryImage
 import com.pastpaperskenya.app.business.model.download.FileData
 import com.pastpaperskenya.app.business.model.product.*
+import java.lang.reflect.Type
 
 
 class Converters {
@@ -185,6 +186,7 @@ class Converters {
         return ids
     }
     /*end products converter */
+
 
 
 }
