@@ -18,7 +18,7 @@ class ProductDetailViewModel @Inject constructor(
      private var _id = MutableLiveData<Int>()
 
     private var _response= _id.switchMap { id->
-        repository.getProductsDetail(7492)
+        repository.getProductsDetail(id)
     }
 
     val response: LiveData<Resource<Product>> = _response

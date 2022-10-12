@@ -484,7 +484,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:fitsSystemWindows="true"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             android:weightSum="2">
 
             <com.pastpaperskenya.app.business.util.customview.RobotoTextView

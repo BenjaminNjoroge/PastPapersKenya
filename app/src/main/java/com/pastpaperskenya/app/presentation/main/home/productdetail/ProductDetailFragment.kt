@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
-import com.pastpaperskenya.app.presentation.main.MainActivity
-import com.pastpaperskenya.app.presentation.main.home.products.ProductsFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -35,11 +33,14 @@ class ProductDetailFragment : Fragment() {
 
         _binding= FragmentProductDetailBinding.inflate(inflater, container, false)
 
-        val title= args.title
-        (activity as MainActivity).supportActionBar?.title= title
+        val id= args.id
+
+        viewModel.start(id)
 
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,7 +77,7 @@ class ProductDetailFragment : Fragment() {
         binding.productRatingText.text= product.average_rating
         //binding.productRating.rating = Float.parseFloat(product.getAverageRating());
 
-        Glide.with(binding.root).load(product.images?.get(0)?.name).into(binding.productImageSlider)
+        Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImageSlider)
 
     }
 
