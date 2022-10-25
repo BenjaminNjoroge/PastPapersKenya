@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
@@ -47,14 +48,14 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
                 this.product= product
 //                this.cart= Cart(null, product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src, product.categories?.get(0)!!.id)
 
-//                Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImage)
+//                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
                 binding.productTitle.text= product.name
 
-//                val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
-  //              val newRegularPrice= product.regular_price?.toInt()!!
+ //               val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
+   //             val newRegularPrice= product.regular_price?.toInt()!!
 
-//                val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
-//                binding.productDiscountPercent.text= percent
+     //           val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
+       //         binding.productDiscountPercent.text= percent
                 binding.productSalePrice.text= "Ksh "+product.sale_price
                 binding.productRegularPrice.text= "Ksh "+product.regular_price
             }

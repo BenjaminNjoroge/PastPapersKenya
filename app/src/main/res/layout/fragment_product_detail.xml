@@ -12,7 +12,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_300dp"
+            android:layout_height="@dimen/size_250dp"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -230,14 +230,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="@dimen/size_7dp"
+                android:layout_margin="@dimen/size_2dp"
                 android:layout_below="@+id/linLayout3">
 
                 <com.pastpaperskenya.app.business.util.customview.RobotoTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/grayExtraLight"
-                    android:padding="@dimen/size_7dp"
+                    android:padding="@dimen/size_2dp"
                     android:text="@string/payment_total"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
@@ -268,7 +268,8 @@
                             android:gravity="center"
                             android:text="@string/text_placeholder"
                             android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_15sp" />
+                            android:textSize="@dimen/text_15sp"
+                            android:background="@drawable/strike_trough_text"/>
 
                     </LinearLayout>
 
@@ -326,9 +327,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight=".30"
                         android:gravity="center"
+                        android:background="@color/danger"
+                        android:maxLines="1"
                         android:text="@string/text_placeholder"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/text_15sp" />
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_15sp"
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 

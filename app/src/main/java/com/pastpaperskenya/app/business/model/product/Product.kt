@@ -62,7 +62,7 @@ data class Product(
     val purchase_note: String?,
     val categories: ArrayList<ProductCategory>?,
     val tags: ArrayList<TagsProperty>?,
-    val images: ArrayList<ImageProperty>?,
+    val images: ArrayList<ImageProperty?>?,
     val attributes: ArrayList<AttributesProperty>?,
     val default_attributes: ArrayList<DefaultProperty>?,
     val variations: ArrayList<Int>?,

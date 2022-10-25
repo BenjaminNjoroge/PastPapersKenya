@@ -20,14 +20,10 @@ class ProductsViewModel @Inject constructor(
 
     private var _categoryId= MutableLiveData<Int>()
 
-    private val _products :LiveData<Resource<List<Product>>> get() = _categoryId.switchMap {
-        repository.getProducts(100, it).asLiveData(context = Dispatchers.IO)
+    private val _products :LiveData<Resource<List<Product>>> get() = _categoryId.switchMap { id->
+        repository.getProducts(100, id).asLiveData(context = Dispatchers.IO)
 
     }
-
-//    private val _response = _categoryId.switchMap {
-//        fetchProducts(100, it) as LiveData<Resource<List<Product>>>
-//    }
 
 
     val products: LiveData<Resource<List<Product>>> = _products

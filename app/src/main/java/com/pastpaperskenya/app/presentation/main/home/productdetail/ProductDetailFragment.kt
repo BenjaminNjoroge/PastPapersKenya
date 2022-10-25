@@ -80,7 +80,7 @@ class ProductDetailFragment : Fragment() {
         binding.productRegularPrice.text= "Ksh "+ product.regular_price
         binding.productSalePrice.text= "Ksh "+ product.sale_price
         binding.productRatingText.text= product.rating_count.toString()
-        binding.paymentTotalPrice.text= product.sale_price
+        binding.paymentTotalPrice.text= "Ksh "+ product.sale_price
         //binding.productReviewCount.text= product.re
 
 
