@@ -15,6 +15,7 @@ class ProductDetailRepository @Inject constructor(
     fun getProductsDetail(id: Int)= networkBoundResource(
         databaseQuery = {detailsDao.getProductDetail(id)},
         networkFetch = {remoteDataSource.getProductDetail(id)},
-        saveNetworkData = {detailsDao.insertProductDetail(it)}
+        saveNetworkData = {
+            detailsDao.insertProductDetail(it)}
     )
 }

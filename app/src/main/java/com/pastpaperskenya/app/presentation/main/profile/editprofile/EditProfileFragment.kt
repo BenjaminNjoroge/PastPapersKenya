@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -38,7 +39,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class EditProfileFragment : Fragment() {
 
-    private val viewModel: EditProfileViewModel by activityViewModels()
+    private val viewModel: EditProfileViewModel by viewModels()
     private var _binding: FragmentEditProfileBinding?= null
     private val binding get() = _binding!!
 

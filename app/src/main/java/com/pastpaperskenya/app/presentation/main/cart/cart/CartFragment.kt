@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.databinding.FragmentCartBinding
+import com.pastpaperskenya.app.presentation.main.home.products.ProductsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +19,7 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
     private val binding get() = _binding!!
 
     private val viewModel: CartViewModel by viewModels()
+    private lateinit var adapter:CartAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +33,10 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.response.observe(viewLifecycleOwner){
+        adapter= CartAdapter(this)
 
+        viewModel.response.observe(viewLifecycleOwner){
+            adapter.submitList(it)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.pastpaperskenya.app.presentation.main.home.productdetail
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.business.model.product.Product
@@ -46,6 +48,10 @@ class ProductDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupObservers()
+
+        binding.detailToolbar.backArrow.setOnClickListener{
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupObservers(){
@@ -53,17 +59,15 @@ class ProductDetailFragment : Fragment() {
         viewModel.response.observe(viewLifecycleOwner){
             when(it.status){
                  Resource.Status.LOADING->{
-                     //binding.detailShimmerLayout.productDetailShimmerView.visibility= View.VISIBLE
-                     binding.productDetailLayout.visibility= View.GONE
+                     binding.pbLoading.visibility= View.VISIBLE
                  }
                 Resource.Status.SUCCESS->{
-                    //binding.detailShimmerLayout.productDetailShimmerView.visibility= View.GONE
-                    binding.productDetailLayout.visibility= View.VISIBLE
+                    binding.pbLoading.visibility= View.GONE
                     bindDetail(it.data!!)
 
                 }
                 Resource.Status.ERROR->{
-                    //binding.detailShimmerLayout.productDetailShimmerView.visibility= View.GONE
+                    binding.pbLoading.visibility= View.GONE
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -72,9 +76,19 @@ class ProductDetailFragment : Fragment() {
 
     private fun bindDetail(product: Product){
         binding.productTitle.text= product.name
-        binding.productOrderCount.text= product.total_sales.toString()
-        binding.productReviewCount.text= product.rating_count.toString()
-        binding.productRatingText.text= product.average_rating
+        binding.productShortDescription.text= Html.fromHtml(product.description)
+        binding.productRegularPrice.text= "Ksh "+ product.regular_price
+        binding.productSalePrice.text= "Ksh "+ product.sale_price
+        binding.productRatingText.text= product.rating_count.toString()
+        binding.paymentTotalPrice.text= product.sale_price
+        //binding.productReviewCount.text= product.re
+
+
+        val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
+        val newRegularPrice= product.regular_price?.toInt()!!
+
+        val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
+        binding.productDiscountPercent.text= percent
         //binding.productRating.rating = Float.parseFloat(product.getAverageRating());
 
         Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImageSlider)

@@ -5,7 +5,7 @@ import com.pastpaperskenya.app.BuildConfig;
 /**
  * Created by Md Sahiul Islam on 23-Jan-19.
  */
-    public class Constants {
+public class Constants {
 
     private static final String SITE_URL = "https://pastpaperskenya.com/"; //Change to your website url
 
@@ -17,21 +17,21 @@ import com.pastpaperskenya.app.BuildConfig;
 
     public static final String BASE_AUTH = "?consumer_key=" + CONSUMER_KEY + "&consumer_secret=" + CONSUMER_SECRET;
 
-    public static final String PAYMENTS_URL= "https://us-central1-pastpaperskenya.cloudfunctions.net/payments/";
-    public static final int RC_GOOGLE_IN= 9002;
+    public static final String PAYMENTS_URL = "https://us-central1-pastpaperskenya.cloudfunctions.net/payments/";
+    public static final int RC_GOOGLE_IN = 9002;
 
     //KEY CONSTANT
-    public static final String FIREBASE_DATABASE_COLLECTION_USER= "users";
-    public static final String FIREBASE_DATABASE_COLLECTION_PAYMENTS= "payments";
-    public static final String FIREBASE_DATABASE_COLLECTION_IMAGES= "images";
-    public static final String USER_SERVER_ID="userServerId";
+    public static final String FIREBASE_DATABASE_COLLECTION_USER = "users";
+    public static final String FIREBASE_DATABASE_COLLECTION_PAYMENTS = "payments";
+    public static final String FIREBASE_DATABASE_COLLECTION_IMAGES = "images";
+    public static final String USER_SERVER_ID = "userServerId";
     public static final String KEY_ID = "id";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_FIRSTNAME = "first_name";
     public static final String KEY_LASTNAME = "last_name";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
-    public static final String KEY_PROFILE_PHOTO= "profile_photo";
+    public static final String KEY_PROFILE_PHOTO = "profile_photo";
 
     public static final String KEY_PRODUCT = "product";
     public static final String KEY_PRODUCT_ID = "product_id";
@@ -67,7 +67,7 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String KEY_TYPE = "type";
     public static final String KEY_NONCE = "nonce";
     public static final String KEY_AMOUNT = "amount";
-    public static final String KEY_CURRENCY= "currency";
+    public static final String KEY_CURRENCY = "currency";
     public static final String KEY_CUSTOMER = "customer";
     public static final String KEY_REVIEW = "review";
     public static final String KEY_REVIEWER = "reviewer";
@@ -79,12 +79,11 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String KEY_DISCOUNT = "discount";
     public static final String KEY_DISCOUNT_TOTAL = "discount_total";
     public static final String KEY_METHOD_ID = "method_id";
-    public static final String KEY_METHOD_TITLE= "method_title";
-    public static final String KEY_SHIPPING_TOTAL= "shipping_total";
-    public static final String KEY_TOTAL= "total";
-    public static final String KEY_TRANSACTION_ID= "transaction_id";
-    public static final String KEY_EXCLUDE="exclude";
-
+    public static final String KEY_METHOD_TITLE = "method_title";
+    public static final String KEY_SHIPPING_TOTAL = "shipping_total";
+    public static final String KEY_TOTAL = "total";
+    public static final String KEY_TRANSACTION_ID = "transaction_id";
+    public static final String KEY_EXCLUDE = "exclude";
 
 
     // API END POINTS
@@ -93,13 +92,13 @@ import com.pastpaperskenya.app.BuildConfig;
     public static final String API_PRODUCT_DETAIL = BASE_URL + "products/" + "{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_PRODUCT_CATEGORIES = "products/categories/" + BASE_AUTH;
     public static final String API_PRODUCT_TAGS = BASE_URL + "products/tags/" + BASE_AUTH;
-    public static final String API_PRODUCT_TAGS_ID = BASE_URL + "products/tags/" + "{" + KEY_ID +"}" + BASE_AUTH;
+    public static final String API_PRODUCT_TAGS_ID = BASE_URL + "products/tags/" + "{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_PRODUCT_FILTER_TAGS = BASE_URL + "products/" + BASE_AUTH;
     public static final String API_PRODUCT_REVIEWS = BASE_URL + "products/reviews/" + BASE_AUTH;
     public static final String API_PRODUCT_ATTRIBUTES = BASE_URL + "products/attributes/" + BASE_AUTH;
     public static final String API_PRODUCT_TERMS = BASE_URL + "products/attributes/" + "{" + KEY_ID + "}/terms/" + BASE_AUTH;
     public static final String API_COUPONS = BASE_URL + "coupons/" + BASE_AUTH;
-   public static final String API_REQUEST_ORDER = BASE_URL + "orders" + BASE_AUTH;
+    public static final String API_REQUEST_ORDER = BASE_URL + "orders" + BASE_AUTH;
     public static final String API_CANCEL_ORDER = BASE_URL + "orders/{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_ORDER_NOTES = BASE_URL + "orders/{" + KEY_ID + "}/notes/" + BASE_AUTH;
     public static final String API_DATA_CONTINENTS = "data/continents/" + BASE_AUTH;

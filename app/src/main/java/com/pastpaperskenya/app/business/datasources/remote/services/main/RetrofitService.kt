@@ -5,9 +5,11 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.util.Constants.*
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -47,26 +49,45 @@ interface RetrofitService {
         @Query ("per_page") perpage: Int
     ): Response<List<SubCategory>>
 
-    @GET(API_PRODUCT_TAGS)
-    suspend fun getProductTags(
-        @Query ("per_page") perpage: Int
-    ): Response<List<ProductTag>>
+
+    @GET(API_PRODUCT_TAGS_ID)
+    suspend fun checkProductHasTagId(
+        @Path("id") id: Int
+    ):List<ProductTag>
+
+    @GET(API_PRODUCT_FILTER_TAGS)
+    suspend fun productFilterTag(
+        @Query("per_page") perpage: Int,
+        @Query("tag") tags: Int,
+        @Query("categories") categories: Int
+    )
 
     @GET(API_PRODUCTS)
-    suspend fun getProductList(
+    suspend fun getProductsList(
         @Query ("per_page") perpage: Int,
-        @Query ("category") category: Int
-    ): Response<List<Product>>
+        @Query("categories") category: Int,
+    ):List<Product>
 
     @GET(API_PRODUCT_DETAIL)
     suspend fun getProductDetail(
         @Path("id") id: Int?
     ): Response<Product>
 
-
-    //for download
     @GET(API_DOWNLOAD)
     suspend fun getDownloads(
         @Path("id") id: Int?
     ): List<Download>
+
+    @GET(API_REQUEST_ORDER)
+    suspend fun getMyOrders(
+        @Query("customer") customer: Int?
+    ): List<Orders>
+
+    @GET(API_CANCEL_ORDER)
+    suspend fun getMyOrderDetails(
+        @Path("id") id: Int?
+    ):Response<Orders>
+
+
+
 }

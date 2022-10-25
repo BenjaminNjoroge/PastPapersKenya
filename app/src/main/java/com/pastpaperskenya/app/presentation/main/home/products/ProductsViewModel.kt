@@ -2,11 +2,13 @@ package com.pastpaperskenya.app.presentation.main.home.products
 
 import androidx.lifecycle.*
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.repository.main.home.ProductsRepository
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,10 +20,16 @@ class ProductsViewModel @Inject constructor(
 
     private var _categoryId= MutableLiveData<Int>()
 
+    private val _products :LiveData<Resource<List<Product>>> get() = _categoryId.switchMap {
+        repository.getProducts(100, it).asLiveData(context = Dispatchers.IO)
 
-    private var _products= _categoryId.switchMap { categoryId->
-        repository.getProducts(100, categoryId)
     }
+
+//    private val _response = _categoryId.switchMap {
+//        fetchProducts(100, it) as LiveData<Resource<List<Product>>>
+//    }
+
+
     val products: LiveData<Resource<List<Product>>> = _products
 
 

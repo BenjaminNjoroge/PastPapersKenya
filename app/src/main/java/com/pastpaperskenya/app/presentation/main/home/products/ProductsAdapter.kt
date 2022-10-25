@@ -45,31 +45,26 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
             @SuppressLint("SetTextI18n")
             fun bind(product: Product){
                 this.product= product
-                this.cart= Cart(null, product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src, product.categories?.get(0)!!.id)
+//                this.cart= Cart(null, product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src, product.categories?.get(0)!!.id)
 
-                Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImage)
+//                Glide.with(binding.root).load(product.images?.get(0)?.src).into(binding.productImage)
                 binding.productTitle.text= product.name
 
-                val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
-                val newRegularPrice= product.regular_price?.toInt()!!
+//                val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
+  //              val newRegularPrice= product.regular_price?.toInt()!!
 
-                val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
-                binding.productDiscountPercent.text= percent
+//                val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
+//                binding.productDiscountPercent.text= percent
                 binding.productSalePrice.text= "Ksh "+product.sale_price
                 binding.productRegularPrice.text= "Ksh "+product.regular_price
-
-                binding.checkCart.setOnClickListener {
-                    if (binding.checkCart.isChecked){
-                        listener.addToCart(cart)
-                    } else{
-                        listener.removeFromCart(cart)
-                    }
-                }
             }
 
         init {
             binding.productImage.setOnClickListener(this)
-            binding.checkCart.setOnClickListener(this)
+            binding.productTitle.setOnClickListener(this)
+            binding.productDiscountPercent.setOnClickListener(this)
+            binding.productRegularPrice.setOnClickListener(this)
+            binding.productSalePrice.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {

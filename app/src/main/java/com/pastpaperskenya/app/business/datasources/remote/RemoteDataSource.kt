@@ -4,8 +4,7 @@ import com.pastpaperskenya.app.business.datasources.remote.services.main.Retrofi
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
-    private val retrofitService: RetrofitService
-) : BaseDataSource() {
+    private val retrofitService: RetrofitService) : BaseDataSource() {
 
     suspend fun getRemoteParentCategory(parent:Int, filter: ArrayList<Int>)=
         getResult { retrofitService.getRemoteHomeCategory(parent, filter) }
@@ -19,8 +18,8 @@ class RemoteDataSource @Inject constructor(
     suspend fun getProductDetail(id: Int)=
         getResult { retrofitService.getProductDetail(id)}
 
-    suspend fun getProducts(perpage: Int, category: Int)=
-        getResult { retrofitService.getProductList(perpage, category) }
+    suspend fun getMyOrderDetails( id: Int)=
+        getResult { retrofitService.getMyOrderDetails(id) }
 
 
 }

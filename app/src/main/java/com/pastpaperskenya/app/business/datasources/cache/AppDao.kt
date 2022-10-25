@@ -7,6 +7,7 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductCategory
 import kotlinx.coroutines.flow.Flow
@@ -29,14 +30,16 @@ interface AppDao {
     @Query("SELECT * FROM product WHERE id=:id")
     fun getProductDetail(id: Int): LiveData<Product>
 
-    @Query("SELECT * FROM product")
-    fun getProducts(): LiveData<List<Product>>
 
     @Query("SELECT * FROM cart")
     fun getAllCartItems(): Flow<List<Cart>>
 
     @Query("SELECT * FROM cart WHERE productId= :productId")
     fun getCartProductById(productId: Int): Flow<Cart>
+
+
+    @Query("SELECT * FROM orders")
+    fun getMyOrdersDetails(): LiveData<Orders>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertParentCategory(homeCategory: List<HomeCategory>)
@@ -53,10 +56,8 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductDetail(product: Product)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProducts(products: List<Product>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertToCart(cart: Cart)
 
     @Delete
@@ -70,5 +71,8 @@ interface AppDao {
 
     @Delete
     suspend fun deleteFromCart(cart: Cart)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMyOrderDetails(orders: Orders)
 
 }

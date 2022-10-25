@@ -8,16 +8,13 @@ import com.pastpaperskenya.app.business.repository.auth.FirebaseRepositoryImpl
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
-import com.pastpaperskenya.app.business.repository.main.home.HomeRepository
-import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepository
-import com.pastpaperskenya.app.business.repository.main.home.PaymentsRepositoryImpl
-import com.pastpaperskenya.app.business.repository.main.home.SubCategoryRepository
 import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
+import com.pastpaperskenya.app.business.repository.main.home.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -80,4 +77,15 @@ object RepositoryModule {
     fun providesCartRepository(database:AppDatabase): CartRepository=
         CartRepository(database)
 
+    @Provides
+    fun providesProductsRepository(database: AppDatabase, retrofitService: RetrofitService): ProductsRepository=
+        ProductsRepository(database, retrofitService)
+
+    @Provides
+    fun providesMyOrdersRepository(retrofitService: RetrofitService, userService: UserService): MyOrdersRepository=
+        MyOrdersRepository(retrofitService, userService)
+
+    @Provides
+    fun providesMyOrderDetailsRepository(database: AppDatabase, remoteDatasource: RemoteDataSource): MyOrdersDetailRepository=
+        MyOrdersDetailRepository(database, remoteDatasource)
 }

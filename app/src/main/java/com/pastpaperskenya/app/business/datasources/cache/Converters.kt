@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.pastpaperskenya.app.business.model.category.CategoryImage
 import com.pastpaperskenya.app.business.model.download.FileData
+import com.pastpaperskenya.app.business.model.orders.*
 import com.pastpaperskenya.app.business.model.product.*
 import java.lang.reflect.Type
 
@@ -187,6 +188,107 @@ class Converters {
     }
     /*end products converter */
 
+
+    /* orders converter */
+
+    @TypeConverter
+    fun toOrderBillingPropertiesJson(value: OrderBillingProperties): String?{
+        return gson.toJson(
+            value, object : TypeToken<OrderBillingProperties?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderBillingProperties(value: String?): OrderBillingProperties?{
+        return gson.fromJson(
+            value, object : TypeToken<OrderBillingProperties?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderMetaDataJson(value: ArrayList<OrderMetaData>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderMetaData>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderMetaData(value: String?): ArrayList<OrderMetaData>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderMetaData>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderLineItemsJson(value: ArrayList<OrderLineItems>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderLineItems>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderLineItems(value: String?): ArrayList<OrderLineItems>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderLineItems>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderTaxLinesJson(value: ArrayList<OrderTaxLines>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderTaxLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderTaxLines(value: String?): ArrayList<OrderTaxLines>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderTaxLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderFeeLinesJson(value: ArrayList<OrderFeeLines>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderFeeLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderFeeLines(value: String?): ArrayList<OrderFeeLines>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderFeeLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderCouponLinesJson(value: ArrayList<OrderCouponLines>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderCouponLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderCouponLines(value: String?): ArrayList<OrderCouponLines>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderCouponLines>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun toOrderRefundsJson(value: ArrayList<OrderRefunds>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<OrderRefunds>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromOrderRefunds(value: String?): ArrayList<OrderRefunds>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<OrderRefunds>?>(){}.type
+        )
+    }
+    /* end of order converter*/
 
 
 }

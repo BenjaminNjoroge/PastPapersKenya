@@ -75,6 +75,23 @@
     <string name="buy">Buy</string>
     <string name="product_price">Price</string>
     <string name="subtotal_price">Sub total</string>
+    <string name="order_detail">Order Details</string>
+    <string name="order_status_pending">Order Status</string>
+    <string name="payment_via">Payment made via</string>
+    <string name="order_price">Order Price</string>
+    <string name="no_of_products">No of Products</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="products">Products</string>
+    <string name="order_status">Order Status</string>
+    <string name="order_detail_id">Order Details Id</string>
+    <string name="billing_address">Billing Adress</string>
+    <string name="save_proceed">Save and Proceed</string>
+    <string name="select_payment_method">Select Payment Method</string>
+    <string name="total">Total</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="payment_total">Payment Total</string>
+    <string name="regularPrice">Regular price</string>
+    <string name="salePrice">Sale Price</string>
 
 
 </resources>

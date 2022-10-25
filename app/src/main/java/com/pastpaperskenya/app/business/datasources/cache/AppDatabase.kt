@@ -8,19 +8,23 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 
 @TypeConverters(Converters::class)
-@Database(entities = [
-    HomeCategory::class,
-    SliderCategory::class,
-    SubCategory::class,
-    Download::class,
-    Product::class,
-    Cart::class
-                     ],
-    version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase(){
+@Database(
+    entities = [
+        HomeCategory::class,
+        SliderCategory::class,
+        SubCategory::class,
+        Download::class,
+        Product::class,
+        Cart::class,
+        Orders::class
+    ],
+    version = 1, exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun appDao(): AppDao
 

@@ -63,7 +63,7 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
 
     }
 
-    fun registerObservers(){
+    private fun registerObservers(){
         viewModel.products.observe(viewLifecycleOwner){
             when(it.status){
                 Resource.Status.LOADING->{

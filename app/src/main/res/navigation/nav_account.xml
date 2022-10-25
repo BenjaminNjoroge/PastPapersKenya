@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_myOrdersDetailsFragment"
+            app:destination="@id/myOrdersDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
@@ -33,4 +36,26 @@
         android:label="Reset Password"
         tools:layout="@layout/fragment_change_password" >
     </fragment>
+
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.MyOrdersFragment"
+        android:label="MyOrdersFragment"
+        tools:layout="@layout/fragment_my_orders_details">
+        <action
+            android:id="@+id/action_myOrdersFragment_to_myOrdersDetailsFragment"
+            app:destination="@id/myOrdersDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOrdersDetailsFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.MyOrdersDetailsFragment"
+        android:label="fragment_my_orders_details"
+        tools:layout="@layout/fragment_my_orders_details">
+
+        <argument android:name="id"
+            app:argType="integer"/>
+
+    </fragment>
+
 </navigation>

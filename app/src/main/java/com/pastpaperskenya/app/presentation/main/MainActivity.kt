@@ -1,14 +1,15 @@
 package com.pastpaperskenya.app.presentation.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.util.StoreTimeHelper
 import com.pastpaperskenya.app.databinding.ActivityMainBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
 
         setupActionBar()
         binding.bottomNavigationView.setupWithNavController(navHostController)
+
+        if (!StoreTimeHelper.isStoreOpen()) {
+            StoreTimeHelper.showCloseDialogue(this)
+        }
     }
 
     private fun setupActionBar(){

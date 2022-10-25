@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
      databaseQuery : () -> LiveData<T>,
      networkFetch : suspend ()-> Resource<A>,
      saveNetworkData: suspend (A) -> Unit
-): LiveData<Resource<T>> =
+): LiveData<Resource<T & Any>> =
 
     liveData(Dispatchers.IO){
         emit(Resource.loading())

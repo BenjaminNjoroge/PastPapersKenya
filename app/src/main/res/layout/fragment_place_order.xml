@@ -1,14 +1,311 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.cart.placeorder.PlaceOrderFragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:descendantFocusability="beforeDescendants"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:layout_marginEnd="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_10dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/size_0dp"
+                app:cardElevation="@dimen/size_3dp"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/grayExtraLight"
+                        android:padding="@dimen/size_7dp"
+                        android:text="@string/products"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_14sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/checkout_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:layout_marginEnd="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_10dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/size_0dp"
+                app:cardElevation="@dimen/size_3dp"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/grayExtraLight"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/size_12dp"
+                        android:paddingBottom="@dimen/size_12dp"
+                        tools:layout_editor_absoluteX="8dp"
+                        tools:layout_editor_absoluteY="8dp">
+
+                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                            android:id="@+id/address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="@dimen/size_3dp"
+                            android:text="@string/billing_address"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_14sp"
+                            android:textStyle="bold" />
+
+                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                            android:id="@+id/billing_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/size_3dp"
+                            android:layout_weight="2"
+                            android:drawableStart="@drawable/ic_baseline_adjust_24"
+                            android:padding="@dimen/size_7dp"
+                            android:text="@string/email"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_12sp"
+                            android:textStyle="normal" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="@dimen/size_40dp"
+                            android:layout_height="@dimen/size_40dp"
+                            android:layout_marginEnd="@dimen/size_10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_baseline_arrow_forward_24" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/payment_amount_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:layout_marginEnd="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_10dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/size_0dp"
+                app:cardElevation="@dimen/size_3dp"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/grayExtraLight"
+                        android:padding="@dimen/size_7dp"
+                        android:text="@string/payment_total"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/size_7dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/sub_total_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/size_10dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/size_10dp"
+                                android:layout_weight=".70"
+                                android:text="@string/subtotal"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/text_13sp"
+                                android:textStyle="bold" />
+
+                            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                                android:id="@+id/product_subtotal_price"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".30"
+                                android:gravity="center"
+                                android:text="@string/text_placeholder"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/text_15sp" />
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/divider"
+                            android:background="@color/grayLight" />
+
+                        <LinearLayout
+                            android:id="@+id/payment_total_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_5dp"
+                            android:layout_marginBottom="@dimen/size_10dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+                            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/size_10dp"
+                                android:layout_weight=".75"
+                                android:text="@string/total"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/text_14sp"
+                                android:textStyle="bold" />
+
+                            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                                android:id="@+id/payment_total_price"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".25"
+                                android:background="@color/grayExtraLight"
+                                android:gravity="center"
+                                android:padding="@dimen/size_3dp"
+                                android:text="@string/text_placeholder"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/text_15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:layout_marginBottom="@dimen/size_10dp">
+
+                <TextView
+                    style="text-decoration: underline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_payment_method"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/size_10dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/payment_method_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_80dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/size_10dp"
+                    android:layout_marginEnd="@dimen/size_10dp"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:background="@color/placeholder"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/size_0dp"
+                    app:cardElevation="@dimen/size_3dp"
+                    app:cardUseCompatPadding="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <ImageView
+                            android:id="@+id/paywithmpesa"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/size_20dp"
+                            android:layout_marginEnd="@dimen/size_20dp"
+                            android:layout_weight="1"
+                            android:enabled="false"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_mpesa"
+                            tools:viewBindingIgnore="true" />
+
+                        <View
+                            android:layout_width="@dimen/size_2dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/size_20dp"
+                            android:layout_marginBottom="@dimen/size_20dp"
+                            android:background="@color/placeholder" />
+
+                        <ImageView
+                            android:id="@+id/paywithcard"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/size_20dp"
+                            android:layout_marginEnd="@dimen/size_20dp"
+                            android:layout_weight="1"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_card"
+                            tools:viewBindingIgnore="true" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

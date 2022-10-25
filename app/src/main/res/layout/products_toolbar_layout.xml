@@ -19,6 +19,15 @@
             android:orientation="horizontal"
             android:weightSum="1">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backArrow"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/size_10dp"
+                android:layout_marginTop="@dimen/size_10dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back_to_home_button"
+                />
+
             <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
                 android:id="@+id/toolbar_title"
                 android:layout_width="0dp"
@@ -28,6 +37,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_16sp"
                 android:textStyle="bold" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -69,11 +79,11 @@
                         android:layout_width="@dimen/size_35dp"
                         android:layout_height="@dimen/size_35dp"
                         android:layout_centerInParent="true"
-                        android:padding="@dimen/size_7dp"
-                        android:src="@drawable/ic_shopping_cart"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:focusable="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="@dimen/size_7dp"
+                        android:src="@drawable/ic_shopping_cart"
                         app:tint="@color/colorPrimary2" />
 
                     <TextView
