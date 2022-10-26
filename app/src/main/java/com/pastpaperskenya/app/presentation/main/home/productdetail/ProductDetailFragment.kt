@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,11 +75,14 @@ class ProductDetailFragment : Fragment() {
                     binding.productPrice.text= "Ksh "+it.data?.sale_price
 
 
-                    //val newSalePrice= it.data?.regular_price?.toInt()?.minus(it.data.sale_price?.toInt()!!)?.times(100)
-                    //val newRegularPrice= it.data?.regular_price?.toInt()!!
+                    val num1= it.data?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+                    val num2= it.data?.sale_price?.let { it1 -> convertIntoNumeric(it1) }
+                    val newSalePrice= num1?.minus(num2!!)?.times(100)
 
-                    //val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
-                    //binding.productDiscountPercent.text= "OFF " +percent
+                    val newRegularPrice= it.data?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+
+                    val percent= newSalePrice!!.div(newRegularPrice!!).toString() + "%"
+                    binding.productDiscountPercent.text= "OFF $percent"
                     //binding.productRating.rating = Float.parseFloat(product.getAverageRating());
 
                     //Glide.with(binding.root).load(it.data?.images?.get(0)?.src).into(binding.productImageSlider)

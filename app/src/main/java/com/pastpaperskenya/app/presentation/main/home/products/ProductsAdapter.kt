@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
 
  class ProductsAdapter(private val listener: ClickListener) :
@@ -51,11 +52,14 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
 //                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
                 binding.productTitle.text= product.name
 
- //               val newSalePrice= product.regular_price?.toInt()?.minus(product.sale_price?.toInt()!!)?.times(100)
-   //             val newRegularPrice= product.regular_price?.toInt()!!
+                val num1= product.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+                val num2= product.sale_price?.let { it1 -> convertIntoNumeric(it1) }
+                val newSalePrice= num1?.minus(num2!!)?.times(100)
 
-     //           val percent= newSalePrice!!.div(newRegularPrice).toString() + "%"
-       //         binding.productDiscountPercent.text= percent
+                val newRegularPrice= product.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+
+                val percent= newSalePrice!!.div(newRegularPrice!!).toString() + "%"
+                binding.productDiscountPercent.text= "OFF $percent"
                 binding.productSalePrice.text= "Ksh "+product.sale_price
                 binding.productRegularPrice.text= "Ksh "+product.regular_price
             }
