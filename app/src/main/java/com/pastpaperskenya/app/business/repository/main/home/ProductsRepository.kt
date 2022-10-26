@@ -5,6 +5,7 @@ import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.util.networkBoundResource
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +21,7 @@ class ProductsRepository @Inject constructor(
 ) {
     private val appDao= database.appDao()
 
-    fun getProducts(perpage: Int, category:Int):Flow<Resource<List<Product>>>{
+    fun getProducts(perpage: Int, category:String):Flow<Resource<List<Product>>>{
         return flow {
             emit(Resource.loading())
             val response= retrofitService.getProductsList(perpage, category)

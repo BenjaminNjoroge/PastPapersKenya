@@ -24,6 +24,13 @@ import retrofit2.Retrofit
 import java.io.File
 import java.io.IOException
 
+fun convertIntoNumeric(value: String): Int{
+    return try {
+        Integer.parseInt(value)
+    }catch (e: NumberFormatException){
+        0
+    }
+}
 
 fun sanitizePhoneNumber(phone: String): String{
     return when{

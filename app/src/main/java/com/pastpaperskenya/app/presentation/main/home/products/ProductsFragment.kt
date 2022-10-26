@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -40,7 +41,16 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
 
         val title= args.title
+
+        // Calling the support action bar and setting it to custom
+
+        // Displaying the custom layout in the ActionBar
+        (activity as MainActivity).supportActionBar!!.setDisplayShowCustomEnabled(true)
+
         (activity as MainActivity).supportActionBar?.title= title
+
+
+        (activity as MainActivity).supportActionBar?.setCustomView(R.layout.primary_toolbar_layout)
 
         return binding.root
     }

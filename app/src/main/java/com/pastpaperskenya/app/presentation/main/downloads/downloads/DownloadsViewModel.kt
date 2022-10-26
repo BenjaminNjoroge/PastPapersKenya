@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ class DownloadsViewModel @Inject constructor(
 
         viewModelScope.launch {
             val id= user?.let { downloadsRepository.getUserDetails(it) }
-            fetchDownloads(id?.userServerId!!.toInt())
+            fetchDownloads(convertIntoNumeric(id?.userServerId!!))
         }
     }
 

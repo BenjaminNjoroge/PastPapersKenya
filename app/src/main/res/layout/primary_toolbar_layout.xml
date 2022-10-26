@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+
+    <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_weight=".7"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_16sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_10dp"
+        android:layout_weight=".3">
+
+        <ImageView
+            android:id="@+id/toolbar_menu_cart"
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/size_7dp"
+            android:src="@drawable/ic_shopping_cart"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/cart_counter"
+            android:layout_width="@dimen/size_20dp"
+            android:layout_height="@dimen/size_20dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/toolbar_badge_circle"
+            android:gravity="center_horizontal"
+            android:text="10"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_8sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</LinearLayout>
+

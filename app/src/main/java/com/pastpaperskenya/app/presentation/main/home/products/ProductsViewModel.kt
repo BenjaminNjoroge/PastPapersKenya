@@ -21,7 +21,7 @@ class ProductsViewModel @Inject constructor(
     private var _categoryId= MutableLiveData<Int>()
 
     private val _products :LiveData<Resource<List<Product>>> get() = _categoryId.switchMap { id->
-        repository.getProducts(100, id).asLiveData(context = Dispatchers.IO)
+        repository.getProducts(100, id.toString()).asLiveData(context = Dispatchers.IO)
 
     }
 

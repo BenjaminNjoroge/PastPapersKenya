@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,7 +26,7 @@ class MyOrdersViewModel @Inject constructor(private val repository: MyOrdersRepo
 
         viewModelScope.launch {
             val id = user?.let { repository.getUserDetails(it) }
-            fetchOrders(id?.userServerId!!.toInt())
+            fetchOrders(convertIntoNumeric(id?.userServerId!!))
         }
     }
 

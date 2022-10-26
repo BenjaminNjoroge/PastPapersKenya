@@ -146,7 +146,7 @@
                     android:textStyle="bold" />
 
                 <com.pastpaperskenya.app.business.util.customview.RobotoTextView
-                    android:id="@+id/product_order_count"
+                    android:id="@+id/product_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -154,7 +154,8 @@
                     android:gravity="center"
                     android:text="@string/text_placeholder"
                     android:textColor="@color/gray"
-                    android:textSize="@dimen/text_13sp" />
+                    android:textSize="@dimen/text_16sp"
+                    android:textStyle="bold"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentDownloadsBinding
+import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,6 +41,9 @@ class DownloadsFragment : Fragment(){
     ): View {
 
         _binding= FragmentDownloadsBinding.inflate(inflater, container, false)
+
+        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+
         return binding.root
     }
 

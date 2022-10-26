@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -100,6 +101,7 @@ class EditProfileFragment : Fragment() {
     ): View {
         _binding= FragmentEditProfileBinding.inflate(layoutInflater)
 
+        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
 
         listenToChannels()
         registerObservers()

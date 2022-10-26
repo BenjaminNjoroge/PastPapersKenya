@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,6 +37,8 @@ class SubCategoryFragment : Fragment(), SubCategoryAdapter.ClickListener{
 
         val title= args.title
         (activity as MainActivity).supportActionBar?.title= title
+        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
+
 
         return binding.root
     }

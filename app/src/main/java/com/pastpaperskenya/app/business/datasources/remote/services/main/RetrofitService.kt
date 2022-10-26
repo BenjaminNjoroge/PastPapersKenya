@@ -7,6 +7,7 @@ import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.util.Constants.*
 import kotlinx.coroutines.flow.Flow
@@ -65,7 +66,7 @@ interface RetrofitService {
     @GET(API_PRODUCTS)
     suspend fun getProductsList(
         @Query ("per_page") perpage: Int,
-        @Query("categories") category: Int,
+        @Query("category") category:String,
     ):List<Product>
 
     @GET(API_PRODUCT_DETAIL)

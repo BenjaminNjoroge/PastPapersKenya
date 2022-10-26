@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.util.enums.ProfileTabs
 import com.pastpaperskenya.app.databinding.FragmentProfileBinding
+import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +41,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         savedInstanceState: Bundle?
     ): View {
         _binding= FragmentProfileBinding.inflate(inflater, container, false)
+
+        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
 
         registerObservers()
 
