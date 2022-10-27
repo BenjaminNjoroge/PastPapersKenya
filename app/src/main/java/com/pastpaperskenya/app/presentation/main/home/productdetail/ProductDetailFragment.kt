@@ -65,27 +65,7 @@ class ProductDetailFragment : Fragment() {
                 Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
 
-                    binding.productTitle.text= it.data?.name
-
-                    binding.productShortDescription.text= it.data?.description
-                    binding.productRegularPrice.text= "Ksh "+ it.data?.regular_price
-                    binding.productSalePrice.text= "Ksh "+ it.data?.sale_price
-                    binding.productRatingText.text= it.data?.rating_count.toString()
-                    binding.paymentTotalPrice.text= "Ksh "+ it.data?.sale_price
-                    binding.productPrice.text= "Ksh "+it.data?.sale_price
-
-
-                    val num1= it.data?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
-                    val num2= it.data?.sale_price?.let { it1 -> convertIntoNumeric(it1) }
-                    val newSalePrice= num1?.minus(num2!!)?.times(100)
-
-                    val newRegularPrice= it.data?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
-
-                    val percent= newSalePrice!!.div(newRegularPrice!!).toString() + "%"
-                    binding.productDiscountPercent.text= "OFF $percent"
-                    //binding.productRating.rating = Float.parseFloat(product.getAverageRating());
-
-                    //Glide.with(binding.root).load(it.data?.images?.get(0)?.src).into(binding.productImageSlider)
+                    bindDetails(it.data)
 
                 }
                 Resource.Status.ERROR->{
@@ -94,6 +74,32 @@ class ProductDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+
+
+    private fun bindDetails(product: Product?){
+        binding.productTitle.text= product?.name
+
+        binding.productShortDescription.text= product?.description
+        binding.productRegularPrice.text= "Ksh "+ product?.regular_price
+        binding.productSalePrice.text= "Ksh "+ product?.sale_price
+        binding.productRatingText.text= product?.average_rating.toString()
+        binding.paymentTotalPrice.text= "Ksh "+ product?.sale_price
+        binding.productPrice.text= "Ksh "+product?.sale_price
+
+
+        val num1= product?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+        val num2= product?.sale_price?.let { it1 -> convertIntoNumeric(it1) }
+        val newSalePrice= num1?.minus(num2!!)?.times(100)
+
+        val newRegularPrice= product?.regular_price?.let { it1 -> convertIntoNumeric(it1) }
+
+        val percent= newRegularPrice?.let { newSalePrice?.div(it).toString() } + "%"
+        binding.productDiscountPercent.text= "OFF $percent"
+        binding.productReviewCount.text= product?.rating_count.toString()
+
+        //Glide.with(binding.root).load(it.data?.images?.get(0)?.src).into(binding.productImageSlider)
     }
 
     override fun onResume() {

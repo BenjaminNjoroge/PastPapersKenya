@@ -18,6 +18,7 @@ import android.graphics.pdf.PdfRenderer
 import android.os.ParcelFileDescriptor
 import android.view.View
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.downloader.*
 import java.io.File
 import java.lang.Exception
@@ -175,6 +176,7 @@ open class DownloadAdapter(private val context: Context, private val arrayList: 
         val timeRemainingTextView: TextView
         val downloadedBytesPerSecondTextView: TextView
         val wrapperImageView: ImageView
+        val relLayout1: ConstraintLayout
 
         init {
             titleTextView = itemView.findViewById(R.id.titleTextView)
@@ -185,7 +187,10 @@ open class DownloadAdapter(private val context: Context, private val arrayList: 
             timeRemainingTextView = itemView.findViewById(R.id.remaining_TextView)
             downloadedBytesPerSecondTextView = itemView.findViewById(R.id.downloadSpeedTextView)
             wrapperImageView = itemView.findViewById(R.id.wrapperImage)
+            relLayout1= itemView.findViewById(R.id.relLayout1)
+
             statusTextView.setOnClickListener(this)
+            relLayout1.setOnClickListener(this)
             wrapperImageView.setOnClickListener(this)
             titleTextView.setOnClickListener(this)
         }
