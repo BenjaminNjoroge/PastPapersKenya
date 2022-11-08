@@ -40,10 +40,7 @@ class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding?= null
     private val binding get() = _binding!!
 
-    private lateinit var firstname: String
-    private lateinit var lastname: String
     private lateinit var email: String
-    private lateinit var phone: String
     private lateinit var country: String
     private lateinit var county: String
     private lateinit var userServerId: String
@@ -112,10 +109,8 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        firstname= binding.inputBillingFirstName.text.toString()
-        lastname= binding.inputBillingLastName.text.toString()
+
         binding.inputBillingEmail.keyListener= null
-        phone= binding.inputBillingPhone.text.toString()
         email= binding.inputBillingEmail.text.toString()
 
         ccp = view.findViewById(R.id.input_billing_country);
@@ -153,6 +148,9 @@ class EditProfileFragment : Fragment() {
             }
 
             saveAddress.setOnClickListener {
+                val firstname= binding.inputBillingFirstName.text.toString()
+                val lastname= binding.inputBillingLastName.text.toString()
+                val phone= binding.inputBillingPhone.text.toString()
 
                 viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
                 viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId))
