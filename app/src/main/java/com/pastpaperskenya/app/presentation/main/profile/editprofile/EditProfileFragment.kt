@@ -32,6 +32,7 @@ import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import toan.android.floatingactionmenu.FloatingActionsMenu
 
 @AndroidEntryPoint
 class EditProfileFragment : Fragment() {
@@ -53,38 +54,10 @@ class EditProfileFragment : Fragment() {
     private lateinit var ccp: CountryCodePicker
     private lateinit var countySpinner: Spinner
 
+    private lateinit var profileImage: FloatingActionsMenu
 
-    private val startForProfileImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-        val resultCode= result.resultCode
-        val data= result.data
 
-        if (resultCode == Activity.RESULT_OK){
-            val fileUri= data!!.data
-            profileUri = fileUri
 
-            Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
-        } else if(resultCode == ImagePicker.RESULT_ERROR){
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else{
-            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private val startForBackgroundImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-        val resultCode= result.resultCode
-        val data= result.data
-
-        if (resultCode == Activity.RESULT_OK){
-            val fileUri= data!!.data
-            profileUri = fileUri
-
-            Glide.with(requireContext()).load(profileUri).into(binding.backgroundProfile)
-        } else if(resultCode == ImagePicker.RESULT_ERROR){
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else{
-            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +82,8 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        profileImage= view.findViewById(R.id.ivProfileImageP)
+        profileImage.setIcon(resources.getDrawable(R.drawable.ic_outline_person_24))
 
         binding.inputBillingEmail.keyListener= null
         email= binding.inputBillingEmail.text.toString()
@@ -228,6 +203,38 @@ class EditProfileFragment : Fragment() {
         requireActivity().finish()
     }
 
+    private val startForProfileImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+        val resultCode= result.resultCode
+        val data= result.data
+
+        if (resultCode == Activity.RESULT_OK){
+            val fileUri= data!!.data
+            profileUri = fileUri
+
+            //Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
+
+        } else if(resultCode == ImagePicker.RESULT_ERROR){
+            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else{
+            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val startForBackgroundImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+        val resultCode= result.resultCode
+        val data= result.data
+
+        if (resultCode == Activity.RESULT_OK){
+            val fileUri= data!!.data
+            profileUri = fileUri
+
+            Glide.with(requireContext()).load(profileUri).into(binding.backgroundProfile)
+        } else if(resultCode == ImagePicker.RESULT_ERROR){
+            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else{
+            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -26,23 +26,20 @@
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleTextAppearance="@style/TransparentText">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <toan.android.floatingactionmenu.FloatingActionsMenu
                 android:id="@+id/ivProfileImageP"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="85dp"
-                android:background="@color/disabledGray"
-                android:backgroundTint="@color/disabledGray"
-                android:scaleType="center"
-                app:fabSize="normal"
-                app:srcCompat="@drawable/ic_baseline_pen_24" />
-
+                android:layout_gravity="bottom"
+                app:fab_menuIcon="@drawable/ic_baseline_person_24"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="@dimen/size_10dp"/>
 
             <ImageView
                 android:id="@+id/background_profile"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/size_180dp"
                 android:scaleType="fitXY"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
