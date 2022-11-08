@@ -30,6 +30,7 @@ import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.hideKeyboard
+import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentSignInBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -45,26 +46,27 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
     private val TAG = "SignInFragment"
 
-    private val viewModel : SignInViewModel by activityViewModels()
-    private var _binding : FragmentSignInBinding? = null
+    private val viewModel: SignInViewModel by activityViewModels()
+    private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding
 
     private lateinit var email: String
-    private lateinit var password:String
+    private lateinit var password: String
 
     private lateinit var fbemail: String
     private lateinit var fbUsername: String
     private lateinit var fbProfilePhoto: String
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FacebookSdk.sdkInitialize(requireActivity());
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSignInBinding.inflate(inflater , container , false)
+        _binding = FragmentSignInBinding.inflate(inflater, container, false)
 
         userInput()
         registerObservers()
@@ -78,12 +80,20 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
         binding?.apply {
             btnCustomLogin.setOnClickListener {
-                email= binding?.inputLoginEmail?.text.toString().trim()
-                password= binding?.inputLoginPassword?.text.toString().trim()
+                email = binding?.inputLoginEmail?.text.toString().trim()
+                password = binding?.inputLoginPassword?.text.toString().trim()
 
                 hideKeyboard()
-                progressBar.isVisible= true
-                viewModel.fieldsChecker(email, password)
+                progressBar.isVisible = true
+
+                if (NetworkChangeReceiver.isNetworkConnected()) {
+                    viewModel.fieldsChecker(email, password)
+                } else {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(context, "Please check internet connection", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
             }
             txtCreateAccount.setOnClickListener {
                 findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
@@ -92,37 +102,37 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 findNavController().navigate(R.id.action_signInFragment_to_resetPasswordFragment)
             }
 
-            gpLoginBtn.setOnClickListener{
+            gpLoginBtn.setOnClickListener {
 
             }
 
         }
     }
 
-    private fun listenToChannels(){
+    private fun listenToChannels() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.authEventsFlow.collect{ events->
-                when(events){
+            viewModel.authEventsFlow.collect { events ->
+                when (events) {
 
-                    is AuthEvents.Message->{
+                    is AuthEvents.Message -> {
                         Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
                     }
-                    is AuthEvents.Error->{
+                    is AuthEvents.Error -> {
                         binding?.apply {
-                            errorTxt.text= events.message
-                            progressBar.isInvisible=true
+                            errorTxt.text = events.message
+                            progressBar.isInvisible = true
                         }
                     }
-                    is AuthEvents.ErrorCode->{
-                            if(events.code== 1)
-                                binding?.apply {
-                                    inputLoginEmail.error= "Email field should not be empty"
-                                    progressBar.isInvisible= true
-                                }
-                        if (events.code ==2)
+                    is AuthEvents.ErrorCode -> {
+                        if (events.code == 1)
                             binding?.apply {
-                                inputLoginPassword.error= "Password should not be empty"
-                                progressBar.isInvisible= true
+                                inputLoginEmail.error = "Email field should not be empty"
+                                progressBar.isInvisible = true
+                            }
+                        if (events.code == 2)
+                            binding?.apply {
+                                inputLoginPassword.error = "Password should not be empty"
+                                progressBar.isInvisible = true
                             }
                     }
                 }
@@ -130,15 +140,19 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
     }
 
-    private fun registerObservers(){
+    private fun registerObservers() {
 
-        viewModel.userResponse.observe(viewLifecycleOwner){ response->
+        viewModel.userResponse.observe(viewLifecycleOwner) { response ->
 
-                if (response.isSuccessful){
-                    viewModel.actualSignInUser(email, password)
-                } else{
-                    Toast.makeText(requireContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show()
-                }
+            if (response.isSuccessful) {
+                viewModel.actualSignInUser(email, password)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    response.errorBody().toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
@@ -148,15 +162,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         }
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-
-    }
-
-       private fun launchActivity() {
-        val intent= Intent(context, MainActivity::class.java)
+    private fun launchActivity() {
+        val intent = Intent(context, MainActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

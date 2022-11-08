@@ -13,9 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.hideKeyboard
+import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.databinding.FragmentSignUpBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,9 +69,11 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
 
                 hideKeyboard()
                 progressBar.isVisible= true
-
-                viewModel.fieldsChecker(email, firstname, lastname, password, confirmPassword)
-
+                if (NetworkChangeReceiver.isNetworkConnected()) {
+                    viewModel.fieldsChecker(email, firstname, lastname, password, confirmPassword)
+                } else{
+                    Toast.makeText(context, "Please Check Internet connection", Toast.LENGTH_SHORT).show()
+                }
             }
             txtAccountLogin.setOnClickListener {
                 findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -84,11 +88,15 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
         viewModel.userResponse.observe(viewLifecycleOwner){ response->
             if(response.isSuccessful){
                 val userServerId= response.body()?.id
+
+                val localuser= UserDetails("", email, phone, firstname, lastname, country, county, userServerId)
+
                 viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
 
-                viewModel.registerUserWithFirebase(email, phone, firstname, lastname, country, county, password,
-                    userServerId.toString()
-                )
+                viewModel.registerAndSaveToFirestore(email, phone, firstname, lastname, country, county, password, userServerId)
+
+
+                viewModel.insertUserDetails(localuser)
             } else{
                 Toast.makeText(requireContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show()
             }

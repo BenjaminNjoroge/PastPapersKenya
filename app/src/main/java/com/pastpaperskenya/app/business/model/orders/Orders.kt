@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "orders")
 data class Orders (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     val parent_id: Int?,
     val number: String?,
@@ -45,5 +45,4 @@ data class Orders (
     val coupon_lines: ArrayList<OrderCouponLines>?,
     val refunds: ArrayList<OrderRefunds>?,
     val set_paid: Boolean?
-
         )

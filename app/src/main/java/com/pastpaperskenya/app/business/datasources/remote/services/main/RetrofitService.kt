@@ -5,6 +5,8 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
+import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductCategory
@@ -82,12 +84,24 @@ interface RetrofitService {
     @GET(API_REQUEST_ORDER)
     suspend fun getMyOrders(
         @Query("customer") customer: Int?
-    ): List<Orders>
+    ): Response<List<Orders>>
 
     @GET(API_CANCEL_ORDER)
     suspend fun getMyOrderDetails(
         @Path("id") id: Int?
     ):Response<Orders>
+
+    @PUT(MPESA_TOKEN)
+    suspend fun getMpesaToken(): MpesaTokenResponse
+
+    @POST(MPESA_STK_REQUEST)
+    @FormUrlEncoded
+    suspend fun stkpushRequest(
+        @Field("total_amount") total_amount: String,
+        @Field("phone_number") phone_number: String,
+        @Field("order_id") order_id: String,
+        @Field("accesstoken") accesstoken: String
+    )
 
 
 

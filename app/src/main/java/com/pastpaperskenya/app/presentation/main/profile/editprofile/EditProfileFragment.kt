@@ -30,6 +30,7 @@ import com.google.firebase.ktx.app
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -50,6 +51,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var phone: String
     private lateinit var country: String
     private lateinit var county: String
+    private lateinit var serverId:String
     private lateinit var userServerId: String
 
     private lateinit var firebaseAuth: FirebaseAuth
@@ -118,7 +120,9 @@ class EditProfileFragment : Fragment() {
         email= binding.inputBillingEmail.text.toString()
         country= binding.inputBillingCountry.text.toString()
         county= binding.inputBillingCounty.text.toString()
-        userServerId= ""
+        serverId= viewModel._userServerId.observe(viewLifecycleOwner){
+            userServerId= it!!
+        }.toString()
 
         clickListeners()
     }
@@ -134,7 +138,8 @@ class EditProfileFragment : Fragment() {
             }
             saveAddress.setOnClickListener {
                 binding.rotateProgress.isVisible= true
-                viewModel.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
+                val id= convertIntoNumeric(userServerId)
+                viewModel.updateUserDetails(userId, phone, firstname, lastname, country, county, id)
                 binding.rotateProgress.isVisible= false
             }
 

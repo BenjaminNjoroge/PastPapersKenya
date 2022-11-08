@@ -92,6 +92,7 @@
     <string name="payment_total">Payment Total</string>
     <string name="regularPrice">Regular price</string>
     <string name="salePrice">Sale Price</string>
+    <string name="payment_title_card">Card</string>
 
 
 </resources>

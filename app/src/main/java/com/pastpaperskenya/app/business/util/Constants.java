@@ -2,6 +2,8 @@ package com.pastpaperskenya.app.business.util;
 
 import com.pastpaperskenya.app.BuildConfig;
 
+import retrofit2.http.PUT;
+
 /**
  * Created by Md Sahiul Islam on 23-Jan-19.
  */
@@ -84,6 +86,7 @@ public class Constants {
     public static final String KEY_TOTAL = "total";
     public static final String KEY_TRANSACTION_ID = "transaction_id";
     public static final String KEY_EXCLUDE = "exclude";
+    public static final String PAYMENT_METHOD_CARD= "card";
 
 
     // API END POINTS
@@ -108,9 +111,13 @@ public class Constants {
     public static final String API_DOWNLOAD = BASE_URL + "customers/" + "{" + KEY_ID + "}" + "/downloads/" + BASE_AUTH;
 
 
-    //SlUG CONSTANT
-    public static final String SLUG_TRENDING_DEAL = "trending";
-    public static final String SLUG_HOT_DEAL = "hot_deal";
-    public static final String SLUG_SPECIAL_SALE = "special_sale";
-    public static final String SEARCH_KEY = "searchKey";
+    //mpesa
+    public static final String MPESA_TOKEN= BASE_URL + "generateToken/";
+    public static final String MPESA_STK_REQUEST= BASE_URL + "generateStkPush/";
+    public static final String CHECK_PAYMENT_STATUS= BASE_URL + "getPaymentStatus/";
+
+    //CARD PAYMENTS
+    public static final String FLUTTER_PUBLIC_KEY= "FLWPUBK-0ff040c1844abe453dea0eb666b5ee27-X";
+    public static  final String FLUTTER_ENCRYPTION_KEY= "4b6869c753dee7d6cc7cf187";
+
 }

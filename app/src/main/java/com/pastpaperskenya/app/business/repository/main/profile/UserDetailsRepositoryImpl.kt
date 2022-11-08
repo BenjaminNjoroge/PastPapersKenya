@@ -1,11 +1,11 @@
 package com.pastpaperskenya.app.business.repository.main.profile
 
 import com.pastpaperskenya.app.business.model.auth.UserDetails
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import javax.inject.Inject
 
 class UserDetailsRepositoryImpl @Inject constructor
-    (private val userService: UserService): UserDetailsRepository {
+    (private val firestoreUserService: FirestoreUserService): UserDetailsRepository {
 
     override suspend fun userDetails(
         userId: String,
@@ -15,8 +15,8 @@ class UserDetailsRepositoryImpl @Inject constructor
         lastname: String,
         county: String,
         country: String,
-        userServerId: String
+        userServerId: Int
     ) {
-        userService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county, userServerId))
+        firestoreUserService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county, userServerId))
     }
 }

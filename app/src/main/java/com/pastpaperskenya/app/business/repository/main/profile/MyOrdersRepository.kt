@@ -2,7 +2,7 @@ package com.pastpaperskenya.app.business.repository.main.profile
 
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
 import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.util.networkBoundResource
@@ -14,20 +14,17 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class MyOrdersRepository @Inject constructor(
-    private val retrofitService: RetrofitService,
-    private val userService: UserService
+    private val remoteDataSource: RemoteDataSource,
+    private val database: AppDatabase
 ) {
 
-    suspend fun getMyOrders(customerId: Int?) = flow{
-        emit(Resource.loading())
+    private val appdao= database.appDao()
 
-        val ordersResponse= retrofitService.getMyOrders(customerId)
-        emit(Resource.success(ordersResponse))
-    }.catch { e->
-        emit(Resource.error(e.message ?: "Unkwown error"))
-    }.flowOn(Dispatchers.IO)
+     fun getMyOrders(customerId: Int) = networkBoundResource(
+        databaseQuery = {appdao.getMyOrders(customerId)},
+        networkFetch = {remoteDataSource.getMyOrders(customerId)},
+        saveNetworkData = {appdao.insertMyOrders(it)}
+    )
 
-    suspend fun getUserDetails(userId: String) : UserDetails?{
-        return userService.getUserDetails(userId)
-    }
+
 }

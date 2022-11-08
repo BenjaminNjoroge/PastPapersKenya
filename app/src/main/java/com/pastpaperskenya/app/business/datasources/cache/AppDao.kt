@@ -2,6 +2,7 @@ package com.pastpaperskenya.app.business.datasources.cache
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.HomeCategory
@@ -41,6 +42,12 @@ interface AppDao {
     @Query("SELECT * FROM orders")
     fun getMyOrdersDetails(): LiveData<Orders>
 
+    @Query("SELECT * FROM orders WHERE customer_id= :customerId")
+    fun getMyOrders(customerId: Int): LiveData<List<Orders>>
+
+    @Query("SELECT * FROM users WHERE userServerId=:userServerId")
+    fun getUserDetails(userServerId: Int): Flow<UserDetails>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertParentCategory(homeCategory: List<HomeCategory>)
 
@@ -56,12 +63,17 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductDetail(product: Product)
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertToCart(cart: Cart)
 
-    @Delete
-    suspend fun deleteAllCartItem(cart: Cart)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUserDetails(userDetails: UserDetails):Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMyOrders(orders: List<Orders>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMyOrderDetails(orders: Orders)
 
     @Query("DELETE FROM cart WHERE productId= :productId")
     suspend fun deleteCartItem(productId: Int)
@@ -69,10 +81,15 @@ interface AppDao {
     @Query("UPDATE cart SET productId= :productId, totalPrice= :totalPrice")
     fun updateCart(productId: Int, totalPrice: String)
 
+    @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
+    suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
+
     @Delete
     suspend fun deleteFromCart(cart: Cart)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMyOrderDetails(orders: Orders)
+    @Delete
+    suspend fun deleteAllCartItem(cart: Cart)
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.presentation.auth.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,12 +49,18 @@ class SignInViewModel @Inject constructor
 
     private fun checkUserExistsInServer(email: String){
         viewModelScope.launch {
-            val response = repository.getUser(email)
-            if(!response.isSuccessful) {
-                eventsChannel.send(AuthEvents.Message("Supplied Email address does not exits in our server. please register first"))
-            }else{
-                _userResponse.value = response
+            try{
+                val response = repository.getUser(email)
+                if(!response.isSuccessful) {
+                    eventsChannel.send(AuthEvents.Message("Supplied Email address does not exits in our server. please register first"))
+                }else{
+                    _userResponse.value = response
+                }
+            } catch (error: IOException){
+                Log.d(TAG, "checkUserExistsInServer: ")
+                eventsChannel.send(AuthEvents.Message("Please check Internet bundles / connection"))
             }
+            
 
         }
     }

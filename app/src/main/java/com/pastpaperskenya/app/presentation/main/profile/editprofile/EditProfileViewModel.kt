@@ -9,8 +9,13 @@ import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.auth.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
+import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
+import com.pastpaperskenya.app.business.usecases.LocalUserService
+import com.pastpaperskenya.app.business.util.Constants
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -19,7 +24,9 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val repository: FirebaseRepository,
-    private val userService: UserService
+    private val firestoreUserService: FirestoreUserService,
+    private val localUserService: LocalUserService,
+    private val datastore:DataStoreRepository
 ) : ViewModel() {
 
     private val _loading= MutableLiveData(false)
@@ -28,6 +35,8 @@ class EditProfileViewModel @Inject constructor(
     private val _userProfile= MutableLiveData<UserDetails>()
     val userProfile : LiveData<UserDetails> = _userProfile
 
+    val _userServerId= MutableLiveData<String?>()
+
     private var _firebaseUser= MutableLiveData<FirebaseUser?>()
     val firebaseUser get() = _firebaseUser
 
@@ -35,18 +44,22 @@ class EditProfileViewModel @Inject constructor(
     val authEventsChannel= _eventsChannel.receiveAsFlow()
 
     init {
-        val firebaseAuth= FirebaseAuth.getInstance()
-        val user= firebaseAuth.currentUser?.uid
-
-        viewModelScope.launch {
-            _loading.postValue(true)
-            _userProfile.value= userService.getUserDetails(user!!)
-            _loading.postValue(false)
+        viewModelScope.launch(Dispatchers.IO) {
+            val id= datastore.getValue(Constants.USER_SERVER_ID)
+            getUserDetails(convertIntoNumeric(id!!))
         }
     }
 
-    fun updateUserDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:String)= viewModelScope.launch {
-        userService.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
+
+    fun updateUserDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:Int)= viewModelScope.launch {
+        firestoreUserService.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
+        localUserService.updateUserInDatabase(phone, firstname, lastname, country, county, userServerId)
+    }
+
+    private suspend fun getUserDetails(userServerId: Int){
+        localUserService.getUserFromDatabase(userServerId).collect{
+            _userProfile.postValue(it)
+        }
     }
 
     fun logout()= viewModelScope.launch {

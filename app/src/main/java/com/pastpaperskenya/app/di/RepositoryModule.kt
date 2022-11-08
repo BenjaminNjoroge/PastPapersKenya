@@ -10,11 +10,12 @@ import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
 import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
+import com.pastpaperskenya.app.business.usecases.LocalUserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,18 +40,18 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesUserDetailsRepository(userService: UserService): UserDetailsRepository {
-        return UserDetailsRepositoryImpl(userService)
+    fun providesUserDetailsRepository(firestoreUserService: FirestoreUserService): UserDetailsRepository {
+        return UserDetailsRepositoryImpl(firestoreUserService)
     }
 
     @Provides
     @Singleton
-    fun providesProfileRepository(userService: UserService): ProfileRepository =
-         ProfileRepositoryImpl(userService)
+    fun providesProfileRepository(localUserService: LocalUserService): ProfileRepository =
+         ProfileRepositoryImpl(localUserService)
 
 
-    fun providesEditProfileRepository(userService: UserService): EditProfileRepository =
-        EditProfileRepositoryImpl(userService)
+    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService): EditProfileRepository =
+        EditProfileRepositoryImpl(localUserService, firestoreUserService)
 
 
     @Provides
@@ -70,8 +71,8 @@ object RepositoryModule {
         SubCategoryRepository(remoteDataSource, database)
 
     @Provides
-    fun providesDownloadsRepository(retrofitService: RetrofitService, userService: UserService): DownloadsRepository =
-        DownloadsRepository(retrofitService, userService)
+    fun providesDownloadsRepository(retrofitService: RetrofitService): DownloadsRepository =
+        DownloadsRepository(retrofitService)
 
     @Provides
     fun providesCartRepository(database:AppDatabase): CartRepository=
@@ -82,8 +83,8 @@ object RepositoryModule {
         ProductsRepository(database, retrofitService)
 
     @Provides
-    fun providesMyOrdersRepository(retrofitService: RetrofitService, userService: UserService): MyOrdersRepository=
-        MyOrdersRepository(retrofitService, userService)
+    fun providesMyOrdersRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): MyOrdersRepository=
+        MyOrdersRepository(remoteDataSource, database)
 
     @Provides
     fun providesMyOrderDetailsRepository(database: AppDatabase, remoteDatasource: RemoteDataSource): MyOrdersDetailRepository=

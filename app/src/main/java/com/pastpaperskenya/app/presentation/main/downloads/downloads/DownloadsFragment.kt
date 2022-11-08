@@ -88,7 +88,11 @@ class DownloadsFragment : Fragment(){
                             AppPreference.getInstance(context).downloadList = downloadDataList;
                             binding.pbLoading.visibility= View.GONE
                             setDownloadAdapter();
+                        } else{
+
                         }
+                    }else{
+                        binding.pbLoading.visibility= View.VISIBLE
                     }
 
                 }

@@ -10,6 +10,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
+import android.util.MutableInt
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -18,15 +19,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
 import java.io.IOException
+import java.lang.Integer.parseInt
 
-fun convertIntoNumeric(value: String): Int{
+fun convertIntoNumeric(value: String): Int {
     return try {
-        Integer.parseInt(value)
+        parseInt(value)
     }catch (e: NumberFormatException){
         0
     }

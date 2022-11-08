@@ -88,7 +88,6 @@ class MyOrdersFragment : Fragment(),
             binding.myOrdersRecycler.visibility= View.GONE
             binding.emptyListLayout.visibility= View.VISIBLE
         }
-
     }
 
     override fun onClick(position: Int, id: Int) {

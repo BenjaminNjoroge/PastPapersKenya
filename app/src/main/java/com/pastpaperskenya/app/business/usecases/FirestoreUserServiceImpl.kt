@@ -1,15 +1,14 @@
-package com.pastpaperskenya.app.business.datasources.remote.services.auth
+package com.pastpaperskenya.app.business.usecases
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.pastpaperskenya.app.business.model.auth.UserDetails
-import com.pastpaperskenya.app.business.model.auth.UserDetails.Companion.toUserDetails
 import com.pastpaperskenya.app.business.model.lipanampesa.DatabaseKeys
 import com.pastpaperskenya.app.business.util.Constants
 import kotlinx.coroutines.tasks.await
 
-class UserServiceImpl : UserService {
+class FirestoreUserServiceImpl : FirestoreUserService {
 
     override suspend fun saveUserDetails(userDetails: UserDetails) {
         userDetails.userId?.let {
@@ -26,7 +25,7 @@ class UserServiceImpl : UserService {
         lastname: String?,
         country: String?,
         county: String?,
-        userServerId: String?
+        userServerId: Int?
     ) {
         val user= hashMapOf(
             "phone" to phone,
@@ -39,25 +38,21 @@ class UserServiceImpl : UserService {
 
         Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(
             user as Map<String, Any>
-        ). addOnSuccessListener { result->
-            //Toast.makeText(context, "Updated successfully", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener { e->
-            //Toast.makeText(context, e+ " unable to update", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override suspend fun getUserDetails(userId: String): UserDetails? {
-           return Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
-                .document(userId)
-                .get().await().toUserDetails()
-
-    }
-
-    override suspend fun updateUserFcmToken(userId: String) {
-        val token= FirebaseMessaging.getInstance().token
-        val data= mapOf(
-            DatabaseKeys.User.fcmToken to token
         )
-        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(data).await()
     }
+
+//    override suspend fun getUserDetails(userId: String): UserDetails? {
+//           return Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
+//                .document(userId)
+//                .get().await().toUserDetails()
+//
+//    }
+
+//    override suspend fun updateUserFcmToken(userId: String) {
+//        val token= FirebaseMessaging.getInstance().token
+//        val data= mapOf(
+//            DatabaseKeys.User.fcmToken to token
+//        )
+//        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(data).await()
+//    }
 }

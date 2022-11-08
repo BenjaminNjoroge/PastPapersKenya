@@ -1,7 +1,6 @@
 package com.pastpaperskenya.app.presentation.main.home.productdetail
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
+import com.flutterwave.raveandroid.RaveUiManager
+import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -28,6 +31,9 @@ class ProductDetailFragment : Fragment() {
 
     private val args: ProductDetailFragmentArgs by navArgs()
 
+    private lateinit var paymentMethod: String
+    private lateinit var paymentTitle: String
+    private lateinit var currentDateandTime: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +56,38 @@ class ProductDetailFragment : Fragment() {
 
         setupObservers()
 
-        binding.detailToolbar.backArrow.setOnClickListener{
-            findNavController().popBackStack()
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        currentDateandTime = sdf.format(Date())
+
+        binding.apply {
+            detailToolbar.backArrow.setOnClickListener{
+                findNavController().popBackStack()
+            }
+
+            binding.paywithcard.setOnClickListener {
+                paymentMethod = Constants.PAYMENT_METHOD_CARD;
+                paymentTitle = getString(R.string.payment_title_card);
+
+                val txRef = currentDateandTime;
+
+//                RaveUiManager(this).setAmount(Double.parseDouble(netTotalAmount))
+//                    .setCurrency("KES")
+//                    .setCountry("KE")
+//                    .setEmail(billingEmail)
+//                    .setfName(billingFirstName)
+//                    .setlName(billingLastName)
+//                    .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
+//                    .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
+//                    .setTxRef(txRef)
+//                    .setPhoneNumber(billingPhone, false)
+//                    .acceptCardPayments(true)
+//                    .allowSaveCardFeature(true)
+//                    .onStagingEnv(false)
+//                    .isPreAuth(false)
+//                    .shouldDisplayFee(false)
+//                    .showStagingLabel(false)
+//                    .initialize();
+            }
         }
     }
 

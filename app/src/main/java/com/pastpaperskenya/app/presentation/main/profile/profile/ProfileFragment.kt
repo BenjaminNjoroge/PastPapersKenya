@@ -120,9 +120,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun registerObservers(){
-        viewModel.loading.observe(viewLifecycleOwner) {
-            binding.progressBar.visibility= View.VISIBLE
-        }
+
         viewModel.userProfile.observe(viewLifecycleOwner) {
             binding.tvUserNameP.text = it.firstname + " " + it.lastname
             binding.tvEmailP.text = it.email
@@ -131,9 +129,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             binding.tvFirstname.text = it.firstname
             binding.tvCountry.text = it.country
             binding.tvCounty.text = it.county
-        }
-        viewModel.loading.observe(viewLifecycleOwner){
-            binding.progressBar.visibility= View.GONE
         }
 
     }

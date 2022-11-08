@@ -1,13 +1,13 @@
 package com.pastpaperskenya.app.presentation.main.profile.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
+import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,24 +15,30 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyOrdersViewModel @Inject constructor(private val repository: MyOrdersRepository) : ViewModel() {
+class MyOrdersViewModel @Inject constructor(
+    private val repository: MyOrdersRepository,
+    private val datastore: DataStoreRepository
+) : ViewModel() {
 
-    private var _response = MutableLiveData<Resource<List<Orders>>>()
-    val response: LiveData<Resource<List<Orders>>> = _response
+    private var _id= MutableLiveData<Int>()
+
+
+
+    private var _category=
+        _id.switchMap {
+            repository.getMyOrders(it)
+        }
+
 
     init {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val user = firebaseAuth.currentUser?.uid
-
         viewModelScope.launch {
-            val id = user?.let { repository.getUserDetails(it) }
-            fetchOrders(convertIntoNumeric(id?.userServerId!!))
+           // _id = convertIntoNumeric(getUserId()!!)
         }
     }
 
-    private fun fetchOrders(customerId: Int) = viewModelScope.launch {
-        repository.getMyOrders(customerId).collect {
-            _response.postValue(it)
-        }
+    val response:LiveData<Resource<List<Orders>>> = _category
+
+    private suspend fun getUserId():String?{
+        return datastore.getValue(Constants.USER_SERVER_ID)
     }
 }

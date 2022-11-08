@@ -3,8 +3,8 @@ package com.pastpaperskenya.app.di
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.AuthenticatorImpl
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserService
-import com.pastpaperskenya.app.business.datasources.remote.services.auth.UserServiceImpl
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
+import com.pastpaperskenya.app.business.usecases.FirestoreUserServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +23,6 @@ object AuthModule {
     @Singleton
     fun provideAuthenticator(): BaseAuthenticator {
         return AuthenticatorImpl()
-    }
-
-    @Provides
-    @Singleton
-    fun providesUserService(): UserService {
-        return UserServiceImpl()
     }
 
 }
