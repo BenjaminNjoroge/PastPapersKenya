@@ -25,7 +25,6 @@ class FirestoreUserServiceImpl : FirestoreUserService {
         lastname: String?,
         country: String?,
         county: String?,
-        userServerId: Int?
     ) {
         val user= hashMapOf(
             "phone" to phone,
@@ -33,7 +32,6 @@ class FirestoreUserServiceImpl : FirestoreUserService {
             "lastname" to lastname,
             "country" to country,
             "county" to county,
-            "userServerId" to userServerId
         )
 
         Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(

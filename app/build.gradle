@@ -63,6 +63,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.nshmura:recyclertablayout:1.5.0'
+    implementation 'com.hbb20:ccp:2.6.1'
 
     //lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha01"

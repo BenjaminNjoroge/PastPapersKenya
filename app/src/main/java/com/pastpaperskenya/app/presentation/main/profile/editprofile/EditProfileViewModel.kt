@@ -1,9 +1,6 @@
 package com.pastpaperskenya.app.presentation.main.profile.editprofile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.auth.UserDetails
@@ -35,13 +32,15 @@ class EditProfileViewModel @Inject constructor(
     private val _userProfile= MutableLiveData<UserDetails>()
     val userProfile : LiveData<UserDetails> = _userProfile
 
-    val _userServerId= MutableLiveData<String?>()
 
     private var _firebaseUser= MutableLiveData<FirebaseUser?>()
     val firebaseUser get() = _firebaseUser
 
     private var _eventsChannel= Channel<AuthEvents>()
     val authEventsChannel= _eventsChannel.receiveAsFlow()
+
+    private var _userServerId= MutableLiveData<String>()
+    val userServerId: LiveData<String> = _userServerId
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -50,10 +49,12 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
+    fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String)= viewModelScope.launch {
+        firestoreUserService.updateUserDetails(userId, phone, firstname, lastname, country, county)
+    }
 
-    fun updateUserDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:Int)= viewModelScope.launch {
-        firestoreUserService.updateUserDetails(userId, phone, firstname, lastname, country, county, userServerId)
-        localUserService.updateUserInDatabase(phone, firstname, lastname, country, county, userServerId)
+    fun updateLocalDetails(phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:Int)= viewModelScope.launch {
+        localUserService.updateUserInDatabase( phone, firstname, lastname, country, county, userServerId)
     }
 
     private suspend fun getUserDetails(userServerId: Int){

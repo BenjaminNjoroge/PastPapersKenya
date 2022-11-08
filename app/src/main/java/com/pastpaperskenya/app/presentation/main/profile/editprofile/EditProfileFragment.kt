@@ -5,37 +5,32 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.app
+import com.hbb20.CountryCodePicker
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.auth.Customer
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -51,13 +46,16 @@ class EditProfileFragment : Fragment() {
     private lateinit var phone: String
     private lateinit var country: String
     private lateinit var county: String
-    private lateinit var serverId:String
     private lateinit var userServerId: String
 
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userId: String
 
     private var profileUri: Uri?= null
+
+    private lateinit var ccp: CountryCodePicker
+    private lateinit var countySpinner: Spinner
+
 
     private val startForProfileImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
         val resultCode= result.resultCode
@@ -113,34 +111,51 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         firstname= binding.inputBillingFirstName.text.toString()
         lastname= binding.inputBillingLastName.text.toString()
         binding.inputBillingEmail.keyListener= null
         phone= binding.inputBillingPhone.text.toString()
         email= binding.inputBillingEmail.text.toString()
-        country= binding.inputBillingCountry.text.toString()
-        county= binding.inputBillingCounty.text.toString()
-        serverId= viewModel._userServerId.observe(viewLifecycleOwner){
-            userServerId= it!!
-        }.toString()
 
-        clickListeners()
-    }
+        ccp = view.findViewById(R.id.input_billing_country);
+        country= ccp.selectedCountryName
 
-    private fun clickListeners() {
+        countySpinner= view.findViewById(R.id.input_billing_county)
+        val countiesAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(requireContext(),
+        R.array.counties, android.R.layout.simple_list_item_1)
+        countiesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+
+        countySpinner.adapter= countiesAdapter
+
+        countySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, position: Int, id: Long) {
+                val ss: String = countySpinner.selectedItem.toString()
+                county= ss
+            }
+
+            override fun onNothingSelected(arg0: AdapterView<*>?) {
+                // TODO Auto-generated method stub
+            }
+        }
+
+
         binding.apply {
+
             btnLogout.setOnClickListener{
                 rotateProgress.isVisible= true
                 viewModel.logout()
             }
+
             btnChangePassword.setOnClickListener {
                 findNavController().navigate(R.id.action_editProfileFragment_to_changePasswordFragment)
             }
+
             saveAddress.setOnClickListener {
-                binding.rotateProgress.isVisible= true
-                val id= convertIntoNumeric(userServerId)
-                viewModel.updateUserDetails(userId, phone, firstname, lastname, country, county, id)
-                binding.rotateProgress.isVisible= false
+
+                viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
+                viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId))
             }
 
             ivProfileImageP.setOnClickListener{
@@ -159,8 +174,8 @@ class EditProfileFragment : Fragment() {
             }
 
         }
-    }
 
+    }
 
     private fun registerObservers(){
         viewModel.firebaseUser.observe(viewLifecycleOwner) { user ->
@@ -175,9 +190,10 @@ class EditProfileFragment : Fragment() {
             binding.inputBillingFirstName.text= Editable.Factory.getInstance().newEditable(details.firstname)
             binding.inputBillingLastName.text= Editable.Factory.getInstance().newEditable(details.lastname)
             binding.inputBillingEmail.text= Editable.Factory.getInstance().newEditable(details.email)
-            binding.inputBillingCountry.text= Editable.Factory.getInstance().newEditable(details.country)
-            binding.inputBillingCounty.text= Editable.Factory.getInstance().newEditable(details.county)
+            //binding.inputBillingCounty.text= Editable.Factory.getInstance().newEditable(details.county)
             binding.inputBillingPhone.text= Editable.Factory.getInstance().newEditable(details.phone)
+
+            userServerId= details.userServerId.toString()
         }
 
     }

@@ -13,7 +13,6 @@ interface FirestoreUserService {
         lastname: String?,
         country: String?,
         county: String?,
-        userServerId: Int?
     )
 
     //suspend fun getUserDetails(userId: String): UserDetails?
