@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.flutterwave.raveandroid.RaveUiManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.product.Product
@@ -135,7 +136,7 @@ class ProductDetailFragment : Fragment() {
         binding.productDiscountPercent.text= "OFF $percent"
         binding.productReviewCount.text= product?.rating_count.toString()
 
-        //Glide.with(binding.root).load(it.data?.images?.get(0)?.src).into(binding.productImageSlider)
+        Glide.with(binding.root).load(product?.images?.get(0)?.src).into(binding.productImageSlider)
     }
 
     override fun onResume() {

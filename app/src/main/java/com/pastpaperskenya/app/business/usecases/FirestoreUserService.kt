@@ -1,6 +1,6 @@
 package com.pastpaperskenya.app.business.usecases
 
-import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.user.UserDetails
 
 interface FirestoreUserService {
 

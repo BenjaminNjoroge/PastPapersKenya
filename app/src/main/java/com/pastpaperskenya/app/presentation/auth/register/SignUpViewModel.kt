@@ -1,16 +1,15 @@
 package com.pastpaperskenya.app.presentation.auth.register
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.auth.Customer
-import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.user.Customer
+import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
+import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
@@ -29,7 +28,9 @@ class SignUpViewModel @Inject constructor
     (private val repository: FirebaseRepository,
      private val firestoreUserService: FirestoreUserService,
      private val localUserService: LocalUserService,
-     private val datastore: DataStoreRepository) :ViewModel() {
+     private val datastore: DataStoreRepository,
+     private val serverRepository: ServerCrudRepository
+) :ViewModel() {
 
     private  val TAG = "SignUpViewModel"
 
@@ -51,11 +52,7 @@ class SignUpViewModel @Inject constructor
         datastore.setValue(key, serverId)
     }
 
-    fun fieldsChecker(email: String,
-                 firstname: String,
-                 lastname: String,
-                 password: String,
-                 confirmPassword: String)= viewModelScope.launch {
+    fun fieldsChecker(email: String, firstname: String, lastname: String, password: String, confirmPassword: String)= viewModelScope.launch {
         when{
             firstname.isEmpty()->{
                 eventsChannel.send(AuthEvents.ErrorCode(1))
@@ -82,7 +79,7 @@ class SignUpViewModel @Inject constructor
     private fun createUserInServer(email: String, firstname: String, lastname: String, password: String){
         viewModelScope.launch {
             try {
-                val response= repository.createUser(email, firstname, lastname, password)
+                val response= serverRepository.createUser(email, firstname, lastname, password)
                 _userResponse.value= response
             } catch (e: IOException){
                 eventsChannel.send(AuthEvents.Message("Unable to create user in server. Please check Internet bundles"))

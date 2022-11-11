@@ -2,7 +2,7 @@ package com.pastpaperskenya.app.business.datasources.cache
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.HomeCategory
@@ -10,7 +10,6 @@ import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
-import com.pastpaperskenya.app.business.model.product.ProductCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao

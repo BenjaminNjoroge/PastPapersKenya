@@ -49,7 +49,7 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
                 this.product= product
 //                this.cart= Cart(null, product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src, product.categories?.get(0)!!.id)
 
-//                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
+                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
                 binding.productTitle.text= product.name
 
                 val num1= product.regular_price?.let { it1 -> convertIntoNumeric(it1) }

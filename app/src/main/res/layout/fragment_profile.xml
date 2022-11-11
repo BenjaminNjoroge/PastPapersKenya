@@ -31,15 +31,18 @@
                 android:scaleType="centerInside"
                 app:srcCompat="@drawable/splash_gradient_background" />
 
-            <toan.android.floatingactionmenu.FloatingActionsMenu
+            <com.github.siyamed.shapeimageview.CircularImageView
                 android:id="@+id/ivProfileImageP"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="10dp"
-                app:fab_menuIcon="@drawable/ic_baseline_person_24"
+                app:siBorderWidth="6dp"
+                app:siBorderColor="@color/danger"
                 android:scaleType="fitXY"
+                android:background="@drawable/circle_profile"
+                android:src="@drawable/ic_baseline_person_24"
                 app:fabSize="normal" />
 
         </RelativeLayout>

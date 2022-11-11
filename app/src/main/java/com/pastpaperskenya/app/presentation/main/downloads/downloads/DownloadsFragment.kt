@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
@@ -34,6 +36,7 @@ class DownloadsFragment : Fragment(){
     private lateinit var downloadsAdapter: DownloadAdapter
 
     private lateinit var downloadDataList: ArrayList<Download>
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,25 +54,29 @@ class DownloadsFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout= view.findViewById(R.id.parent_view)
+
         if (NetworkChangeReceiver.isNetworkConnected()){
+            swipeRefreshLayout.setOnRefreshListener {
+                setupObservers()
+            }
             setupObservers()
         } else{
-            downloadDataList= AppPreference.getInstance(context).getDownloadList() as ArrayList<Download>;
-            if(downloadDataList!=null) {
-                if (downloadDataList.size > 0) {
-                    binding.pbLoading.visibility= View.GONE
-                    AppPreference.getInstance(getContext()).setDownloadList(downloadDataList);
-                    setDownloadAdapter();
+            try{
+                downloadDataList= AppPreference.getInstance(context).getDownloadList() as ArrayList<Download>;
+                if(downloadDataList!=null) {
+                    if (downloadDataList.size > 0) {
+                        binding.pbLoading.visibility= View.GONE
+                        AppPreference.getInstance(getContext()).setDownloadList(downloadDataList);
+                        setDownloadAdapter();
+                    }
                 }
+            } catch (e: Exception){
+                Toast.makeText(context, "Downloads is empty", Toast.LENGTH_LONG).show()
             }
+
         }
 
-        binding.swipe.setOnRefreshListener {
-            @Override fun onRefresh(){
-                setupObservers()
-                binding.swipe.isRefreshing= false
-            }
-        }
     }
 
 
@@ -82,6 +89,7 @@ class DownloadsFragment : Fragment(){
                 Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
                     downloadDataList= it.data as ArrayList<Download>
+                    swipeRefreshLayout.isRefreshing= false
 
                     if(downloadDataList!=null) {
                         if (downloadDataList.size > 0) {

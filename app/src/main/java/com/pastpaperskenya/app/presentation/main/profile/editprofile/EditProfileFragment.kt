@@ -22,17 +22,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.hbb20.CountryCodePicker
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import toan.android.floatingactionmenu.FloatingActionsMenu
 
 @AndroidEntryPoint
 class EditProfileFragment : Fragment() {
@@ -54,9 +55,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var ccp: CountryCodePicker
     private lateinit var countySpinner: Spinner
 
-    private lateinit var profileImage: FloatingActionsMenu
-
-
+    private lateinit var profileImage: CircularImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +82,6 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         profileImage= view.findViewById(R.id.ivProfileImageP)
-        profileImage.setIcon(resources.getDrawable(R.drawable.ic_outline_person_24))
 
         binding.inputBillingEmail.keyListener= null
         email= binding.inputBillingEmail.text.toString()
@@ -129,6 +127,27 @@ class EditProfileFragment : Fragment() {
 
                 viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
                 viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId))
+
+                binding.rotateProgress.visibility= View.VISIBLE
+
+                viewModel.fieldsChecker(convertIntoNumeric(userServerId), phone, firstname, lastname, country, county)
+
+                viewModel.updateServerDetails.observe(viewLifecycleOwner){ response->
+                    when(response){
+                        is NetworkResult.Loading->{
+                            binding.rotateProgress.visibility= View.VISIBLE
+                        }
+                        is NetworkResult.Success->{
+                            binding.rotateProgress.visibility= View.GONE
+                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+
+                        }
+                        is NetworkResult.Error->{
+                            //binding.rotateProgress.visibility= View.GONE
+                            //Toast.makeText(requireContext(), "Unable to upload user data", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
 
             ivProfileImageP.setOnClickListener{
@@ -176,19 +195,33 @@ class EditProfileFragment : Fragment() {
             viewModel.authEventsChannel.collect{ events->
                 when(events){
                     is AuthEvents.Message->{
+                        binding.rotateProgress.visibility= View.GONE
                         Toast.makeText(requireActivity(), events.message, Toast.LENGTH_SHORT).show()
-                        binding.apply {
-                            rotateProgress.isInvisible= true
-                        }
+
                     }
                     is AuthEvents.Error->{
                         Toast.makeText(requireActivity(), events.message, Toast.LENGTH_SHORT).show()
-                        binding.apply {
-                            rotateProgress.isInvisible= true
-                        }
-                    }
-                    else -> {
 
+                    }
+                    is AuthEvents.ErrorCode->{
+                        if (events.code==1){
+                            binding.apply {
+                                rotateProgress.isInvisible= true
+                                inputBillingFirstName.error= "Firstname cannot be empty"
+                            }
+                        }
+                        if (events.code ==2){
+                            binding.apply {
+                                rotateProgress.isInvisible= true
+                                inputBillingLastName.error= "Lastname cannot be empty"
+                            }
+                        }
+                        if(events.code==3){
+                            binding.apply {
+                                rotateProgress.isInvisible= true
+                                inputBillingPhone.error= "Phone cannot be empty"
+                            }
+                        }
                     }
                 }
             }
@@ -211,7 +244,7 @@ class EditProfileFragment : Fragment() {
             val fileUri= data!!.data
             profileUri = fileUri
 
-            //Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
+            Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
 
         } else if(resultCode == ImagePicker.RESULT_ERROR){
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()

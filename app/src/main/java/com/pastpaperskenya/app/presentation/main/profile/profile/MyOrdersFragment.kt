@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.sealed.Resource
@@ -20,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val ARG_PARAM1 = "param1"
 
 @AndroidEntryPoint
-class MyOrdersFragment : Fragment(),
+class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
     MyOrdersAdapter.OrderClickListener {
 
     private var _binding: FragmentMyOrdersBinding? = null
@@ -28,6 +29,7 @@ class MyOrdersFragment : Fragment(),
 
     private val viewmodel: MyOrdersViewModel by viewModels()
     private lateinit var adapter: MyOrdersAdapter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private var param1: String? = null
 
@@ -43,7 +45,9 @@ class MyOrdersFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View {
 
-        _binding= FragmentMyOrdersBinding.inflate(inflater, container, false)
+        _binding = FragmentMyOrdersBinding.inflate(inflater, container, false)
+
+
 
         return binding.root
     }
@@ -57,42 +61,53 @@ class MyOrdersFragment : Fragment(),
                 }
             }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter= MyOrdersAdapter(this)
-        val linearLayoutManager= LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.myOrdersRecycler.layoutManager= linearLayoutManager
-        binding.myOrdersRecycler.adapter= adapter
+        swipeRefreshLayout= view.findViewById<SwipeRefreshLayout>(R.id.parent_view)
 
-        if(NetworkChangeReceiver.isNetworkConnected()){
-            viewmodel.response.observe(viewLifecycleOwner){
-                when(it.status){
-                    Resource.Status.LOADING->{
-                        binding.pbLoading.visibility= View.VISIBLE
-                    }
-                    Resource.Status.SUCCESS->{
-                        binding.myOrdersRecycler.visibility= View.VISIBLE
-                        binding.pbLoading.visibility= View.GONE
-                        if (!it.data.isNullOrEmpty()) adapter.submitList(it.data) else binding.pbLoading.visibility= View.VISIBLE
+        adapter = MyOrdersAdapter(this)
+        val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.myOrdersRecycler.layoutManager = linearLayoutManager
+        binding.myOrdersRecycler.adapter = adapter
 
-                    }
-                    Resource.Status.ERROR->{
-                        binding.pbLoading.visibility= View.GONE
-                        toast(it.message.toString())
+        swipeRefreshLayout.setOnRefreshListener {
+            setupobserver()
+        }
+        setupobserver()
+    }
+
+    private fun setupobserver(){
+        viewmodel.response.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Resource.Status.LOADING -> {
+                    binding.pbLoading.visibility = View.VISIBLE
+                }
+                Resource.Status.SUCCESS -> {
+                    binding.myOrdersRecycler.visibility = View.VISIBLE
+                    binding.pbLoading.visibility = View.GONE
+                    if (!it.data.isNullOrEmpty()) adapter.submitList(it.data) else binding.pbLoading.visibility =
+                        View.VISIBLE
+
+                    swipeRefreshLayout.setOnRefreshListener {
+                        swipeRefreshLayout.isRefreshing= false
                     }
                 }
+                Resource.Status.ERROR -> {
+                    binding.pbLoading.visibility = View.GONE
+                    toast(it.message.toString())
+                }
             }
-        }else{
-            binding.pbLoading.visibility= View.GONE
-            binding.myOrdersRecycler.visibility= View.GONE
-            binding.emptyListLayout.visibility= View.VISIBLE
         }
     }
 
     override fun onClick(position: Int, id: Int) {
-        val bundle= bundleOf("id" to id)
-        findNavController().navigate(R.id.action_myOrdersFragment_to_myOrdersDetailsFragment, bundle)
+        val bundle = bundleOf("id" to id)
+        findNavController().navigate(
+            R.id.action_myOrdersFragment_to_myOrdersDetailsFragment,
+            bundle
+        )
     }
 
 }

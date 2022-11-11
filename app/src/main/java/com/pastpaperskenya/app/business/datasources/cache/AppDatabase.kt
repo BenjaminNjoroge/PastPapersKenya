@@ -3,7 +3,7 @@ package com.pastpaperskenya.app.business.datasources.cache
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.pastpaperskenya.app.business.model.auth.UserDetails
+import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.HomeCategory

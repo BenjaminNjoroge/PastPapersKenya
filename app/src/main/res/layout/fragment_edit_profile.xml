@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".presentation.main.MainActivity">
 
+    <ProgressBar
+        android:id="@+id/rotate_progress"
+        android:layout_width="@dimen/size_80dp"
+        android:layout_height="@dimen/size_80dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:progress_color="@color/colorProgress" />
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/userHeadline"
         android:layout_width="match_parent"
@@ -26,15 +35,18 @@
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleTextAppearance="@style/TransparentText">
 
-            <toan.android.floatingactionmenu.FloatingActionsMenu
+            <com.github.siyamed.shapeimageview.CircularImageView
                 android:id="@+id/ivProfileImageP"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="bottom"
-                app:fab_menuIcon="@drawable/ic_baseline_person_24"
                 android:scaleType="fitXY"
-                android:layout_marginBottom="@dimen/size_10dp"/>
+                app:siBorderWidth="6dp"
+                app:siBorderColor="@color/danger"
+                android:background="@drawable/circle_profile"
+                android:layout_marginBottom="@dimen/size_10dp"
+                android:src="@drawable/ic_baseline_person_24"/>
 
             <ImageView
                 android:id="@+id/background_profile"
@@ -86,10 +98,12 @@
         android:layout_marginBottom="@dimen/size_50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -136,13 +150,6 @@
                 android:layout_marginEnd="@dimen/size_15dp"
                 android:orientation="vertical">
 
-                <ProgressBar
-                    android:id="@+id/rotate_progress"
-                    android:layout_width="@dimen/size_50dp"
-                    android:layout_height="@dimen/size_50dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    app:progress_color="@color/colorProgress" />
 
                 <com.pastpaperskenya.app.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"

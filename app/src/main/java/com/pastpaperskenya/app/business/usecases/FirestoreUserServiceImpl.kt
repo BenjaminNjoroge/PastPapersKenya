@@ -2,9 +2,7 @@ package com.pastpaperskenya.app.business.usecases
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.pastpaperskenya.app.business.model.auth.UserDetails
-import com.pastpaperskenya.app.business.model.lipanampesa.DatabaseKeys
+import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.util.Constants
 import kotlinx.coroutines.tasks.await
 

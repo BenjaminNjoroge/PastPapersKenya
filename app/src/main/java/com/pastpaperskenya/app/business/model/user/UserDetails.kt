@@ -1,13 +1,7 @@
-package com.pastpaperskenya.app.business.model.auth
+package com.pastpaperskenya.app.business.model.user
 
-import android.os.Parcelable
-import android.util.Log
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.firestore.DocumentSnapshot
-import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "users")
 data class UserDetails(

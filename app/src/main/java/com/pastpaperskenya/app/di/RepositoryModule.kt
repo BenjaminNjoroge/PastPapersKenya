@@ -13,6 +13,8 @@ import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAut
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
 import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
+import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
+import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
 import com.pastpaperskenya.app.business.usecases.LocalUserService
@@ -34,8 +36,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesAuthRepository(authenticator: BaseAuthenticator, retrofitService: RetrofitService): FirebaseRepository{
-        return FirebaseRepositoryImpl(authenticator, retrofitService)
+    fun providesAuthRepository(authenticator: BaseAuthenticator): FirebaseRepository{
+        return FirebaseRepositoryImpl(authenticator)
+    }
+
+    @Provides
+    @Singleton
+    fun providesServerCrud(retrofitService: RetrofitService): ServerCrudRepository{
+        return ServerCrudRepositoryImpl(retrofitService)
     }
 
     @Provides
@@ -50,8 +58,9 @@ object RepositoryModule {
          ProfileRepositoryImpl(localUserService)
 
 
-    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService): EditProfileRepository =
-        EditProfileRepositoryImpl(localUserService, firestoreUserService)
+    @Provides
+    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService, remoteDataSource: RemoteDataSource): EditProfileRepository =
+        EditProfileRepositoryImpl(localUserService, firestoreUserService, remoteDataSource)
 
 
     @Provides

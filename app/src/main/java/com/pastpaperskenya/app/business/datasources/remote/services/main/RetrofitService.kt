@@ -3,16 +3,13 @@ package com.pastpaperskenya.app.business.datasources.remote.services.main
 import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
-import com.pastpaperskenya.app.business.model.auth.Customer
+import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
-import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
-import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.util.Constants.*
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -28,11 +25,19 @@ interface RetrofitService {
         @Field ("password") password: String
     ): Response<Customer>
 
+    @FormUrlEncoded
+    @PUT(API_CUSTOMER)
+    suspend fun updateUser(
+        @Path ("id") id: Int,
+        @Field("first_name") firstname: String,
+        @Field("last_name") lastname: String
+
+    ): Response<Customer>
 
     @GET(API_CUSTOMER)
     suspend fun getUser(
         @Query ("email") email: String
-    ) : Response<List<Customer>>
+    ) : Response<Customer>
 
 
     @GET(API_PRODUCT_CATEGORIES)
@@ -102,7 +107,5 @@ interface RetrofitService {
         @Field("order_id") order_id: String,
         @Field("accesstoken") accesstoken: String
     )
-
-
 
 }

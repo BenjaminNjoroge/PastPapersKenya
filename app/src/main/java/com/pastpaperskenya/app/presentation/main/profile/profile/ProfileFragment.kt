@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -29,7 +30,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseUser: String
 
-
+    private lateinit var profileImage: CircularImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        profileImage= view.findViewById(R.id.ivProfileImageP)
+
+
+
         clickListeners()
 
         binding.viewpager.adapter= PagerAdapter(this)
@@ -132,8 +138,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()

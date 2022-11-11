@@ -1,9 +1,7 @@
 package com.pastpaperskenya.app.business.usecases
 
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
-import com.pastpaperskenya.app.business.model.auth.UserDetails
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import com.pastpaperskenya.app.business.model.user.UserDetails
 import javax.inject.Inject
 
 class LocalUserServiceImpl @Inject constructor(

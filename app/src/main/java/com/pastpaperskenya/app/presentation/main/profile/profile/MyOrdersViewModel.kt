@@ -1,9 +1,6 @@
 package com.pastpaperskenya.app.presentation.main.profile.profile
 
 import androidx.lifecycle.*
-import com.google.firebase.auth.FirebaseAuth
-import com.pastpaperskenya.app.business.model.auth.UserDetails
-import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
@@ -23,7 +20,6 @@ class MyOrdersViewModel @Inject constructor(
     private var _id= MutableLiveData<Int>()
 
 
-
     private var _category=
         _id.switchMap {
             repository.getMyOrders(it)
@@ -32,7 +28,7 @@ class MyOrdersViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-           // _id = convertIntoNumeric(getUserId()!!)
+            _id.value = convertIntoNumeric(getUserId()!!)
         }
     }
 

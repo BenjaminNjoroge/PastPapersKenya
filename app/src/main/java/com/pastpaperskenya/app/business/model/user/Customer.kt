@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.model.auth
+package com.pastpaperskenya.app.business.model.user
 
 import com.google.gson.annotations.SerializedName
 
