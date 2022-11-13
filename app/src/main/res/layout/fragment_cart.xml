@@ -10,16 +10,60 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimaryLight">
+        android:background="@color/colorWhite">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_cart_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryLight"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
+        <RelativeLayout
+            android:id="@+id/layout_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            android:layout_margin="30dp">
+
+            <ImageView
+                android:id="@+id/image_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/empty_cart"/>
+
+            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                android:id="@+id/text_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/image_empty"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textSize="@dimen/text_24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Your cart is empty"/>
+
+            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                android:id="@+id/text_empty_hints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/text_empty"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:textColor="@color/gray"
+                android:text="@string/empty_cart"/>
+        </RelativeLayout>
     </RelativeLayout>
+
+
 
     <RelativeLayout
         android:id="@+id/cart_checkout_layout"
