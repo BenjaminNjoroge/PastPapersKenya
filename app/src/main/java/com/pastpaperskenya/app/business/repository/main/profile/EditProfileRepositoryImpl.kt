@@ -27,7 +27,7 @@ class EditProfileRepositoryImpl @Inject constructor(
         localUserService.getUserFromDatabase(userId)
 
 
-    override suspend fun updateUserToFirebase(userId: String, firstname: String, lastname: String, phone: String, country: String, county: String) {
+    override suspend fun updateUserToFirebase(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String) {
         firestoreUserService.updateUserDetails(userId, phone, firstname, lastname, country, county)
     }
 

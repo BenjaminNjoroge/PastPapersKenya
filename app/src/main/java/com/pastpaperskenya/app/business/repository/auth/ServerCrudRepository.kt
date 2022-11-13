@@ -7,6 +7,6 @@ interface ServerCrudRepository {
 
     suspend fun createUser(email: String, firstname: String, lastname: String, password: String): Response<Customer>
 
-    suspend fun getUser(email: String): Response<Customer>
+    suspend fun getUser(email: String): Response<List<Customer>>
 
 }

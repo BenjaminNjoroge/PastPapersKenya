@@ -14,7 +14,7 @@ class ServerCrudRepositoryImpl @Inject constructor(
         return retrofitService.createUser(email, firstname, lastname, password)
     }
 
-    override suspend fun getUser(email: String): Response<Customer> {
+    override suspend fun getUser(email: String): Response<List<Customer>> {
         return retrofitService.getUser(email)
     }
 

@@ -27,8 +27,8 @@ class SignInViewModel @Inject constructor
 
     private val TAG = "SignInViewModel"
 
-    private var _userResponse: MutableLiveData<Response<Customer>> = MutableLiveData()
-    val userResponse: LiveData<Response<Customer>> = _userResponse
+    private var _userResponse: MutableLiveData<Response<List<Customer>>> = MutableLiveData()
+    val userResponse: LiveData<Response<List<Customer>>> = _userResponse
 
     private var _firebaseUser = MutableLiveData<FirebaseUser?>()
     val currentUser get() = _firebaseUser

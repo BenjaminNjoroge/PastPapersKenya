@@ -36,7 +36,7 @@ interface RetrofitService {
     @GET(API_CUSTOMER)
     suspend fun getUser(
         @Query ("email") email: String
-    ) : Response<Customer>
+    ) : Response<List<Customer>>
 
 
     @GET(API_PRODUCT_CATEGORIES)

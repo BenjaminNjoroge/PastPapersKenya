@@ -42,7 +42,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-class SignInFragment : Fragment(R.layout.fragment_sign_in) {
+class SignInFragment : Fragment() {
 
     private val TAG = "SignInFragment"
 
