@@ -1,7 +1,8 @@
 package com.pastpaperskenya.app.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
-import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -48,20 +49,19 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
 
-    @Singleton
     @Provides
-    @Named("base")
-    fun provideBaseRetrofit(okHttpClient: OkHttpClient): Retrofit=
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
+    fun provideGson(): Gson = GsonBuilder().create()
 
     @Singleton
     @Provides
-    fun providesPaymentService(@Named("payments") retrofit: Retrofit): PaymentsService =
-        retrofit.create(PaymentsService::class.java)
+    @Named("base")
+    fun provideBaseRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit=
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
+
 
     @Singleton
     @Provides

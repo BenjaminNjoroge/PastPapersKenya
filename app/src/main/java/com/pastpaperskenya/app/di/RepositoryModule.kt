@@ -12,7 +12,6 @@ import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
-import com.pastpaperskenya.app.business.datasources.remote.services.payment.PaymentsService
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
@@ -63,9 +62,6 @@ object RepositoryModule {
         EditProfileRepositoryImpl(localUserService, firestoreUserService, remoteDataSource)
 
 
-    @Provides
-    fun providesPaymentRepository(paymentsService: PaymentsService): PaymentsRepository =
-        PaymentsRepositoryImpl(paymentsService)
 
     @Provides
     fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): RemoteDataSource =

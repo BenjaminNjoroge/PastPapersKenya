@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.pastpaperskenya.app.business.util.sealed.ResourceOne
-import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,41 +27,13 @@ class CheckoutFragment : Fragment() {
 
         _binding= FragmentCheckoutBinding.inflate(inflater, container, false)
 
-        observeLoading()
 
         binding.btnPayMpesaPay.setOnClickListener {
-            payMpesa()
         }
 
         return binding.root
     }
 
 
-    protected fun handleApiError(resource: ResourceOne.Failure<Any>) {
-        if (resource.response.message == "Invalid session-id") {
-        } else {
-            toast(resource.response.message)
-        }
-    }
-    private fun observeLoading() {
-        viewModel.loading.observe(viewLifecycleOwner, { loading ->
-            binding.pbLoading.visibility = if (loading) View.VISIBLE else View.GONE
-        })
-    }
-
-    private fun payMpesa(){
-        phone= binding.etPayMpesaMobilerNumber.text.toString()
-        customerId= "Benamin mbuthia"
-        orderId= "first order"
-        viewModel.payMpesa(1, phone, customerId, orderId).observe(viewLifecycleOwner, { resource->
-            when(resource){
-                is ResourceOne.Success -> {
-                    toast("Request successful")
-                    requireActivity().finish()
-                }
-                is ResourceOne.Failure -> handleApiError(resource)
-            }
-        })
-    }
 
 }

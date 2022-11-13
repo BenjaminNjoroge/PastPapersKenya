@@ -31,7 +31,6 @@ interface RetrofitService {
         @Path ("id") id: Int,
         @Field("first_name") firstname: String,
         @Field("last_name") lastname: String
-
     ): Response<Customer>
 
     @GET(API_CUSTOMER)

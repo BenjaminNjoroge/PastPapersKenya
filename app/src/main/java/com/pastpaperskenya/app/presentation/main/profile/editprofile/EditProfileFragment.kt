@@ -197,6 +197,7 @@ class EditProfileFragment : Fragment() {
                     is AuthEvents.Message->{
                         binding.rotateProgress.visibility= View.GONE
                         Toast.makeText(requireActivity(), events.message, Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
 
                     }
                     is AuthEvents.Error->{
