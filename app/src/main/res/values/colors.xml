@@ -46,7 +46,7 @@
     <color name="status_cancelled">#59FA0606</color>
     <color name="status_refunded">#59C06808</color>
     <color name="status_processing">#5926A203</color>
-    <color name="status_onhold">#59AC8603</color>
+    <color name="status_onhold">#FF9800</color>
     <color name="status_completed">#59040BAF</color>
     <color name="status_failed">#59F50707</color>
 

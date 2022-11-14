@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
 
         <LinearLayout
@@ -26,7 +26,29 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone" />
+            android:visibility="visible">
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/shimmer_my_orders_layout"/>
+
+
+        </LinearLayout>
+
+        <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textSize="@dimen/text_20sp"
+            android:textStyle="normal"
+            android:textColor="@color/gray"
+            android:text="You have no Downloads yet"
+            android:layout_marginBottom="@dimen/size_10dp"
+            android:visibility="visible"/>
 
         <ProgressBar
             android:id="@+id/pbLoading"
