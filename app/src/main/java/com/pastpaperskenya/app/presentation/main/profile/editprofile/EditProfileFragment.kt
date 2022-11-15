@@ -192,7 +192,7 @@ class EditProfileFragment : Fragment() {
 
     private fun listenToChannels(){
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.authEventsChannel.collect{ events->
+            viewModel.events.collect{ events->
                 when(events){
                     is AuthEvents.Message->{
                         binding.rotateProgress.visibility= View.GONE

@@ -6,6 +6,7 @@ import com.pastpaperskenya.app.business.datasources.remote.services.main.Retrofi
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductCategory
+import com.pastpaperskenya.app.business.usecases.CartService
 import com.pastpaperskenya.app.business.util.networkBoundResource
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +17,9 @@ import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class ProductsRepository @Inject constructor(
-    private val database: AppDatabase,
+    private val cartService: CartService,
     private val retrofitService: RetrofitService,
 ) {
-    private val appDao= database.appDao()
 
     fun getProducts(perpage: Int, category:String):Flow<Resource<List<Product>>>{
         return flow {
@@ -31,12 +31,13 @@ class ProductsRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    suspend fun addProductToCart(cart: Cart){
-        appDao.insertToCart(cart)
+
+    suspend fun insertCartItems(cart: Cart){
+        cartService.insertCartItems(cart)
     }
 
-    suspend fun removeProductFromCart(cart: Cart){
-        appDao.deleteFromCart(cart)
+    suspend fun deleteCartItems(productId: Int){
+        cartService.deleteCartItems(productId)
     }
-
+    
 }

@@ -16,6 +16,7 @@ import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
+import com.pastpaperskenya.app.business.usecases.CartService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
 import dagger.Module
 import dagger.Provides
@@ -80,12 +81,12 @@ object RepositoryModule {
         DownloadsRepository(retrofitService)
 
     @Provides
-    fun providesCartRepository(database:AppDatabase): CartRepository=
-        CartRepository(database)
+    fun providesCartRepository(cartService: CartService): CartRepository=
+        CartRepository(cartService)
 
     @Provides
-    fun providesProductsRepository(database: AppDatabase, retrofitService: RetrofitService): ProductsRepository=
-        ProductsRepository(database, retrofitService)
+    fun providesProductsRepository(cartService: CartService, retrofitService: RetrofitService): ProductsRepository=
+        ProductsRepository(cartService, retrofitService)
 
     @Provides
     fun providesMyOrdersRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): MyOrdersRepository=

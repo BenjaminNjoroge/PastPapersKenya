@@ -18,6 +18,7 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
     </fragment>
+
     <fragment
         android:id="@+id/subCategoryFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.subcategory.SubCategoryFragment"
@@ -38,6 +39,7 @@
             app:argType="string"/>
 
     </fragment>
+
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.products.ProductsFragment"
@@ -46,7 +48,7 @@
 
         <action
             android:id="@+id/action_productsFragment_to_cartFragment2"
-            app:destination="@id/cartFragment2" />
+            app:destination="@id/cartFragment" />
         <action
             android:id="@+id/action_productsFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
@@ -58,26 +60,29 @@
             app:argType="string"/>
 
     </fragment>
+
     <fragment
-        android:id="@+id/cartFragment2"
+        android:id="@+id/cartFragment"
         android:name="com.pastpaperskenya.app.presentation.main.cart.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
+
     <fragment
-        android:id="@+id/placeOrderFragment2"
+        android:id="@+id/placeOrderFragment"
         android:name="com.pastpaperskenya.app.presentation.main.cart.placeorder.PlaceOrderFragment"
         android:label="fragment_place_order"
         tools:layout="@layout/fragment_place_order" />
+
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductDetailFragment"
         android:label="ProductDetailFragment" >
         <action
             android:id="@+id/action_productDetailFragment_to_cartFragment2"
-            app:destination="@id/cartFragment2" />
+            app:destination="@id/cartFragment" />
         <action
             android:id="@+id/action_productDetailFragment_to_placeOrderFragment2"
-            app:destination="@id/placeOrderFragment2" />
+            app:destination="@id/placeOrderFragment" />
 
         <argument android:name="id"
             app:argType="integer"/>

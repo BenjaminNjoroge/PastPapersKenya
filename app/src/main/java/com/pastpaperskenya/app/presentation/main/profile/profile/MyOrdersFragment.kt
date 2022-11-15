@@ -7,16 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentMyOrdersBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"
 
@@ -76,6 +79,25 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
             setupobserver()
         }
         setupobserver()
+        registerObserver()
+    }
+
+    private fun registerObserver(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewmodel.events.collect{ events->
+                when(events){
+                    is AuthEvents.Message->{
+                        //nothing
+                    }
+                    is AuthEvents.ErrorCode->{
+                        //nothing
+                    }
+                    is AuthEvents.Error->{
+                        (events.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun setupobserver(){
@@ -86,6 +108,7 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
                 }
                 Resource.Status.SUCCESS -> {
                     binding.myOrdersRecycler.visibility = View.VISIBLE
+                    binding.holderLayout.visibility= View.GONE
                     binding.pbLoading.visibility = View.GONE
                     if (!it.data.isNullOrEmpty()) adapter.submitList(it.data) else binding.pbLoading.visibility =
                         View.VISIBLE
@@ -95,6 +118,7 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
                     }
                 }
                 Resource.Status.ERROR -> {
+                    binding.holderLayout.visibility= View.GONE
                     binding.pbLoading.visibility = View.GONE
                     toast(it.message.toString())
                 }

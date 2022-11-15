@@ -12,10 +12,12 @@ import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.download.Download
+import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
@@ -24,6 +26,7 @@ import com.pastpaperskenya.app.databinding.FragmentDownloadsBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -77,8 +80,27 @@ class DownloadsFragment : Fragment(){
 
         }
 
+        registerObserver()
+
     }
 
+    private fun registerObserver(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.events.collect{ events->
+                when(events){
+                    is AuthEvents.Message->{
+                        //nothing
+                    }
+                    is AuthEvents.ErrorCode->{
+                        //nothing
+                    }
+                    is AuthEvents.Error->{
+                        (events.message)
+                    }
+                }
+            }
+        }
+    }
 
     private fun setupObservers(){
         viewModel.downloads.observe(viewLifecycleOwner){
@@ -88,6 +110,8 @@ class DownloadsFragment : Fragment(){
                 }
                 Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
+                    binding.emptyListLayout.visibility= View.GONE
+
                     downloadDataList= it.data as ArrayList<Download>
                     swipeRefreshLayout.isRefreshing= false
 
@@ -101,6 +125,8 @@ class DownloadsFragment : Fragment(){
                         }
                     }else{
                         binding.pbLoading.visibility= View.VISIBLE
+                        binding.emptyListLayout.visibility= View.GONE
+
                     }
 
                 }

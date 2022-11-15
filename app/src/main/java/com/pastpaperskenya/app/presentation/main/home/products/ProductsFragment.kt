@@ -100,8 +100,8 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
         viewModel.addToCart(cart)
     }
 
-    override fun removeFromCart(cart: Cart) {
-        viewModel.removeFromCart(cart)
+    override fun removeFromCart(productId: Int) {
+        viewModel.removeFromCart(productId)
     }
 
 }

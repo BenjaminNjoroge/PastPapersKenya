@@ -35,13 +35,13 @@ class ProductsViewModel @Inject constructor(
 
     fun addToCart(cart: Cart){
         viewModelScope.launch {
-            repository.addProductToCart(cart)
+            repository.insertCartItems(cart)
         }
     }
 
-    fun removeFromCart(cart: Cart){
+    fun removeFromCart(productId: Int){
         viewModelScope.launch {
-            repository.removeProductFromCart(cart)
+            repository.deleteCartItems(productId)
         }
     }
 }

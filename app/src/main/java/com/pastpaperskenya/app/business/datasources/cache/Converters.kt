@@ -3,6 +3,7 @@ package com.pastpaperskenya.app.business.datasources.cache
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.category.CategoryImage
 import com.pastpaperskenya.app.business.model.download.FileData
 import com.pastpaperskenya.app.business.model.orders.*
@@ -289,6 +290,24 @@ class Converters {
         )
     }
     /* end of order converter*/
+
+    /* start cart */
+
+    @TypeConverter
+    fun toCartJson(value: ArrayList<Cart>): String?{
+        return gson.toJson(
+            value, object : TypeToken<ArrayList<Cart>?>(){}.type
+        )
+    }
+
+    @TypeConverter
+    fun fromCart(value: String?): ArrayList<Cart>?{
+        return gson.fromJson(
+            value, object : TypeToken<ArrayList<Cart>?>(){}.type
+        )
+    }
+
+    /* end cart */
 
 
 }

@@ -26,92 +26,146 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val firebaseRepository: FirebaseRepository,
     private val editProfileRepository: EditProfileRepository,
-    private val datastore:DataStoreRepository,
+    private val datastore: DataStoreRepository,
 ) : ViewModel() {
 
-    private val _loading= MutableLiveData(false)
+    private val _loading = MutableLiveData(false)
     val loading get() = _loading
 
-    private val _userProfile= MutableLiveData<UserDetails>()
-    val userProfile : LiveData<UserDetails> = _userProfile
+    private val _userProfile = MutableLiveData<UserDetails>()
+    val userProfile: LiveData<UserDetails> = _userProfile
 
 
-    private var _firebaseUser= MutableLiveData<FirebaseUser?>()
+    private var _firebaseUser = MutableLiveData<FirebaseUser?>()
     val firebaseUser get() = _firebaseUser
 
-    private var _eventsChannel= Channel<AuthEvents>()
-    val authEventsChannel= _eventsChannel.receiveAsFlow()
+    private var eventsChannel = Channel<AuthEvents>()
+    val events = eventsChannel.receiveAsFlow()
 
-    private var _userServerId= MutableLiveData<String>()
+    private var _userServerId = MutableLiveData<String>()
     val userServerId: LiveData<String> = _userServerId
 
-    private var _updateServerDetails= MutableLiveData<NetworkResult<Customer>>()
+    private var _updateServerDetails = MutableLiveData<NetworkResult<Customer>>()
     val updateServerDetails: LiveData<NetworkResult<Customer>> = _updateServerDetails
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val id= datastore.getValue(Constants.USER_SERVER_ID)
-            getUserDetails(convertIntoNumeric(id!!))
+            val id = datastore.getValue(Constants.USER_SERVER_ID)
+
+            try {
+                getUserDetails(convertIntoNumeric(id!!))
+            } catch (e: Exception) {
+                eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
+            }
         }
     }
 
-    fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname :String, country:String, county: String)= viewModelScope.launch {
-        editProfileRepository.updateUserToFirebase(userId, phone, firstname, lastname, country, county)
+    fun updateFirestoreDetails(
+        userId: String,
+        phone: String,
+        firstname: String,
+        lastname: String,
+        country: String,
+        county: String
+    ) = viewModelScope.launch {
+        editProfileRepository.updateUserToFirebase(
+            userId,
+            phone,
+            firstname,
+            lastname,
+            country,
+            county
+        )
     }
 
-    fun updateLocalDetails(phone: String, firstname: String, lastname :String, country:String, county: String, userServerId:Int)= viewModelScope.launch {
-        editProfileRepository.updateUserToDatabase( phone, firstname, lastname, country, county, userServerId)
+    fun updateLocalDetails(
+        phone: String,
+        firstname: String,
+        lastname: String,
+        country: String,
+        county: String,
+        userServerId: Int
+    ) = viewModelScope.launch {
+        editProfileRepository.updateUserToDatabase(
+            phone,
+            firstname,
+            lastname,
+            country,
+            county,
+            userServerId
+        )
     }
 
 
-    fun fieldsChecker(userServerId: Int, phone: String, firstname: String, lastname: String, country: String, county: String)= viewModelScope.launch{
-        when{
-            firstname.isEmpty()->{
-                _eventsChannel.send(AuthEvents.ErrorCode(1))
+    fun fieldsChecker(
+        userServerId: Int,
+        phone: String,
+        firstname: String,
+        lastname: String,
+        country: String,
+        county: String
+    ) = viewModelScope.launch {
+        when {
+            firstname.isEmpty() -> {
+                eventsChannel.send(AuthEvents.ErrorCode(1))
             }
-            lastname.isEmpty()->{
-                _eventsChannel.send(AuthEvents.ErrorCode(2))
+            lastname.isEmpty() -> {
+                eventsChannel.send(AuthEvents.ErrorCode(2))
             }
-            lastname.isEmpty()->{
-                _eventsChannel.send(AuthEvents.ErrorCode(3))
+            phone.isEmpty() -> {
+                eventsChannel.send(AuthEvents.ErrorCode(3))
             }
 
-            else->{
-               updateServerDetails(userServerId, phone, firstname, lastname, country, county)
+            else -> {
+                updateServerDetails(userServerId, phone, firstname, lastname, country, county)
+            }
         }
     }
-    }
 
-    private suspend fun updateServerDetails(userServerId: Int, phone: String, firstname: String, lastname: String, country: String, county: String)= viewModelScope.launch {
-        editProfileRepository.updateUserToServer(userServerId, firstname, lastname, phone, country, county).collect{
-           _updateServerDetails.value= it
+    private suspend fun updateServerDetails(
+        userServerId: Int,
+        phone: String,
+        firstname: String,
+        lastname: String,
+        country: String,
+        county: String
+    ) = viewModelScope.launch {
+        editProfileRepository.updateUserToServer(
+            userServerId,
+            firstname,
+            lastname,
+            phone,
+            country,
+            county
+        ).collect {
+            _updateServerDetails.value = it
             delay(2000)
-            _eventsChannel.send(AuthEvents.Message("Updated successfully"))
+            eventsChannel.send(AuthEvents.Message("Updated successfully"))
         }
     }
 
-    private suspend fun getUserDetails(userServerId: Int){
-        editProfileRepository.getUserDetails(userServerId)?.collect{
+    private suspend fun getUserDetails(userServerId: Int) {
+        editProfileRepository.getUserDetails(userServerId)?.collect {
             _userProfile.postValue(it)
         }
     }
 
-    fun logout()= viewModelScope.launch {
+    fun logout() = viewModelScope.launch {
         try {
-            val user= firebaseRepository.signOut()
+            val user = firebaseRepository.signOut()
             user?.let {
-                _eventsChannel.send(AuthEvents.Message("logout failure"))
-            }?: _eventsChannel.send(AuthEvents.Message("Logout Success"))
+                eventsChannel.send(AuthEvents.Message("logout failure"))
+            } ?: eventsChannel.send(AuthEvents.Message("Logout Success"))
 
             getCurrentUser()
 
-        } catch (e: Exception){
-            _eventsChannel.send(AuthEvents.Error(e.message.toString()))
+        } catch (e: Exception) {
+            eventsChannel.send(AuthEvents.Error(e.message.toString()))
         }
     }
 
-    private fun getCurrentUser()= viewModelScope.launch {
-        val user= firebaseRepository.getCurrentUser()
+    private fun getCurrentUser() = viewModelScope.launch {
+        val user = firebaseRepository.getCurrentUser()
         _firebaseUser.postValue(user)
     }
 

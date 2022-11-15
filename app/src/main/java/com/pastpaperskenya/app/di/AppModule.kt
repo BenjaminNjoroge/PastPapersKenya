@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
-import com.pastpaperskenya.app.business.usecases.FirestoreUserService
-import com.pastpaperskenya.app.business.usecases.FirestoreUserServiceImpl
-import com.pastpaperskenya.app.business.usecases.LocalUserService
-import com.pastpaperskenya.app.business.usecases.LocalUserServiceImpl
+import com.pastpaperskenya.app.business.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,4 +32,6 @@ object AppModule {
     fun providesFirestoreUserService(): FirestoreUserService= FirestoreUserServiceImpl()
 
 
+    @Provides
+    fun providesCartService(database: AppDatabase): CartService= CartServiceImpl(database)
 }

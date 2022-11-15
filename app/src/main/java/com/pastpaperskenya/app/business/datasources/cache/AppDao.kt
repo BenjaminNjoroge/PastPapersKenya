@@ -30,13 +30,11 @@ interface AppDao {
     @Query("SELECT * FROM product WHERE id=:id")
     fun getProductDetail(id: Int): LiveData<Product>
 
-
-    @Query("SELECT * FROM cart")
+    @Query("SELECT * FROM cart ORDER BY id DESC")
     fun getAllCartItems(): Flow<List<Cart>>
 
-    @Query("SELECT * FROM cart WHERE productId= :productId")
+    @Query("SELECT * FROM cart WHERE product_id= :productId")
     fun getCartProductById(productId: Int): Flow<Cart>
-
 
     @Query("SELECT * FROM orders")
     fun getMyOrdersDetails(): LiveData<Orders>
@@ -74,21 +72,11 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMyOrderDetails(orders: Orders)
 
-    @Query("DELETE FROM cart WHERE productId= :productId")
+    @Query("DELETE FROM cart WHERE product_id= :productId")
     suspend fun deleteCartItem(productId: Int)
 
-    @Query("UPDATE cart SET productId= :productId, totalPrice= :totalPrice")
-    fun updateCart(productId: Int, totalPrice: String)
 
     @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
     suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
-
-    @Delete
-    suspend fun deleteFromCart(cart: Cart)
-
-    @Delete
-    suspend fun deleteAllCartItem(cart: Cart)
-
-
 
 }

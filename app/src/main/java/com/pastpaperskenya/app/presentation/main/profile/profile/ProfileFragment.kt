@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.github.siyamed.shapeimageview.CircularImageView
@@ -16,10 +17,12 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.enums.ProfileTabs
 import com.pastpaperskenya.app.databinding.FragmentProfileBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -137,10 +140,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             binding.tvCounty.text = it.county
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.events.collect{ events->
+                when(events){
+                    is AuthEvents.Message->{
+                        //nothing
+                    }
+                    is AuthEvents.ErrorCode->{
+                        //nothing
+                    }
+                    is AuthEvents.Error->{
+                        (events.message)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding= null
     }
+
 }

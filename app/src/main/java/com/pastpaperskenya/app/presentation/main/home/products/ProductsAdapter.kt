@@ -34,7 +34,7 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
     interface ClickListener{
         fun onClick(id: Int, name: String?)
         fun addToCart(cart: Cart)
-        fun removeFromCart(cart: Cart)
+        fun removeFromCart(productId: Int)
     }
 
     class ProductsViewHolder( private val binding: ItemGridProductListLayoutBinding,
@@ -42,14 +42,12 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
         RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
         private lateinit var product: Product
-        private lateinit var cart: Cart
 
             @SuppressLint("SetTextI18n")
             fun bind(product: Product){
                 this.product= product
-//                this.cart= Cart(null, product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src, product.categories?.get(0)!!.id)
 
-                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
+//                Glide.with(binding.root).load(product.images?.get(0)!!.src).into(binding.productImage)
                 binding.productTitle.text= product.name
 
                 val num1= product.regular_price?.let { it1 -> convertIntoNumeric(it1) }
@@ -70,6 +68,10 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
             binding.productDiscountPercent.setOnClickListener(this)
             binding.productRegularPrice.setOnClickListener(this)
             binding.productSalePrice.setOnClickListener(this)
+
+            binding.checkCart.setOnClickListener {
+                listener.addToCart(Cart(product.id, product.name, product.price, product.sale_price))
+            }
         }
 
         override fun onClick(v: View?) {
