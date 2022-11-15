@@ -72,7 +72,7 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="add_quantity">Add Quantity</string>
     <string name="discount">Discount</string>
-    <string name="buy">Buy</string>
+    <string name="buy">Buy Now</string>
     <string name="product_price">Price</string>
     <string name="subtotal_price">Sub total</string>
     <string name="order_detail">Order Details</string>

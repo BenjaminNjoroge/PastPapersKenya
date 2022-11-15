@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/size_56dp">
 
 
     <RelativeLayout
@@ -21,6 +22,13 @@
             android:background="@color/colorPrimaryLight"
             android:visibility="gone"
             tools:listitem="@layout/item_product_cart_layout"/>
+
+        <ProgressBar
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pbLoading"
+            android:layout_centerInParent="true"/>
 
         <RelativeLayout
             android:id="@+id/layout_empty"
@@ -64,41 +72,44 @@
                 android:textColor="@color/gray"
                 android:text="@string/empty_cart"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cart_checkout_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/size_7dp"
+            android:paddingBottom="@dimen/size_7dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_cart_checkout"
+            android:visibility="visible">
+
+            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                android:id="@+id/cart_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/size_15dp"
+                android:text="@string/text_placeholder"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_17sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cart_checkout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/size_15dp"
+                android:background="@drawable/btn_shopping"
+                android:textStyle="bold"
+                android:text="@string/buy"
+                android:textColor="@color/colorWhite" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 
-
-    <RelativeLayout
-        android:id="@+id/cart_checkout_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/size_7dp"
-        android:paddingBottom="@dimen/size_7dp"
-        android:background="@drawable/bg_cart_checkout"
-        android:visibility="gone">
-
-        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
-            android:id="@+id/cart_total_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/size_15dp"
-            android:text="@string/text_placeholder"
-            android:textColor="@color/colorPrimary2"
-            android:textSize="@dimen/text_16sp"
-            android:textStyle="bold" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cart_checkout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/size_15dp"
-            android:backgroundTint="@color/colorPrimary2"
-            android:text="@string/buy"
-            android:textColor="@color/colorWhite" />
-
-    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

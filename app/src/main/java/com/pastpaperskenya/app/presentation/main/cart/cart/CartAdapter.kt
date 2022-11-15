@@ -14,7 +14,7 @@ class CartAdapter constructor(private val listener: RemoveCartItemClickListener)
     ListAdapter<Cart, CartAdapter.CartViewHolder>(CartViewHolder.CartComparator()) {
 
     interface RemoveCartItemClickListener {
-        fun removeItem(position: Int, cart: Cart?)
+        fun removeItem(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -49,14 +49,14 @@ class CartAdapter constructor(private val listener: RemoveCartItemClickListener)
 
             binding.apply {
                 productTitle.text = cart.productName
-                productSalePrice.text = cart.productPrice
-                productSubtotalPrice.text = cart.productPrice
+                productSalePrice.text = "Ksh "+cart.productPrice
+                productSubtotalPrice.text = "Ksh "+cart.productPrice
                 //Glide.with(binding.root).load(cart.productImage).into(binding.productImage)
             }
         }
 
         override fun onClick(view: View?) {
-            listener.removeItem(absoluteAdapterPosition, cart)
+            listener.removeItem(cart.productId)
         }
 
         class CartComparator : DiffUtil.ItemCallback<Cart>() {

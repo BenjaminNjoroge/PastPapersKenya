@@ -200,11 +200,11 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/remove_product"
-                    android:layout_width="@dimen/size_18dp"
-                    android:layout_height="@dimen/size_18dp"
+                    android:layout_width="@dimen/size_25dp"
+                    android:layout_height="@dimen/size_25dp"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/size_5dp"
-                    android:layout_marginEnd="@dimen/size_5dp"
+                    android:layout_marginEnd="@dimen/size_15dp"
                     android:src="@drawable/ic_delete_cane"
                     android:tint="@color/grayLight" />
 

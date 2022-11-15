@@ -10,6 +10,7 @@ import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -60,7 +61,7 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductDetail(product: Product)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE )
     suspend fun insertToCart(cart: Cart)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -74,7 +75,6 @@ interface AppDao {
 
     @Query("DELETE FROM cart WHERE product_id= :productId")
     suspend fun deleteCartItem(productId: Int)
-
 
     @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
     suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)

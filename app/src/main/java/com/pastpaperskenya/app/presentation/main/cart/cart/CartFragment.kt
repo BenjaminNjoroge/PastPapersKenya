@@ -17,6 +17,7 @@ import com.pastpaperskenya.app.databinding.FragmentCartBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.pastpaperskenya.app.presentation.main.home.products.ProductsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
@@ -46,22 +47,26 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
         binding.productCartRecycler.layoutManager = linearLayoutManager
         binding.productCartRecycler.adapter = adapter
 
-        viewModel.response.observe(viewLifecycleOwner){ items->
+        viewModel.response.observe(viewLifecycleOwner){
+            viewModel.response.observe(viewLifecycleOwner){ items->
 
-            if(!items.isNullOrEmpty()){
-                binding.productCartRecycler.visibility= View.VISIBLE
-                binding.layoutEmpty.visibility= View.GONE
-                adapter.submitList(items)
+                if(!items.isNullOrEmpty()){
+                    binding.productCartRecycler.visibility= View.VISIBLE
+                    binding.cartCheckoutLayout.visibility= View.VISIBLE
+                    binding.layoutEmpty.visibility= View.GONE
+                    binding.pbLoading.visibility= View.GONE
+                    adapter.submitList(items)
 
-            } else {
-                binding.productCartRecycler.visibility= View.GONE
-                binding.layoutEmpty.visibility= View.VISIBLE
+                } else {
+                    binding.productCartRecycler.visibility= View.GONE
+                    binding.layoutEmpty.visibility= View.VISIBLE
 
+                }
             }
         }
     }
 
-    override fun removeItem(position: Int, cart: Cart?) {
+    override fun removeItem(position: Int) {
         viewModel.deleteItem(position)
     }
 

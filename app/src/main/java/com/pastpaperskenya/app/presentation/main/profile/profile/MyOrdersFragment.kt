@@ -93,7 +93,7 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
                         //nothing
                     }
                     is AuthEvents.Error->{
-                        (events.message)
+                        events.message
                     }
                 }
             }
