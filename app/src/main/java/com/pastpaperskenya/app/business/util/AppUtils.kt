@@ -20,12 +20,36 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
 import java.io.IOException
 import java.lang.Integer.parseInt
+
+//fun Fragment.findSafeNavController(): NavController? {
+//    return try {
+//        findNavController()
+//    } catch (e: IllegalStateException) {
+//        try {
+//            findNavControllerWithFragmentManager()
+//        } catch (e: IllegalStateException) {
+//            try {
+//                findNavControllerWithActivity()
+//            } catch (e: IllegalStateException) {
+//                try {
+//                    findNavControllerWithViewPost()
+//                } catch (e: IllegalStateException) {
+//                    null
+//                } finally {
+//                    ErrorLogger.sendError(e)
+//                }
+//            }
+//        }
+//    }
+//}
 
 fun convertIntoNumeric(value: String): Int {
     return try {

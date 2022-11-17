@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
@@ -28,6 +29,8 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
     private val viewModel: CartViewModel by viewModels()
     private lateinit var adapter:CartAdapter
 
+    private var count: Int = 0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,21 +50,39 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
         binding.productCartRecycler.layoutManager = linearLayoutManager
         binding.productCartRecycler.adapter = adapter
 
-        viewModel.response.observe(viewLifecycleOwner){
-            viewModel.response.observe(viewLifecycleOwner){ items->
+        registerObserver()
 
-                if(!items.isNullOrEmpty()){
-                    binding.productCartRecycler.visibility= View.VISIBLE
-                    binding.cartCheckoutLayout.visibility= View.VISIBLE
-                    binding.layoutEmpty.visibility= View.GONE
-                    binding.pbLoading.visibility= View.GONE
-                    adapter.submitList(items)
+        binding.cartCheckout.setOnClickListener {
+            findNavController().navigate(R.id.action_cartFragment_to_placeOrderFragment)
+        }
 
-                } else {
-                    binding.productCartRecycler.visibility= View.GONE
-                    binding.layoutEmpty.visibility= View.VISIBLE
+    }
 
+    private fun registerObserver(){
+        viewModel.response.observe(viewLifecycleOwner){ items->
+
+            if(!items.isNullOrEmpty()){
+                binding.productCartRecycler.visibility= View.VISIBLE
+                binding.cartCheckoutLayout.visibility= View.VISIBLE
+
+
+                for (item in items){
+                    count += Integer.parseInt(item.productPrice.toString())
                 }
+
+                val totalprices= count
+                binding.cartTotalPrice.text= "Total: Ksh $totalprices"
+
+                binding.layoutEmpty.visibility= View.GONE
+                binding.pbLoading.visibility= View.GONE
+                adapter.submitList(items)
+
+            } else {
+                binding.productCartRecycler.visibility= View.GONE
+                binding.layoutEmpty.visibility= View.VISIBLE
+                binding.cartCheckoutLayout.visibility= View.GONE
+
+
             }
         }
     }

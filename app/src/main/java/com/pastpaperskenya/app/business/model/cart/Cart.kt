@@ -11,8 +11,8 @@ data class Cart(
     @ColumnInfo(name = "product_name") var productName: String?,
     @ColumnInfo(name = "product_price") var productPrice: String?,
     @ColumnInfo(name = "total_price") var totalPrice: String?,
-//    val productImage: String?,
-//    val categoryIds: Int
+    @ColumnInfo(name = "product_image") var productImage: String?,
+    @ColumnInfo(name = "column_id") var categoryIds: Int
 ){
     @PrimaryKey(autoGenerate = true) var id= 0
 }

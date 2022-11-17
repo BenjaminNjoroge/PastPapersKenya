@@ -11,20 +11,7 @@
         android:label="Cart"
         tools:layout="@layout/fragment_cart" >
         <action
-            android:id="@+id/action_cartFragment_to_addressFragment"
-            app:destination="@id/addressFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-    </fragment>
-    <fragment
-        android:id="@+id/addressFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.address.AddressFragment"
-        android:label="Address"
-        tools:layout="@layout/fragment_address" >
-        <action
-            android:id="@+id/action_addressFragment_to_placeOrderFragment"
+            android:id="@+id/action_cartFragment_to_placeOrderFragment"
             app:destination="@id/placeOrderFragment" />
     </fragment>
     <fragment

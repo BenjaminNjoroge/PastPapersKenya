@@ -51,7 +51,7 @@ class CartAdapter constructor(private val listener: RemoveCartItemClickListener)
                 productTitle.text = cart.productName
                 productSalePrice.text = "Ksh "+cart.productPrice
                 productSubtotalPrice.text = "Ksh "+cart.productPrice
-                //Glide.with(binding.root).load(cart.productImage).into(binding.productImage)
+                Glide.with(binding.root).load(cart.productImage).into(binding.productImage)
             }
         }
 
