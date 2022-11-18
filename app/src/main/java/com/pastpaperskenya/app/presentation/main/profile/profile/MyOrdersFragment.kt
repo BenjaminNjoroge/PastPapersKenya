@@ -101,26 +101,34 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
     }
 
     private fun setupobserver(){
-        viewmodel.response.observe(viewLifecycleOwner) {
-            when (it.status) {
+        viewmodel.response.observe(viewLifecycleOwner) { items->
+            when (items.status) {
                 Resource.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
                 }
                 Resource.Status.SUCCESS -> {
-                    binding.myOrdersRecycler.visibility = View.VISIBLE
-                    binding.holderLayout.visibility= View.GONE
-                    binding.pbLoading.visibility = View.GONE
-                    if (!it.data.isNullOrEmpty()) adapter.submitList(it.data) else binding.pbLoading.visibility =
-                        View.VISIBLE
+
+                    if(!items.data.isNullOrEmpty()){
+                        binding.myOrdersRecycler.visibility= View.VISIBLE
+                        binding.holderLayout.visibility= View.GONE
+                        binding.pbLoading.visibility= View.GONE
+                        adapter.submitList(items.data)
+                    } else{
+                        binding.myOrdersRecycler.visibility= View.GONE
+                        binding.holderLayout.visibility= View.VISIBLE
+                        binding.pbLoading.visibility= View.VISIBLE
+                    }
+
 
                     swipeRefreshLayout.setOnRefreshListener {
                         swipeRefreshLayout.isRefreshing= false
                     }
                 }
                 Resource.Status.ERROR -> {
-                    binding.holderLayout.visibility= View.GONE
+                    binding.myOrdersRecycler.visibility= View.GONE
                     binding.pbLoading.visibility = View.GONE
-                    toast(it.message.toString())
+                    binding.holderLayout.visibility= View.VISIBLE
+                    toast(items.message.toString())
                 }
             }
         }

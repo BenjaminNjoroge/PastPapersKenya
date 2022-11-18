@@ -94,6 +94,8 @@
     <string name="salePrice">Sale Price</string>
     <string name="payment_title_card">Card</string>
     <string name="empty_cart">You have no items in your shopping cart.\n Lets go buy something!</string>
+    <string name="price">Price</string>
+    <string name="pay_amount_text">Pay Amount</string>
 
     <string-array name="counties">
         <item>Mombasa</item>

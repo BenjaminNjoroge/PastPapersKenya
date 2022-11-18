@@ -1,16 +1,14 @@
-package com.pastpaperskenya.app.presentation.main.profile.editprofile
+package com.pastpaperskenya.app.presentation.main.cart.useraddress
 
-import androidx.lifecycle.*
-import com.google.firebase.auth.FirebaseUser
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.EditProfileRepository
-import com.pastpaperskenya.app.business.usecases.FirestoreUserService
-import com.pastpaperskenya.app.business.usecases.LocalUserService
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
@@ -23,30 +21,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class EditProfileViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository,
+class UserAddressViewModel @Inject constructor(
     private val editProfileRepository: EditProfileRepository,
-    private val datastore: DataStoreRepository,
-) : ViewModel() {
-
-    private val _loading = MutableLiveData(false)
-    val loading get() = _loading
+    private val datastore: DataStoreRepository
+): ViewModel() {
 
     private val _userProfile = MutableLiveData<UserDetails>()
     val userProfile: LiveData<UserDetails> = _userProfile
-
-
-    private var _firebaseUser = MutableLiveData<FirebaseUser?>()
-    val firebaseUser get() = _firebaseUser
-
-    private var eventsChannel = Channel<AuthEvents>()
-    val events = eventsChannel.receiveAsFlow()
 
     private var _userServerId = MutableLiveData<String>()
     val userServerId: LiveData<String> = _userServerId
 
     private var _updateServerDetails = MutableLiveData<NetworkResult<Customer>>()
     val updateServerDetails: LiveData<NetworkResult<Customer>> = _updateServerDetails
+
+    private var eventsChannel = Channel<AuthEvents>()
+    val events = eventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -59,6 +49,7 @@ class EditProfileViewModel @Inject constructor(
             }
         }
     }
+
 
     fun updateFirestoreDetails(
         userId: String,
@@ -150,25 +141,4 @@ class EditProfileViewModel @Inject constructor(
             _userProfile.postValue(it)
         }
     }
-
-    fun logout() = viewModelScope.launch {
-        try {
-            val user = firebaseRepository.signOut()
-            user?.let {
-                eventsChannel.send(AuthEvents.Message("logout failure"))
-            } ?: eventsChannel.send(AuthEvents.Message("Logout Success"))
-
-            getCurrentUser()
-
-        } catch (e: Exception) {
-            eventsChannel.send(AuthEvents.Error(e.message.toString()))
-        }
-    }
-
-    private fun getCurrentUser() = viewModelScope.launch {
-        val user = firebaseRepository.getCurrentUser()
-        _firebaseUser.postValue(user)
-    }
-
-
 }

@@ -12,6 +12,10 @@
 
     <style name="AppTheme.InputField" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
+    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 
     <!-- Base application theme. -->
 

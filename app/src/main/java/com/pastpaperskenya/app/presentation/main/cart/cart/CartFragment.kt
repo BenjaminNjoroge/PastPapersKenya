@@ -70,6 +70,7 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
                     count += Integer.parseInt(item.productPrice.toString())
                 }
 
+
                 val totalprices= count
                 binding.cartTotalPrice.text= "Total: Ksh $totalprices"
 
@@ -81,8 +82,6 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
                 binding.productCartRecycler.visibility= View.GONE
                 binding.layoutEmpty.visibility= View.VISIBLE
                 binding.cartCheckoutLayout.visibility= View.GONE
-
-
             }
         }
     }

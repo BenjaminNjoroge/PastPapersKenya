@@ -16,7 +16,20 @@
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.placeorder.PlaceOrderFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.cart.checkout.CheckoutFragment"
         android:label="Place Order"
-        tools:layout="@layout/fragment_place_order" />
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_placeOrderFragment_to_userAddressFragment"
+            app:destination="@id/userAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userAddressFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.cart.useraddress.UserAddressFragment"
+        android:label="UserAddress"
+        tools:layout="@layout/fragment_user_address">
+        <action
+            android:id="@+id/action_userAddressFragment_to_placeOrderFragment"
+            app:destination="@id/placeOrderFragment" />
+    </fragment>
 </navigation>

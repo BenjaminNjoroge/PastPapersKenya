@@ -33,7 +33,6 @@ class CartViewModel @Inject constructor(private val repository: CartRepository):
 
     fun deleteItem(productId: Int)= viewModelScope.launch {
             repository.deleteItems(productId)
-
     }
 
 }

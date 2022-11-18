@@ -31,7 +31,7 @@ class MyOrdersAdapter(private val listener: OrderClickListener) :
 
 
     class MyOrdersViewHolder(private val binding: ItemMyOrdersLayoutBinding,
-    private val listener: OrderClickListener) :
+                             private val listener: OrderClickListener) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         private lateinit var items: Orders
@@ -57,6 +57,7 @@ class MyOrdersAdapter(private val listener: OrderClickListener) :
         }
 
     }
+
     class MyOrdersComparator : DiffUtil.ItemCallback<Orders>() {
 
         override fun areItemsTheSame(oldItem: Orders, newItem: Orders): Boolean =
@@ -65,7 +66,6 @@ class MyOrdersAdapter(private val listener: OrderClickListener) :
 
         override fun areContentsTheSame(oldItem: Orders, newItem: Orders): Boolean =
             oldItem == newItem
-
 
     }
 }
