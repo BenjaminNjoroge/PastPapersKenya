@@ -49,9 +49,8 @@ class CheckoutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
-
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
+
 
         return binding.root
     }
@@ -59,7 +58,21 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         adapter = CheckoutAdapter()
+
+        viewModel.userResponse.observe(viewLifecycleOwner) {
+
+            binding.email.text= it.email
+            Toast.makeText(requireContext(), it.email, Toast.LENGTH_SHORT).show()
+
+        }
+
+        binding.paywithcard.setOnClickListener {
+            Log.d(TAG, "onViewCreated: onclick")
+
+        }
+
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.checkoutProducts.layoutManager = linearLayoutManager
@@ -80,23 +93,6 @@ class CheckoutFragment : Fragment() {
 
         }
 
-        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
-
-            val billingEmail = details.email.toString()
-            val billingFirstname = details.firstname.toString()
-            val billingLastname = details.lastname.toString()
-            val billingPhone = details.phone.toString()
-
-            binding.email.text= details.email
-            Toast.makeText(requireContext(), billingEmail, Toast.LENGTH_SHORT).show()
-
-        }
-
-        binding.paywithcard.setOnClickListener {
-            Log.d(TAG, "onViewCreated: onclick")
-
-
-        }
 
             binding.paywithmpesa.setOnClickListener {
                 showPaymentSheet()

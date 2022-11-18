@@ -35,12 +35,22 @@ class CheckoutViewModel @Inject constructor(
     val events = eventsChannel.receiveAsFlow()
 
     init {
+
+        viewModelScope.launch {
+            try {
+                val user = datastore.getValue(Constants.USER_SERVER_ID)
+                getUserDetails(convertIntoNumeric(user!!))
+            } catch (e: Exception) {
+                eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
+            }
+
+        }
+    }
+
+    init {
         viewModelScope.launch {
             try {
                 getCartItems()
-                val user = datastore.getValue(Constants.USER_SERVER_ID)
-
-                getUserDetails(convertIntoNumeric(user!!))
             } catch (e: Exception) {
                 eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
             }
@@ -55,7 +65,7 @@ class CheckoutViewModel @Inject constructor(
 
     private suspend fun getUserDetails(userId: Int){
         profileRepository.getUserDetails(userId).collect{
-            _userResponse.postValue(it)
+            _userResponse.value= it
         }
     }
 }
