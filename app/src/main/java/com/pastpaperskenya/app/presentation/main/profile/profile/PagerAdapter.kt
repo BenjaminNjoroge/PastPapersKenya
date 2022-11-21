@@ -3,6 +3,8 @@ package com.pastpaperskenya.app.presentation.main.profile.profile
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.pastpaperskenya.app.business.util.enums.ProfileTabs
+import com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersFragment
+import com.pastpaperskenya.app.presentation.main.profile.profile.wishlist.WishListFragment
 
 class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/myOrdersFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.MyOrdersFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersFragment"
         android:label="MyOrdersFragment"
         tools:layout="@layout/fragment_my_orders_details">
         <action
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/myOrdersDetailsFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.MyOrdersDetailsFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersDetailsFragment"
         android:label="fragment_my_orders_details"
         tools:layout="@layout/fragment_my_orders_details">
 

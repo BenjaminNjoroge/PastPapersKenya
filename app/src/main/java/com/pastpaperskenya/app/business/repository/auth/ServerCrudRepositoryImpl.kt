@@ -1,13 +1,13 @@
 package com.pastpaperskenya.app.business.repository.auth
 
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import retrofit2.Response
 import javax.inject.Inject
 
 class ServerCrudRepositoryImpl @Inject constructor(
-    private val retrofitService: RetrofitService
+    private val retrofitService: RetrofitApiService
 ): ServerCrudRepository{
 
     override suspend fun createUser(email: String, firstname: String, lastname: String, password: String): Response<Customer> {

@@ -1,13 +1,9 @@
 package com.pastpaperskenya.app.business.repository.main.home
 
-import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
-import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
-import com.pastpaperskenya.app.business.model.product.ProductCategory
 import com.pastpaperskenya.app.business.usecases.CartService
-import com.pastpaperskenya.app.business.util.networkBoundResource
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,13 +14,13 @@ import javax.inject.Inject
 
 class ProductsRepository @Inject constructor(
     private val cartService: CartService,
-    private val retrofitService: RetrofitService,
+    private val retrofitApiService: RetrofitApiService,
 ) {
 
     fun getProducts(perpage: Int, category:String):Flow<Resource<List<Product>>>{
         return flow {
             emit(Resource.loading())
-            val response= retrofitService.getProductsList(perpage, category)
+            val response= retrofitApiService.getProductsList(perpage, category)
             emit(Resource.success(response))
         }.catch { e->
             emit(Resource.error(e.message ?: "Unkwown error"))

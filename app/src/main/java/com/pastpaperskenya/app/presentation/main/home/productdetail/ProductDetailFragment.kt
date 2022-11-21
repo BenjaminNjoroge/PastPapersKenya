@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.flutterwave.raveandroid.RaveUiManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
@@ -35,6 +36,11 @@ class ProductDetailFragment : Fragment() {
     private lateinit var paymentMethod: String
     private lateinit var paymentTitle: String
     private lateinit var currentDateandTime: String
+
+    private lateinit var billingPhone:String
+    private lateinit var billingLastname:String
+    private lateinit var billingFirstname: String
+    private lateinit var billingEmail: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,34 +71,17 @@ class ProductDetailFragment : Fragment() {
                 findNavController().popBackStack()
             }
 
-            binding.paywithcard.setOnClickListener {
-                paymentMethod = Constants.PAYMENT_METHOD_CARD;
-                paymentTitle = getString(R.string.payment_title_card);
-
-                val txRef = currentDateandTime;
-
-//                RaveUiManager(this).setAmount(Double.parseDouble(netTotalAmount))
-//                    .setCurrency("KES")
-//                    .setCountry("KE")
-//                    .setEmail(billingEmail)
-//                    .setfName(billingFirstName)
-//                    .setlName(billingLastName)
-//                    .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
-//                    .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
-//                    .setTxRef(txRef)
-//                    .setPhoneNumber(billingPhone, false)
-//                    .acceptCardPayments(true)
-//                    .allowSaveCardFeature(true)
-//                    .onStagingEnv(false)
-//                    .isPreAuth(false)
-//                    .shouldDisplayFee(false)
-//                    .showStagingLabel(false)
-//                    .initialize();
-            }
         }
     }
 
     private fun setupObservers(){
+
+        viewModel.userDetails.observe(viewLifecycleOwner){
+            billingEmail= it.email.toString()
+            billingFirstname= it.firstname.toString()
+            billingLastname= it.lastname.toString()
+            billingPhone= it.phone.toString()
+        }
 
         viewModel.response.observe(viewLifecycleOwner){
             when(it.status){
@@ -111,11 +100,20 @@ class ProductDetailFragment : Fragment() {
                 }
             }
         }
+
     }
 
 
 
     private fun bindDetails(product: Product?){
+
+        val productId= product?.id
+        val productName= product?.name
+        val productRegularPrice= product?.regular_price
+        val productPrice= product?.sale_price
+        val productImage= product?.images?.get(0)?.src
+        val categoryIds= product?.categories?.get(0)?.id
+
         binding.productTitle.text= product?.name
 
         binding.productShortDescription.text= product?.description
@@ -137,6 +135,40 @@ class ProductDetailFragment : Fragment() {
         binding.productReviewCount.text= product?.rating_count.toString()
 
         Glide.with(binding.root).load(product?.images?.get(0)?.src).into(binding.productImageSlider)
+
+        binding.paywithcard.setOnClickListener {
+            paymentMethod = Constants.PAYMENT_METHOD_CARD;
+            paymentTitle = getString(R.string.payment_title_card);
+
+            val txRef = currentDateandTime;
+
+            if (num2 != null) {
+                RaveUiManager(requireParentFragment()).setAmount(num2.toDouble())
+                    .setCurrency("KES")
+                    .setCountry("KE")
+                    .setEmail(billingEmail)
+                    .setfName(billingFirstname)
+                    .setlName(billingLastname)
+                    .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
+                    .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
+                    //.setTxRef(txRef)
+                    .setPhoneNumber(billingPhone, false)
+                    .acceptCardPayments(true)
+                    .allowSaveCardFeature(false)
+                    .onStagingEnv(false)
+                    .isPreAuth(false)
+                    .shouldDisplayFee(true)
+                    .showStagingLabel(false)
+                    .initialize()
+            }
+        }
+
+        binding.productFavourite.setOnClickListener {
+            viewModel.addToWishlist(WishList(productId!!, productName, productRegularPrice, productPrice, productImage,
+                categoryIds!!
+            ))
+        }
+
     }
 
     override fun onResume() {

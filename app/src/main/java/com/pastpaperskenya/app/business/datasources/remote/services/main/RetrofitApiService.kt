@@ -13,7 +13,7 @@ import com.pastpaperskenya.app.business.util.Constants.*
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitService {
+interface RetrofitApiService {
 
     //user
     @FormUrlEncoded
@@ -107,4 +107,10 @@ interface RetrofitService {
         @Field("accesstoken") accesstoken: String
     )
 
+    @POST()
+    @FormUrlEncoded
+    suspend fun createOrderNote(
+//        @Path("id") id: Int,
+//        @FieldMap()
+    )
 }

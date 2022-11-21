@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.profile.profile
+package com.pastpaperskenya.app.presentation.main.profile.profile.myorders
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,12 +10,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentMyOrdersBinding

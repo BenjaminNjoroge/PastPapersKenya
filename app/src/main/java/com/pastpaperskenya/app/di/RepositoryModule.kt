@@ -11,13 +11,15 @@ import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepos
 import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
+import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
 import com.pastpaperskenya.app.business.usecases.CartService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
+import com.pastpaperskenya.app.business.usecases.WishlistService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,8 +44,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesServerCrud(retrofitService: RetrofitService): ServerCrudRepository{
-        return ServerCrudRepositoryImpl(retrofitService)
+    fun providesServerCrud(retrofitApiService: RetrofitApiService): ServerCrudRepository{
+        return ServerCrudRepositoryImpl(retrofitApiService)
     }
 
     @Provides
@@ -64,8 +66,8 @@ object RepositoryModule {
 
 
     @Provides
-    fun providesCategoryRemoteDataSource(retrofitService: RetrofitService): RemoteDataSource =
-        RemoteDataSource(retrofitService)
+    fun providesCategoryRemoteDataSource(retrofitApiService: RetrofitApiService): RemoteDataSource =
+        RemoteDataSource(retrofitApiService)
 
     @Provides
     fun providesHomeCategoryRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): HomeRepository =
@@ -76,16 +78,20 @@ object RepositoryModule {
         SubCategoryRepository(remoteDataSource, database)
 
     @Provides
-    fun providesDownloadsRepository(retrofitService: RetrofitService): DownloadsRepository =
-        DownloadsRepository(retrofitService)
+    fun providesDownloadsRepository(retrofitApiService: RetrofitApiService): DownloadsRepository =
+        DownloadsRepository(retrofitApiService)
 
     @Provides
     fun providesCartRepository(cartService: CartService): CartRepository=
         CartRepository(cartService)
 
     @Provides
-    fun providesProductsRepository(cartService: CartService, retrofitService: RetrofitService): ProductsRepository=
-        ProductsRepository(cartService, retrofitService)
+    fun providesWishlistRepository(wishlistService: WishlistService): WishlistRepository=
+        WishlistRepository(wishlistService)
+
+    @Provides
+    fun providesProductsRepository(cartService: CartService, retrofitApiService: RetrofitApiService): ProductsRepository=
+        ProductsRepository(cartService, retrofitApiService)
 
     @Provides
     fun providesMyOrdersRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): MyOrdersRepository=

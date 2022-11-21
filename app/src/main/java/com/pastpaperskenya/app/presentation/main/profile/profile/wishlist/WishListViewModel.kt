@@ -1,46 +1,45 @@
-package com.pastpaperskenya.app.presentation.main.cart.cart
+package com.pastpaperskenya.app.presentation.main.profile.profile.wishlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.security.interfaces.RSAKey
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val repository: CartRepository): ViewModel() {
+class WishListViewModel @Inject constructor(
+    private val wishlistRepository: WishlistRepository): ViewModel() {
 
-    private var _response= MutableLiveData<List<Cart>>()
-    val response: LiveData<List<Cart>> get() = _response
+
+    private var _response= MutableLiveData<List<WishList>>()
+    val response: LiveData<List<WishList>> get() = _response
 
     private var eventsChannel = Channel<AuthEvents>()
     val events = eventsChannel.receiveAsFlow()
 
     init {
         viewModelScope.launch {
-            getCartItems()
+            getWishlistItems()
         }
     }
 
 
-    private suspend fun getCartItems(){
-        repository.getCartItems().collect{
-          _response.postValue(it)
+    private suspend fun getWishlistItems(){
+        wishlistRepository.getWishlistItems().collect{
+            _response.postValue(it)
         }
     }
 
     fun deleteItem(productId: Int)= viewModelScope.launch {
-            repository.deleteItems(productId)
+        wishlistRepository.deleteItems(productId)
         eventsChannel.send(AuthEvents.ErrorCode(100))
     }
-
 }

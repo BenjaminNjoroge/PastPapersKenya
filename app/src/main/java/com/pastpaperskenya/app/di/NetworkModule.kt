@@ -2,7 +2,7 @@ package com.pastpaperskenya.app.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -65,8 +65,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitService =
-        retrofit.create(RetrofitService::class.java)
+    fun providesRetrofitService(@Named("base") retrofit: Retrofit): RetrofitApiService =
+        retrofit.create(RetrofitApiService::class.java)
 
 
 

@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.presentation.main.cart.checkout
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.Nullable
-import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,11 +19,8 @@ import com.flutterwave.raveandroid.rave_java_commons.RaveConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
-import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -43,6 +40,15 @@ class CheckoutFragment : Fragment() {
     private lateinit var mBottomSheetDialog: BottomSheetDialog
     private lateinit var mBehavior: BottomSheetBehavior<*>
 
+    private lateinit var billingEmail: String
+    private lateinit var billingFirstname:String
+    private lateinit var billingLastname: String
+    private lateinit var billingPhone: String
+
+    private lateinit var mProgressDialog:ProgressDialog
+
+    private val progressStatus = 120
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,27 +57,18 @@ class CheckoutFragment : Fragment() {
 
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
+        mProgressDialog = ProgressDialog(requireContext());
 
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         adapter = CheckoutAdapter()
-
-        viewModel.userResponse.observe(viewLifecycleOwner) {
-
-            binding.email.text= it.email
-            Toast.makeText(requireContext(), it.email, Toast.LENGTH_SHORT).show()
-
-        }
-
-        binding.paywithcard.setOnClickListener {
-            Log.d(TAG, "onViewCreated: onclick")
-
-        }
 
         val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -93,6 +90,36 @@ class CheckoutFragment : Fragment() {
 
         }
 
+        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
+
+             billingEmail = details.email.toString()
+             billingFirstname = details.firstname.toString()
+             billingLastname = details.lastname.toString()
+             billingPhone = details.phone.toString()
+
+        }
+
+        binding.paywithcard.setOnClickListener {
+            Log.d(TAG, "onViewCreated: onclick")
+            RaveUiManager(requireParentFragment()).setAmount(1.0)
+                .setCurrency("KES")
+                .setCountry("KE")
+                .setEmail(billingEmail)
+                .setfName(billingFirstname)
+                .setlName(billingLastname)
+                .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
+                .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
+                //.setTxRef(txRef)
+                .setPhoneNumber(billingPhone, false)
+                .acceptCardPayments(true)
+                .allowSaveCardFeature(false)
+                .onStagingEnv(false)
+                .isPreAuth(false)
+                .shouldDisplayFee(true)
+                .showStagingLabel(false)
+                .initialize()
+
+        }
 
             binding.paywithmpesa.setOnClickListener {
                 showPaymentSheet()
@@ -104,33 +131,33 @@ class CheckoutFragment : Fragment() {
 
         }
 
-        private fun ravePayWithCard(email: String, phone: String, firstname: String, lastname: String, amount: Double
-        ) {
-            RaveUiManager(requireParentFragment()).setAmount(amount)
-                .setCurrency("KES")
-                .setCountry("KE")
-                .setEmail(email)
-                .setfName(firstname)
-                .setlName(lastname)
-                .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
-                .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
-                //.setTxRef(txRef)
-                .setPhoneNumber(phone, false)
-                .acceptCardPayments(true)
-                .allowSaveCardFeature(false)
-                .onStagingEnv(false)
-                .isPreAuth(false)
-                .shouldDisplayFee(true)
-                .showStagingLabel(false)
-                .initialize()
-        }
 
+    private fun showPaymentProcessingDialog() {
+        mProgressDialog.setMessage("Processing your request")
+        mProgressDialog.setTitle("Please Wait... " + progressStatus.toString() + "sec")
+        mProgressDialog.setIndeterminate(true)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+        mProgressDialog.show()
+//        // Start lengthy operation in a background thread
+//        Thread {
+//            while (progressStatus > 1) {
+//                try {
+//                    // Here I'm making thread sleep to show progress
+//                    Thread.sleep(1000)
+//                    progressStatus -= 1
+//                } catch (e: InterruptedException) {
+//                    e.printStackTrace()
+//                }
+//                // Update the progress bar
+//                handler.post(Runnable { mProgressDialog.setTitle("Please Wait... " + progressStatus.toString() + "sec") })
+//            }
+//            mProgressDialog.dismiss()
+//            progressStatus = timerCount
+//        }.start()
+    }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
-            /*
-             *  We advise you to do a further verification of transaction's details on your server to be
-             *  sure everything checks out before providing service or goods.
-             */
+
             if (requestCode == RaveConstants.RAVE_REQUEST_CODE && data != null) {
                 val message = data.getStringExtra("response")
                 if (resultCode == RavePayActivity.RESULT_SUCCESS) {
@@ -164,20 +191,21 @@ class CheckoutFragment : Fragment() {
             val img_close: ImageView = view.findViewById(R.id.img_close)
             img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
             val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
-            amount_tv.text = "Pay Ksh $netTotalAmount"
+            amount_tv.text = "Pay Ksh$netTotalAmount"
+
             val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
             val payNow_Btn: Button = view.findViewById(R.id.btnPay)
 
-//        if (billingAddress.get(KEY_PHONE) != null) {
-//            phoneNo.setText(billingAddress.get(KEY_PHONE))
-//        }
+        if (!billingPhone.isNullOrEmpty()) {
+            phoneNo.setText(billingPhone)
+        }
             payNow_Btn.setOnClickListener(View.OnClickListener {
                 val mobileNo = phoneNo.text.toString().trim { it <= ' ' }
                 if (mobileNo.isEmpty()) {
                     phoneNo.error = "Enter Phone No"
                     phoneNo.requestFocus()
                 } else if (mobileNo.length < 10) {
-                    phoneNo.error = "Enter valid Phone No"
+                    phoneNo.error = "Phone No too small"
                     phoneNo.requestFocus()
                 } else if (mobileNo.startsWith("0") && mobileNo.length != 10) {
                     phoneNo.error = "Enter valid Phone No"
@@ -197,6 +225,7 @@ class CheckoutFragment : Fragment() {
             mBottomSheetDialog.setCanceledOnTouchOutside(false)
             mBottomSheetDialog.show()
         }
+
 
 
     }

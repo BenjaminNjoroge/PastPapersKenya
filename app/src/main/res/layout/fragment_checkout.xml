@@ -101,6 +101,7 @@
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/text_14sp"
                             android:text="@string/email"
+                            android:visibility="gone"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton

@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.profile.profile
+package com.pastpaperskenya.app.presentation.main.profile.profile.myorders
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentMyOrdersDetailsBinding

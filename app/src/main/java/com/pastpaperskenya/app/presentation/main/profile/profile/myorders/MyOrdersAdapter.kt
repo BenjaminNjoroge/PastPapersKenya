@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.profile.profile
+package com.pastpaperskenya.app.presentation.main.profile.profile.myorders
 
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +31,8 @@ class MyOrdersAdapter(private val listener: OrderClickListener) :
 
 
     class MyOrdersViewHolder(private val binding: ItemMyOrdersLayoutBinding,
-                             private val listener: OrderClickListener) :
+                             private val listener: OrderClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         private lateinit var items: Orders

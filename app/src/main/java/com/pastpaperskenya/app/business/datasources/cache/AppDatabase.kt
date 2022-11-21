@@ -11,6 +11,7 @@ import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.wishlist.WishList
 
 @TypeConverters(Converters::class)
 @Database(
@@ -22,7 +23,8 @@ import com.pastpaperskenya.app.business.model.product.Product
         Product::class,
         Cart::class,
         Orders::class,
-        UserDetails::class
+        UserDetails::class,
+        WishList::class
     ],
     version = 1, exportSchema = false
 )

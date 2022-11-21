@@ -1,10 +1,7 @@
 package com.pastpaperskenya.app.business.repository.auth
 
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
-import retrofit2.Response
 import javax.inject.Inject
 
 class FirebaseRepositoryImpl @Inject constructor(

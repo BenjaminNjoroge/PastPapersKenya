@@ -10,6 +10,7 @@ import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
+import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -33,6 +34,9 @@ interface AppDao {
 
     @Query("SELECT * FROM cart ORDER BY id DESC")
     fun getAllCartItems(): Flow<List<Cart>>
+
+    @Query("SELECT * FROM wishlist ORDER BY id DESC")
+    fun getAllWishlistItems(): Flow<List<WishList>>
 
     @Query("SELECT * FROM cart WHERE product_id= :productId")
     fun getCartProductById(productId: Int): Flow<Cart>
@@ -64,6 +68,9 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE )
     suspend fun insertToCart(cart: Cart)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE )
+    suspend fun insertToWishlist(wishList: WishList)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUserDetails(userDetails: UserDetails):Long
 
@@ -75,6 +82,9 @@ interface AppDao {
 
     @Query("DELETE FROM cart WHERE product_id= :productId")
     suspend fun deleteCartItem(productId: Int)
+
+    @Query("DELETE FROM wishlist WHERE product_id= :productId")
+    suspend fun deleteWishlistItem(productId: Int)
 
     @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
     suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)

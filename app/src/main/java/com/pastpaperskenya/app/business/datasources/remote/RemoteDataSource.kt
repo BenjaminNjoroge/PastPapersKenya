@@ -1,30 +1,30 @@
 package com.pastpaperskenya.app.business.datasources.remote
 
-import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitService
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
-    private val retrofitService: RetrofitService) : BaseDataSource() {
+    private val retrofitApiService: RetrofitApiService) : BaseDataSource() {
 
     suspend fun getRemoteParentCategory(parent:Int, filter: ArrayList<Int>)=
-        getResult { retrofitService.getRemoteHomeCategory(parent, filter) }
+        getResult { retrofitApiService.getRemoteHomeCategory(parent, filter) }
 
     suspend fun getRemoteSliderCategory(parent:Int)=
-        getResult { retrofitService.getRemoteSliderCategory(parent) }
+        getResult { retrofitApiService.getRemoteSliderCategory(parent) }
 
     suspend fun getRemoteSubCategory(parent:Int, perpage:Int)=
-        getResult { retrofitService.getRemoteSubCategory(parent, perpage) }
+        getResult { retrofitApiService.getRemoteSubCategory(parent, perpage) }
 
     suspend fun getProductDetail(id: Int)=
-        getResult { retrofitService.getProductDetail(id)}
+        getResult { retrofitApiService.getProductDetail(id)}
 
     suspend fun getMyOrderDetails( id: Int)=
-        getResult { retrofitService.getMyOrderDetails(id) }
+        getResult { retrofitApiService.getMyOrderDetails(id) }
 
     suspend fun getMyOrders(id:Int)=
-        getResult { retrofitService.getMyOrders(id)}
+        getResult { retrofitApiService.getMyOrders(id)}
 
     suspend fun updateUser(customer: Int, firstname: String, lastname: String,  phone: String, country: String, county: String)=
-          retrofitService.updateUser(customer, firstname, lastname)
+          retrofitApiService.updateUser(customer, firstname, lastname)
 
 }

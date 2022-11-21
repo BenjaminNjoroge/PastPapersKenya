@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.profile.profile
+package com.pastpaperskenya.app.presentation.main.profile.profile.myorders
 
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseAuth
