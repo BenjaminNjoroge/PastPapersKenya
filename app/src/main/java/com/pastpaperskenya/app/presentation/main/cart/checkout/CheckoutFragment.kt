@@ -48,6 +48,7 @@ class CheckoutFragment : Fragment() {
 
     private val progressStatus = 120
 
+    private var netTotalAmount= 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,6 +85,9 @@ class CheckoutFragment : Fragment() {
         viewModel.totalPrice.observe(viewLifecycleOwner){ total->
             binding.productSubtotalPrice.text = "Total Ksh: $total"
             binding.paymentTotalPrice.text = "Total Ksh: $total"
+            if (total != null) {
+                netTotalAmount= total
+            }
         }
 
         viewModel.userResponse.observe(viewLifecycleOwner) { details ->
@@ -187,7 +191,7 @@ class CheckoutFragment : Fragment() {
             val img_close: ImageView = view.findViewById(R.id.img_close)
             img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
             val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
-            //amount_tv.text = "Pay Ksh $netTotalAmount"
+            amount_tv.text = "Pay $netTotalAmount"+"ksh"
 
             val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
             val payNow_Btn: Button = view.findViewById(R.id.btnPay)
