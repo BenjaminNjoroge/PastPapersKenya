@@ -17,6 +17,7 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
  class ProductsAdapter(private val listener: ClickListener) :
      ListAdapter<Product, ProductsAdapter.ProductsViewHolder>(ProductsComparator()) {
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         val binding= ItemGridProductListLayoutBinding.inflate(LayoutInflater.from(parent.context), parent,false)
         return ProductsViewHolder(binding, listener)
@@ -48,7 +49,13 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
                 this.product= product
 
                 if(product.images != null && product.images.size >= 1){
-                    Glide.with(binding.root).load(product.images.get(0)!!.src).into(binding.productImage)
+                    Glide.with(binding.root)
+                        .load(product.images.get(0)!!.src)
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                        .fallback(R.drawable.image_placeholder)
+                        .into(binding.productImage)
+
                 }
                 binding.productTitle.text= product.name
 
@@ -72,7 +79,13 @@ import com.pastpaperskenya.app.databinding.ItemGridProductListLayoutBinding
             binding.productSalePrice.setOnClickListener(this)
 
             binding.checkCart.setOnClickListener {
-                listener.addToCart(Cart(product.id, product.name, product.price, product.sale_price, product.images?.get(0)?.src,
+                val productImage: String
+                if (product.images.isNullOrEmpty()){
+                    productImage= R.drawable.image_placeholder.toString()
+                }else{
+                    productImage= product.images!!.get(0)!!.src!!
+                }
+                listener.addToCart(Cart(product.id, product.name, product.price, product.sale_price, productImage,
                     product.categories?.get(0)?.id!!
                 ))
             }

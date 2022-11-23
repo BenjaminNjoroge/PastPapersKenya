@@ -35,7 +35,6 @@ class CheckoutFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: CheckoutAdapter
-    private var netTotalAmount: Int = 0
 
     private lateinit var mBottomSheetDialog: BottomSheetDialog
     private lateinit var mBehavior: BottomSheetBehavior<*>
@@ -188,7 +187,7 @@ class CheckoutFragment : Fragment() {
             val img_close: ImageView = view.findViewById(R.id.img_close)
             img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
             val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
-            amount_tv.text = "Pay Ksh$netTotalAmount"
+            //amount_tv.text = "Pay Ksh $netTotalAmount"
 
             val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
             val payNow_Btn: Button = view.findViewById(R.id.btnPay)

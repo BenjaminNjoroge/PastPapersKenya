@@ -42,6 +42,8 @@ class ProductDetailFragment : Fragment() {
     private lateinit var billingFirstname: String
     private lateinit var billingEmail: String
 
+    private lateinit var productImage: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,7 +113,11 @@ class ProductDetailFragment : Fragment() {
         val productName= product?.name
         val productRegularPrice= product?.regular_price
         val productPrice= product?.sale_price
-        val productImage= product?.images?.get(0)?.src
+        if (product?.images.isNullOrEmpty()){
+            productImage= R.drawable.image_placeholder.toString()
+        }else{
+            productImage= product?.images!!.get(0)!!.src!!
+        }
         val categoryIds= product?.categories?.get(0)?.id
         val productDescription= product?.description
         val productCount= product?.rating_count
@@ -139,7 +145,11 @@ class ProductDetailFragment : Fragment() {
         binding.productReviewCount.text= product?.rating_count.toString()
 
         if(product?.images != null && product.images.size >= 1){
-            Glide.with(binding.root).load(product.images.get(0)!!.src).into(binding.productImageSlider)
+            Glide.with(binding.root).load(product.images.get(0)!!.src)
+                .placeholder(R.drawable.image_placeholder)
+                .error(R.drawable.image_placeholder)
+                .fallback(R.drawable.image_placeholder)
+                .into(binding.productImageSlider)
         }
 
         binding.paywithcard.setOnClickListener {

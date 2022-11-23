@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.databinding.ItemHomeCategoryLayoutBinding
 
@@ -40,7 +41,11 @@ class HomeAdapter(private val listener: ClickListener) :
             binding.apply {
                 categoryTitle.text = item.name
                 if (item.image?.src != null) {
-                    Glide.with(binding.root).load(item.image.src).into(categoryImage)
+                    Glide.with(binding.root).load(item.image.src)
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                        .fallback(R.drawable.image_placeholder)
+                        .into(categoryImage)
                 }
             }
         }
