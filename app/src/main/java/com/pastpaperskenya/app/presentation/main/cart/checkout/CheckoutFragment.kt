@@ -235,5 +235,4 @@ class CheckoutFragment : Fragment() {
         }
 
 
-
     }

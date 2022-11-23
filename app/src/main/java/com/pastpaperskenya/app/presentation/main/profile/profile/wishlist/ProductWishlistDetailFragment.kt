@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.flutterwave.raveandroid.RaveUiManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.wishlist.WishList
@@ -32,6 +34,9 @@ class ProductWishlistDetailFragment : Fragment() {
     private var _binding: FragmentWishlistProductDetailBinding?= null
     private val binding get() = _binding!!
 
+    private lateinit var mBottomSheetDialog: BottomSheetDialog
+    private lateinit var mBehavior: BottomSheetBehavior<*>
+
     private val args: ProductWishlistDetailFragmentArgs by navArgs()
 
     private lateinit var paymentMethod: String
@@ -42,6 +47,9 @@ class ProductWishlistDetailFragment : Fragment() {
     private lateinit var billingLastname:String
     private lateinit var billingFirstname: String
     private lateinit var billingEmail: String
+
+    private var netTotalAmount= 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,17 +110,6 @@ class ProductWishlistDetailFragment : Fragment() {
 
     private fun bindDetails(product: Product?){
 
-        val productId= product?.id
-        val productName= product?.name
-        val productRegularPrice= product?.regular_price
-        val productPrice= product?.sale_price
-        val productImage= product?.images?.get(0)?.src
-        val categoryIds= product?.categories?.get(0)?.id
-        val productDescription= product?.description
-        val productCount= product?.rating_count
-        val productRating= product?.average_rating
-
-
         binding.productTitle.text= product?.name
 
         binding.productShortDescription.text= product?.description
@@ -162,7 +159,64 @@ class ProductWishlistDetailFragment : Fragment() {
             }
         }
 
+        netTotalAmount= product?.sale_price!!.toInt()
+
+        binding.paywithmpesa.setOnClickListener {
+            showPaymentSheet()
+        }
+
     }
+
+    private fun showPaymentSheet() {
+        mBottomSheetDialog = BottomSheetDialog(requireContext())
+        val view: View = layoutInflater.inflate(
+            R.layout.mpesa_payment_sheet,
+            requireActivity().getWindow().getDecorView().getRootView() as ViewGroup,
+            false
+        )
+        mBottomSheetDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+
+        mBottomSheetDialog.setContentView(view)
+        mBehavior = BottomSheetBehavior.from(view.parent as View)
+
+        val img_close: ImageView = view.findViewById(R.id.img_close)
+        img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
+        val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
+        amount_tv.text = "Pay $netTotalAmount"+"ksh"
+
+        val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
+        val payNow_Btn: Button = view.findViewById(R.id.btnPay)
+
+        if (!billingPhone.isNullOrEmpty()) {
+            phoneNo.setText(billingPhone)
+        }
+        payNow_Btn.setOnClickListener(View.OnClickListener {
+            val mobileNo = phoneNo.text.toString().trim { it <= ' ' }
+            if (mobileNo.isEmpty()) {
+                phoneNo.error = "Enter Phone No"
+                phoneNo.requestFocus()
+            } else if (mobileNo.length < 10) {
+                phoneNo.error = "Phone No too small"
+                phoneNo.requestFocus()
+            } else if (mobileNo.startsWith("0") && mobileNo.length != 10) {
+                phoneNo.error = "Enter valid Phone No"
+                phoneNo.requestFocus()
+            } else if (mobileNo.startsWith("254") && mobileNo.length != 12) {
+                phoneNo.error = "Enter valid Phone No"
+                phoneNo.requestFocus()
+            } else if (!mobileNo.startsWith("0") && !mobileNo.startsWith("254") && mobileNo.length != 9) {
+                phoneNo.error = "Enter valid Phone No"
+                phoneNo.requestFocus()
+            } else {
+                mBottomSheetDialog.dismiss()
+                //generateToken(false, mobileNo)
+            }
+        })
+
+        mBottomSheetDialog.setCanceledOnTouchOutside(false)
+        mBottomSheetDialog.show()
+    }
+
 
     override fun onResume() {
         super.onResume()
