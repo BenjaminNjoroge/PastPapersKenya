@@ -13,10 +13,10 @@
         <action
             android:id="@+id/action_homeFragment_to_subCategoryFragment"
             app:destination="@id/subCategoryFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 
     <fragment
@@ -48,7 +48,11 @@
 
         <action
             android:id="@+id/action_productsFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
         <argument android:name="id"
             app:argType="integer"/>

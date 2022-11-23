@@ -38,8 +38,10 @@ class HomeAdapter(private val listener: ClickListener) :
         fun bind(item: HomeCategory){
             this.homeCategory= item
             binding.apply {
-                categoryTitle.text= item.name
-                Glide.with(binding.root).load(item.image?.src).into(categoryImage)
+                categoryTitle.text = item.name
+                if (item.image?.src != null) {
+                    Glide.with(binding.root).load(item.image.src).into(categoryImage)
+                }
             }
         }
 

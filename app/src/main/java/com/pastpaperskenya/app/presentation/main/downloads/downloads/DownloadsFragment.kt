@@ -134,9 +134,13 @@ class DownloadsFragment : Fragment(){
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
+                    try{
                     downloadDataList= AppPreference.getInstance(context).downloadList as ArrayList<Download>;
                     downloadsAdapter= DownloadAdapter(requireContext(), downloadDataList)
                     setDownloadAdapter()
+                } catch (e: Exception) {
+                    Toast.makeText(context, "$e oppss...there might be a problem with your internet connection", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

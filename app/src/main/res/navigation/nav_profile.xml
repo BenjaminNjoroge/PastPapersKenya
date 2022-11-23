@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_editProfileFragment"
-            app:destination="@id/editProfileFragment" />
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment
@@ -22,10 +26,18 @@
         tools:layout="@layout/fragment_edit_profile" >
         <action
             android:id="@+id/action_editProfileFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment

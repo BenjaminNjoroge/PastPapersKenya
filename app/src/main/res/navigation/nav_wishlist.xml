@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_wish_list">
         <action
             android:id="@+id/action_wishListFragment_to_productWishlistDetailFragment"
-            app:destination="@id/productWishlistDetailFragment" />
+            app:destination="@id/productWishlistDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment

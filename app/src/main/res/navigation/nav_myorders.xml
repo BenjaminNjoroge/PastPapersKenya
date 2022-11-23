@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_my_orders">
         <action
             android:id="@+id/action_myOrdersFragment_to_myOrdersDetailsFragment"
-            app:destination="@id/myOrdersDetailsFragment" />
+            app:destination="@id/myOrdersDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 
     <fragment

@@ -37,10 +37,13 @@ class SubCategoryAdapter(private val listener: ClickListener)
 
         private lateinit var category: SubCategory
 
-        fun bind(item: SubCategory){
-            this.category= item
-            binding.categoryTitle.text= item.name
-            Glide.with(binding.root).load(item.image?.src).into(binding.categoryImage)
+        fun bind(item: SubCategory) {
+            this.category = item
+            binding.categoryTitle.text = item.name
+
+            if (item.image?.src != null) {
+                Glide.with(binding.root).load(item.image.src).into(binding.categoryImage)
+            }
         }
 
         init {

@@ -138,7 +138,9 @@ class ProductDetailFragment : Fragment() {
         binding.productDiscountPercent.text= "OFF $percent"
         binding.productReviewCount.text= product?.rating_count.toString()
 
-        Glide.with(binding.root).load(product?.images?.get(0)?.src).into(binding.productImageSlider)
+        if(product?.images != null && product.images.size >= 1){
+            Glide.with(binding.root).load(product.images.get(0)!!.src).into(binding.productImageSlider)
+        }
 
         binding.paywithcard.setOnClickListener {
             paymentMethod = Constants.PAYMENT_METHOD_CARD;
