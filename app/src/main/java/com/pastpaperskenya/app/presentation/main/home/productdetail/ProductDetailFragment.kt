@@ -51,9 +51,19 @@ class ProductDetailFragment : Fragment() {
 
         _binding= FragmentProductDetailBinding.inflate(inflater, container, false)
 
-        val id= args.id
+        viewModel.userDetails.observe(viewLifecycleOwner){ details->
+            if (details.email.toString().isEmpty() || details.lastname.toString().isEmpty()
+                || details.firstname.toString().isEmpty() || details.phone.toString().isEmpty()){
 
-        viewModel.start(id)
+                
+                findNavController().navigate(R.id.action_productDetailFragment_to_productUserAddressFragment)
+            }
+            else{
+
+                val id= args.id
+                viewModel.start(id)
+            }
+        }
 
         return binding.root
     }

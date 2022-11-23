@@ -57,6 +57,14 @@ class CheckoutFragment : Fragment() {
 
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
+        viewModel.userResponse.observe(viewLifecycleOwner){ details->
+            if (details.email.toString().isEmpty() || details.lastname.toString().isEmpty()
+                || details.firstname.toString().isEmpty() || details.phone.toString().isEmpty()){
+
+                findNavController().navigate(R.id.action_placeOrderFragment_to_userAddressFragment)
+            }
+        }
+
         mProgressDialog = ProgressDialog(requireContext());
 
         return binding.root

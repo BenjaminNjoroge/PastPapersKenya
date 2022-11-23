@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.products.ProductsFragment"
-        android:label="fragment_products"
+        android:label="Products"
         tools:layout="@layout/fragment_products" >
 
         <action
@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductDetailFragment"
-        android:label="ProductDetailFragment"
+        android:label="Products Detail"
         tools:layout="@layout/fragment_product_detail">
 
         <argument android:name="id"
@@ -73,6 +73,18 @@
 
         <argument android:name="title"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_productDetailFragment_to_productUserAddressFragment"
+            app:destination="@id/productUserAddressFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/productUserAddressFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductUserAddressFragment"
+        android:label="UserAddress"
+        tools:layout="@layout/fragment_user_address">
+        <action
+            android:id="@+id/action_productUserAddressFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
     </fragment>
 </navigation>
