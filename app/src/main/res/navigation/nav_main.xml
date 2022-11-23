@@ -7,6 +7,6 @@
     <include app:graph="@navigation/nav_home"/>
     <include app:graph="@navigation/nav_cart"/>
     <include app:graph="@navigation/nav_downloads"/>
-    <include app:graph="@navigation/nav_account"/>
+    <include app:graph="@navigation/nav_profile"/>
 
 </navigation>

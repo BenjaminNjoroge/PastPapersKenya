@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.home.productdetail
+package com.pastpaperskenya.app.presentation.main.profile.profile.wishlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,19 +19,20 @@ import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
+import com.pastpaperskenya.app.databinding.FragmentWishlistProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 @AndroidEntryPoint
-class ProductDetailFragment : Fragment() {
+class ProductWishlistDetailFragment : Fragment() {
 
-    private val viewModel: ProductDetailViewModel by viewModels()
-    private var _binding: FragmentProductDetailBinding?= null
+    private val viewModel: ProductWishlistDetailViewModel by viewModels()
+    private var _binding: FragmentWishlistProductDetailBinding?= null
     private val binding get() = _binding!!
 
-    private val args: ProductDetailFragmentArgs by navArgs()
+    private val args: ProductWishlistDetailFragmentArgs by navArgs()
 
     private lateinit var paymentMethod: String
     private lateinit var paymentTitle: String
@@ -47,7 +48,7 @@ class ProductDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding= FragmentProductDetailBinding.inflate(inflater, container, false)
+        _binding= FragmentWishlistProductDetailBinding.inflate(inflater, container, false)
 
         val id= args.id
 
@@ -66,12 +67,6 @@ class ProductDetailFragment : Fragment() {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         currentDateandTime = sdf.format(Date())
 
-        binding.apply {
-            detailToolbar.backArrow.setOnClickListener{
-                findNavController().popBackStack()
-            }
-
-        }
     }
 
     private fun setupObservers(){
@@ -165,12 +160,6 @@ class ProductDetailFragment : Fragment() {
                     .showStagingLabel(false)
                     .initialize()
             }
-        }
-
-        binding.productFavourite.setOnClickListener {
-            viewModel.addToWishlist(WishList(productId, productName, productRegularPrice, productPrice, productImage,
-                categoryIds, productDescription, percent, productCount, productRating
-            ))
         }
 
     }

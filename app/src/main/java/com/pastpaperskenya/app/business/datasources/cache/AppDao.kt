@@ -50,6 +50,9 @@ interface AppDao {
     @Query("SELECT * FROM users WHERE userServerId=:userServerId")
     fun getUserDetails(userServerId: Int): Flow<UserDetails>
 
+    @Query("SELECT SUM(total_price) FROM cart")
+    fun getPriceCount(): Flow<Int?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertParentCategory(homeCategory: List<HomeCategory>)
 

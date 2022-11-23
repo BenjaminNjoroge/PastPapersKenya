@@ -33,6 +33,13 @@ interface RetrofitApiService {
         @Field("last_name") lastname: String
     ): Response<Customer>
 
+    @FormUrlEncoded
+    @PUT(API_CUSTOMER)
+    suspend fun updateUserPassword(
+        @Path ("id") id: Int,
+        @Field("password") firstname: String,
+    ): Response<Customer>
+
     @GET(API_CUSTOMER)
     suspend fun getUser(
         @Query ("email") email: String

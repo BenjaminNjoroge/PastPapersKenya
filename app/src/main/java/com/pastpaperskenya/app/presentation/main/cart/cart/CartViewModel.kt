@@ -25,9 +25,23 @@ class CartViewModel @Inject constructor(private val repository: CartRepository):
     private var eventsChannel = Channel<AuthEvents>()
     val events = eventsChannel.receiveAsFlow()
 
+    private var _totalPrice= MutableLiveData<Int>(0)
+    val totalPrice: LiveData<Int> = _totalPrice
+
     init {
         viewModelScope.launch {
             getCartItems()
+        }
+    }
+    init {
+        viewModelScope.launch {
+            getTotalPrice()
+        }
+    }
+
+    private suspend fun getTotalPrice() {
+        repository.getProductCount().collect{
+            _totalPrice.postValue(it)
         }
     }
 

@@ -14,4 +14,6 @@ interface CartService{
     suspend fun insertCartItems(cart: Cart)
 
     suspend fun deleteCartItems(productId: Int)
+
+    fun getProductCount(): Flow<Int?>
 }

@@ -10,7 +10,10 @@ import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.viewpager2.widget.ViewPager2
 import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.android.material.tabs.TabLayout
@@ -27,6 +30,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
+    //private lateinit var navHostController: NavController
+
     private val viewModel: ProfileViewModel by activityViewModels()
     private var _binding: FragmentProfileBinding?= null
     private val binding get() = _binding!!
@@ -37,6 +42,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //val navHostFragment= childFragmentManager.findFragmentById(R.id.profile_fragments_container) as NavHostFragment
+        //navHostController= navHostFragment.navController
+
         firebaseAuth= FirebaseAuth.getInstance()
         firebaseUser= firebaseAuth.currentUser?.uid.toString()
     }

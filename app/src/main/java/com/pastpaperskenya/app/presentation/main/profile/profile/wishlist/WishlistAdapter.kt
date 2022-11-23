@@ -12,11 +12,12 @@ import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.databinding.ItemProductCartLayoutBinding
 import com.pastpaperskenya.app.databinding.ItemWishlistProductLayoutBinding
 
-class WishlistAdapter constructor(private val listener: RemoveWishlistItemClickListener):
+class WishlistAdapter constructor(private val listener: WishlistItemClickListener):
     ListAdapter<WishList, WishlistAdapter.WishlistViewHolder>(WishlistViewHolder.WishlistComparator()) {
 
-    interface RemoveWishlistItemClickListener {
+    interface WishlistItemClickListener {
         fun removeItem(position: Int)
+        fun createOder(position: Int, productId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WishlistViewHolder {
@@ -35,7 +36,7 @@ class WishlistAdapter constructor(private val listener: RemoveWishlistItemClickL
 
     class WishlistViewHolder(
         private val binding: ItemWishlistProductLayoutBinding,
-        private val listener: RemoveWishlistItemClickListener
+        private val listener: WishlistItemClickListener
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -43,7 +44,9 @@ class WishlistAdapter constructor(private val listener: RemoveWishlistItemClickL
 
 
         init {
-            binding.removeProduct.setOnClickListener(this)
+            binding.root.setOnClickListener(this)
+            binding.parentView.setOnClickListener(this)
+            binding.productImage.setOnClickListener(this)
         }
 
         fun bind(wishList: WishList) {
@@ -51,13 +54,17 @@ class WishlistAdapter constructor(private val listener: RemoveWishlistItemClickL
 
             binding.apply {
                 productTitle.text = wishList.productName
-                productSalePrice.text = "Ksh "+wishList.productPrice
+                productSalePrice.text = "Ksh "+wishList.productSalePrice
                 Glide.with(binding.root).load(wishList.productImage).into(binding.productImage)
+            }
+
+            binding.removeProduct.setOnClickListener {
+                listener.removeItem(wishList.productId!!)
             }
         }
 
         override fun onClick(view: View?) {
-            listener.removeItem(wishList.productId)
+            listener.createOder(absoluteAdapterPosition, wishList.productId!!)
         }
 
         class WishlistComparator : DiffUtil.ItemCallback<WishList>() {

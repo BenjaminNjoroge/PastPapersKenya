@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_myorders"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/myOrdersFragment">
+
+    <fragment
+        android:id="@+id/myOrdersFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersFragment"
+        android:label="MyOrdersFragment"
+        tools:layout="@layout/fragment_my_orders">
+        <action
+            android:id="@+id/action_myOrdersFragment_to_myOrdersDetailsFragment"
+            app:destination="@id/myOrdersDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myOrdersDetailsFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersDetailsFragment"
+        android:label="MyOrdersDetailsFragment"
+        tools:layout="@layout/fragment_my_orders_details">
+
+        <argument android:name="id"
+            app:argType="integer"/>
+
+    </fragment>
+</navigation>

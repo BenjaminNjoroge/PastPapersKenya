@@ -18,5 +18,9 @@ class ServerCrudRepositoryImpl @Inject constructor(
         return retrofitService.getUser(email)
     }
 
+    override suspend fun updateUser(id: Int, password: String): Response<Customer> {
+        return retrofitService.updateUserPassword(id, password)
+    }
+
 
 }

@@ -32,7 +32,6 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
     private val viewModel: CartViewModel by viewModels()
     private lateinit var adapter: CartAdapter
 
-    private var count: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,14 +70,6 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
                 binding.cartCheckoutLayout.visibility = View.VISIBLE
 
 
-                for (item in items) {
-                    count += Integer.parseInt(item.productPrice.toString())
-                }
-
-
-                val totalprices = count
-                binding.cartTotalPrice.text = "Total: Ksh $totalprices"
-
                 binding.layoutEmpty.visibility = View.GONE
                 binding.pbLoading.visibility = View.GONE
                 adapter.submitList(items)
@@ -88,6 +79,10 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
                 binding.layoutEmpty.visibility = View.VISIBLE
                 binding.cartCheckoutLayout.visibility = View.GONE
             }
+        }
+
+        viewModel.totalPrice.observe(viewLifecycleOwner){ total->
+            binding.cartTotalPrice.text = "Total Ksh: $total"
         }
     }
 
@@ -101,8 +96,7 @@ class CartFragment : Fragment(), CartAdapter.RemoveCartItemClickListener {
                 when (events) {
                     is AuthEvents.ErrorCode -> {
                         if(events.code== 100){
-   //                      requireParentFragment()
-                            Toast.makeText(requireContext(), "too bad", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "removed", Toast.LENGTH_SHORT).show()
                         }
                     }
                     is AuthEvents.Error -> {

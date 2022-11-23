@@ -9,4 +9,6 @@ interface ServerCrudRepository {
 
     suspend fun getUser(email: String): Response<List<Customer>>
 
+    suspend fun updateUser(id: Int, password: String): Response<Customer>
+
 }

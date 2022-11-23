@@ -80,14 +80,11 @@ class CheckoutFragment : Fragment() {
             if (!items.isNullOrEmpty()) {
                 adapter.submitList(items)
             }
+        }
 
-            for (item in items) {
-                netTotalAmount += Integer.parseInt(item.productPrice.toString())
-            }
-
-            binding.productSubtotalPrice.text = "Ksh " + netTotalAmount.toString()
-            binding.paymentTotalPrice.text = "Ksh " + netTotalAmount.toString()
-
+        viewModel.totalPrice.observe(viewLifecycleOwner){ total->
+            binding.productSubtotalPrice.text = "Total Ksh: $total"
+            binding.paymentTotalPrice.text = "Total Ksh: $total"
         }
 
         viewModel.userResponse.observe(viewLifecycleOwner) { details ->

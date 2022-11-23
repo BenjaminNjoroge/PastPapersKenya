@@ -21,5 +21,8 @@ class CartRepository @Inject constructor(
         cartService.deleteCartItems(productId)
     }
 
+    fun getProductCount(): Flow<Int?>{
+        return cartService.getProductCount()
+    }
 
 }

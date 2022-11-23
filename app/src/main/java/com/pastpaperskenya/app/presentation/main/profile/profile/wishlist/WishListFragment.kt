@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
@@ -24,7 +26,7 @@ import kotlinx.coroutines.launch
 private const val ARG_PARAM1 = "param1"
 
 @AndroidEntryPoint
-class WishListFragment : Fragment(), WishlistAdapter.RemoveWishlistItemClickListener {
+class WishListFragment : Fragment(), WishlistAdapter.WishlistItemClickListener {
 
     private val TAG = "WishListFragment"
     private var param1: String? = null
@@ -117,5 +119,10 @@ class WishListFragment : Fragment(), WishlistAdapter.RemoveWishlistItemClickList
 
     override fun removeItem(position: Int) {
         viewModel.deleteItem(position)
+    }
+
+    override fun createOder(position: Int, productId: Int) {
+        val bundle= bundleOf("id" to productId)
+        findNavController().navigate(R.id.action_wishListFragment_to_productWishlistDetailFragment, bundle)
     }
 }

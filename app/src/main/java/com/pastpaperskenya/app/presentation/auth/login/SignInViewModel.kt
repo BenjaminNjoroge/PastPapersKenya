@@ -10,6 +10,8 @@ import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
 import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
+import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
+import com.pastpaperskenya.app.business.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,7 +24,9 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor
     (
     private val repository: FirebaseRepository,
-    private val serverRepository: ServerCrudRepository
+    private val serverRepository: ServerCrudRepository,
+    private val datastore: DataStoreRepository
+
 ) : ViewModel() {
 
     private val TAG = "SignInViewModel"
@@ -72,9 +76,14 @@ class SignInViewModel @Inject constructor
     fun actualSignInUser(email: String, password: String) = viewModelScope.launch {
         try {
             val user = repository.signInWithEmailPassword(email, password)
-            user?.let {
-                _firebaseUser.postValue(it)
-                eventsChannel.send(AuthEvents.Message("Login Success"))
+            if(!datastore.getValue(Constants.RESET_PASSWORD).isNullOrEmpty()){
+                val value= datastore.getValue(Constants.KEY_PASSWORD)
+               // val response= serverRepository.updateUser()
+            } else {
+                user?.let {
+                    _firebaseUser.postValue(it)
+                    eventsChannel.send(AuthEvents.Message("Login Success"))
+                }
             }
         } catch (e: Exception) {
             eventsChannel.send(AuthEvents.Error(e.message.toString()))

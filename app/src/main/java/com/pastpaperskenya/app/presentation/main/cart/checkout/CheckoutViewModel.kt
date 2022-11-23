@@ -14,6 +14,7 @@ import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,6 +34,9 @@ class CheckoutViewModel @Inject constructor(
 
     private var eventsChannel = Channel<AuthEvents>()
     val events = eventsChannel.receiveAsFlow()
+
+    private var _totalPrice= MutableLiveData<Int?>(0)
+    val totalPrice: LiveData<Int?> = _totalPrice
 
     init {
 
@@ -57,6 +61,12 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
+    init {
+        viewModelScope.launch {
+            getTotalPrice()
+        }
+    }
+
     private suspend fun getCartItems(){
         cartRepository.getCartItems().collect{
             _cartResponse.postValue(it)
@@ -66,6 +76,12 @@ class CheckoutViewModel @Inject constructor(
     private suspend fun getUserDetails(userId: Int){
         profileRepository.getUserDetails(userId).collect{
             _userResponse.value= it
+        }
+    }
+
+    private suspend fun getTotalPrice() {
+        cartRepository.getProductCount().collect{
+            _totalPrice.postValue(it)
         }
     }
 }

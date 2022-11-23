@@ -38,8 +38,8 @@ class MyOrdersAdapter(private val listener: OrderClickListener) :
         private lateinit var items: Orders
 
         init {
-            //binding.parentView.setOnClickListener(this)
-            //binding.orderDetail.setOnClickListener(this)
+            binding.parentView.setOnClickListener(this)
+            binding.orderDetail.setOnClickListener(this)
         }
 
         fun bind(orders: Orders){

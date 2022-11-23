@@ -87,6 +87,7 @@ public class Constants {
     public static final String KEY_TRANSACTION_ID = "transaction_id";
     public static final String KEY_EXCLUDE = "exclude";
     public static final String PAYMENT_METHOD_CARD= "card";
+    public static final String RESET_PASSWORD= "reset_password";
 
 
     // API END POINTS
