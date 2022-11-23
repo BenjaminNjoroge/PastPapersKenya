@@ -330,58 +330,81 @@
                 android:id="@+id/linLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="@dimen/size_2dp"
-                android:layout_below="@+id/linLayout4">
+                android:layout_below="@+id/linLayout4"
+                android:layout_marginStart="@dimen/size_2dp"
+                android:layout_marginTop="@dimen/size_2dp"
+                android:layout_marginEnd="@dimen/size_2dp"
+                android:layout_marginBottom="@dimen/size_2dp"
+                android:orientation="vertical">
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:background="@color/grayExtraLight"
-                    android:padding="@dimen/size_2dp"
-                    android:text="@string/payment_total"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold" />
+                    android:weightSum="2">
 
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/divider"
-                        android:background="@color/grayLight" />
-
-                    <LinearLayout
-                        android:id="@+id/payment_total_layout"
-                        android:layout_width="match_parent"
+                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_5dp"
-                        android:layout_marginBottom="@dimen/size_10dp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:padding="@dimen/size_2dp"
+                        android:text="@string/payment_total"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/size_10dp"
-                            android:layout_weight=".75"
-                            android:text="@string/total"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_14sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/change_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/size_10dp"
+                        android:textStyle="italic"
+                        android:textAllCaps="false"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/colorProgress"
+                        android:text="Change Address" />
+                </LinearLayout>
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
-                            android:id="@+id/payment_total_price"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight=".25"
-                            android:background="@color/grayExtraLight"
-                            android:gravity="center"
-                            android:padding="@dimen/size_3dp"
-                            android:text="@string/text_placeholder"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/text_15sp"
-                            android:textStyle="bold" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider"
+                    android:background="@color/grayLight" />
 
-                    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/payment_total_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5dp"
+                    android:layout_marginBottom="@dimen/size_10dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_10dp"
+                        android:layout_weight=".75"
+                        android:text="@string/total"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_14sp"
+                        android:textStyle="bold" />
+
+                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        android:id="@+id/payment_total_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".25"
+                        android:background="@color/grayExtraLight"
+                        android:gravity="center"
+                        android:padding="@dimen/size_3dp"
+                        android:text="@string/text_placeholder"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_15sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
