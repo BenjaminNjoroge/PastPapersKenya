@@ -75,7 +75,11 @@
             app:argType="string"/>
         <action
             android:id="@+id/action_productDetailFragment_to_productUserAddressFragment"
-            app:destination="@id/productUserAddressFragment" />
+            app:destination="@id/productUserAddressFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment
@@ -85,6 +89,10 @@
         tools:layout="@layout/fragment_user_address">
         <action
             android:id="@+id/action_productUserAddressFragment_to_productDetailFragment"
-            app:destination="@id/productDetailFragment" />
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 </navigation>
