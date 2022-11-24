@@ -5,12 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.user.Customer
+import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.EditProfileRepository
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserAddressViewModel @Inject constructor(
     private val editProfileRepository: EditProfileRepository,
-    private val datastore: DataStoreRepository
+    private val datastore: DataStoreRepository,
+    private val serverCrudRepository: ServerCrudRepository
 ): ViewModel() {
 
     private val _userProfile = MutableLiveData<UserDetails>()
@@ -32,8 +36,6 @@ class UserAddressViewModel @Inject constructor(
     private var _userServerId = MutableLiveData<String>()
     val userServerId: LiveData<String> = _userServerId
 
-    private var _updateServerDetails = MutableLiveData<NetworkResult<Customer>>()
-    val updateServerDetails: LiveData<NetworkResult<Customer>> = _updateServerDetails
 
     private var eventsChannel = Channel<AuthEvents>()
     val events = eventsChannel.receiveAsFlow()
@@ -93,8 +95,7 @@ class UserAddressViewModel @Inject constructor(
         phone: String,
         firstname: String,
         lastname: String,
-        country: String,
-        county: String
+        customer: CustomerUpdate
     ) = viewModelScope.launch {
         when {
             firstname.isEmpty() -> {
@@ -108,31 +109,29 @@ class UserAddressViewModel @Inject constructor(
             }
 
             else -> {
-                updateServerDetails(userServerId, phone, firstname, lastname, country, county)
+                if(NetworkChangeReceiver.isNetworkConnected()){
+                    updateServerDetails(userServerId, customer)
+                } else{
+                    eventsChannel.send(AuthEvents.Message("Error. Network not available"))
+                }
             }
         }
     }
 
     private suspend fun updateServerDetails(
         userServerId: Int,
-        phone: String,
-        firstname: String,
-        lastname: String,
-        country: String,
-        county: String
+        customer: CustomerUpdate
     ) = viewModelScope.launch {
-        editProfileRepository.updateUserToServer(
-            userServerId,
-            firstname,
-            lastname,
-            phone,
-            country,
-            county
-        ).collect {
-            _updateServerDetails.value = it
-            delay(2000)
+        val response= serverCrudRepository.updateUser(userServerId, customer)
+
+        if (response.isSuccessful) {
+            //delay(2000)
             eventsChannel.send(AuthEvents.Message("Updated successfully"))
             eventsChannel.send(AuthEvents.ErrorCode(100))
+
+        } else{
+            val error= response.errorBody().toString()
+            eventsChannel.send(AuthEvents.Message("$error: An error occurred. check your internet bundles"))
         }
     }
 

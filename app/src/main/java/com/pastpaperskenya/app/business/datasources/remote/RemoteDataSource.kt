@@ -24,7 +24,4 @@ class RemoteDataSource @Inject constructor(
     suspend fun getMyOrders(id:Int)=
         getResult { retrofitApiService.getMyOrders(id)}
 
-    suspend fun updateUser(customer: Int, firstname: String, lastname: String,  phone: String, country: String, county: String)=
-          retrofitApiService.updateUser(customer, firstname, lastname)
-
 }

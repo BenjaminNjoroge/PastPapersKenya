@@ -18,9 +18,7 @@ import javax.inject.Inject
 
 class EditProfileRepositoryImpl @Inject constructor(
     private val localUserService: LocalUserService,
-    private val firestoreUserService: FirestoreUserService,
-    private val remoteDataSource: RemoteDataSource
-) :
+    private val firestoreUserService: FirestoreUserService) :
     EditProfileRepository, BaseDataSource() {
 
     override suspend fun getUserDetails(userId: Int): Flow<UserDetails?> =
@@ -33,13 +31,6 @@ class EditProfileRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserToDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int) {
         localUserService.updateUserInDatabase(phone, firstname, lastname, country, county, userServerId)
-    }
-
-
-    override suspend fun updateUserToServer(customer: Int, firstname: String, lastname: String, phone: String, country: String, county: String): Flow<NetworkResult<Customer>> {
-        return flow {
-            emit(safeApiCall { remoteDataSource.updateUser(customer, firstname, lastname, phone, country, county) })
-        }.flowOn(Dispatchers.IO)
     }
 
 

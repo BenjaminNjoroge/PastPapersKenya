@@ -13,5 +13,4 @@ interface EditProfileRepository {
 
     suspend fun updateUserToDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
 
-    suspend fun updateUserToServer(customer: Int, firstname: String, lastname: String, phone: String, country: String, county: String): Flow<NetworkResult<Customer>>
 }

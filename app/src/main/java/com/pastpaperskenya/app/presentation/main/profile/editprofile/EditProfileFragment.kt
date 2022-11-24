@@ -26,6 +26,9 @@ import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.hbb20.CountryCodePicker
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.user.Customer
+import com.pastpaperskenya.app.business.model.user.CustomerBilling
+import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
@@ -130,24 +133,11 @@ class EditProfileFragment : Fragment() {
 
                 binding.rotateProgress.visibility= View.VISIBLE
 
-                viewModel.fieldsChecker(convertIntoNumeric(userServerId), phone, firstname, lastname, country, county)
+                val billing= CustomerBilling(county, country, phone)
+                val customer= CustomerUpdate(firstname, lastname, billing)
 
-                viewModel.updateServerDetails.observe(viewLifecycleOwner){ response->
-                    when(response){
-                        is NetworkResult.Loading->{
-                            binding.rotateProgress.visibility= View.VISIBLE
-                        }
-                        is NetworkResult.Success->{
-                            binding.rotateProgress.visibility= View.GONE
-                            Toast.makeText(requireContext(), "Updated successfully", Toast.LENGTH_SHORT).show()
+                viewModel.fieldsChecker(convertIntoNumeric(userServerId), phone, firstname, lastname, customer)
 
-                        }
-                        is NetworkResult.Error->{
-                            //binding.rotateProgress.visibility= View.GONE
-                            //Toast.makeText(requireContext(), "Unable to upload user data", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
             }
 
             ivProfileImageP.setOnClickListener{

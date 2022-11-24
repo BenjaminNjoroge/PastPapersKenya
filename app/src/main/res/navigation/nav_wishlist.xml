@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_wishlist"
+    app:startDestination="@id/wishListFragment2">
+
+
+    <fragment
+        android:id="@+id/wishListFragment2"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.wishlist.WishListFragment"
+        android:label="WishListFragment"
+        tools:layout="@layout/fragment_wish_list">
+        <action
+            android:id="@+id/action_wishListFragment2_to_productWishlistDetailFragment2"
+            app:destination="@id/productWishlistDetailFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/productWishlistDetailFragment2"
+        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.wishlist.ProductWishlistDetailFragment"
+        android:label="ProductWishlistDetailFragment"
+        tools:layout="@layout/fragment_wishlist_product_detail"/>
+</navigation>

@@ -92,6 +92,7 @@ public class Constants {
 
     // API END POINTS
     public static final String API_CUSTOMER = BASE_URL + "customers/" + BASE_AUTH;
+    public static final String API_CUSTOMER_ID = BASE_URL + "customers/" + "{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_PRODUCTS = BASE_URL + "products/" + BASE_AUTH;
     public static final String API_PRODUCT_DETAIL = BASE_URL + "products/" + "{" + KEY_ID + "}" + BASE_AUTH;
     public static final String API_PRODUCT_CATEGORIES = "products/categories/" + BASE_AUTH;

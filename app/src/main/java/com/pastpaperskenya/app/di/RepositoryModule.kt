@@ -61,8 +61,8 @@ object RepositoryModule {
 
 
     @Provides
-    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService, remoteDataSource: RemoteDataSource): EditProfileRepository =
-        EditProfileRepositoryImpl(localUserService, firestoreUserService, remoteDataSource)
+    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService): EditProfileRepository =
+        EditProfileRepositoryImpl(localUserService, firestoreUserService)
 
 
     @Provides

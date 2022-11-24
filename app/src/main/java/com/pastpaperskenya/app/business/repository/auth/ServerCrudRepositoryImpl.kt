@@ -2,6 +2,7 @@ package com.pastpaperskenya.app.business.repository.auth
 
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.model.user.Customer
+import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import retrofit2.Response
 import javax.inject.Inject
@@ -18,7 +19,11 @@ class ServerCrudRepositoryImpl @Inject constructor(
         return retrofitService.getUser(email)
     }
 
-    override suspend fun updateUser(id: Int, password: String): Response<Customer> {
+    override suspend fun updateUser(id: Int, customer: CustomerUpdate): Response<CustomerUpdate> {
+        return retrofitService.updateUser(id, customer)
+    }
+
+    override suspend fun updatePassword(id: Int, password: String): Response<Customer> {
         return retrofitService.updateUserPassword(id, password)
     }
 

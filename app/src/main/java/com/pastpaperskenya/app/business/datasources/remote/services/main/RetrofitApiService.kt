@@ -9,6 +9,7 @@ import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductTag
+import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.util.Constants.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -25,19 +26,17 @@ interface RetrofitApiService {
         @Field ("password") password: String
     ): Response<Customer>
 
-    @FormUrlEncoded
-    @PUT(API_CUSTOMER)
+    @PUT(API_CUSTOMER_ID)
     suspend fun updateUser(
-        @Path ("id") id: Int,
-        @Field("first_name") firstname: String,
-        @Field("last_name") lastname: String
-    ): Response<Customer>
+        @Path (KEY_ID) id: Int,
+        @Body customer: CustomerUpdate
+    ): Response<CustomerUpdate>
 
     @FormUrlEncoded
-    @PUT(API_CUSTOMER)
+    @PUT(API_CUSTOMER_ID)
     suspend fun updateUserPassword(
-        @Path ("id") id: Int,
-        @Field("password") firstname: String,
+        @Path (KEY_ID) id: Int,
+        @Field("password") password: String,
     ): Response<Customer>
 
     @GET(API_CUSTOMER)

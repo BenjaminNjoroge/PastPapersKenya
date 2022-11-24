@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Customer (
 
     @SerializedName("id")
-    val id: Int,
+    val id: Int?,
 
     @SerializedName("date_created")
     val date_created: String?,
@@ -45,14 +45,14 @@ data class Customer (
 
 ) {
     class BillingAddress (
-        val firstname: String,
-        val lastname: String,
-        val company: String,
-        val address: String,
-        val city: String,
-        val state: String,
-        val country: String,
-        val email: String,
-        val phone: String
+        val firstname: String?,
+        val lastname: String?,
+        val company: String?,
+        val address: String?,
+        val city: String?,
+        val state: String?,
+        val country: String?,
+        val email: String?,
+        val phone: String?
             )
 }

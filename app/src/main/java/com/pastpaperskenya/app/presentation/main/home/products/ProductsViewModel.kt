@@ -5,10 +5,13 @@ import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductCategory
+import com.pastpaperskenya.app.business.repository.auth.AuthEvents
 import com.pastpaperskenya.app.business.repository.main.home.ProductsRepository
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,6 +20,9 @@ class ProductsViewModel @Inject constructor(
     private val repository: ProductsRepository
 
 ): ViewModel() {
+
+    private val eventsChannel = Channel<AuthEvents>()
+    val authEventsFlow = eventsChannel.receiveAsFlow()
 
     private var _categoryId= MutableLiveData<Int>()
 
@@ -36,12 +42,14 @@ class ProductsViewModel @Inject constructor(
     fun addToCart(cart: Cart){
         viewModelScope.launch {
             repository.insertCartItems(cart)
+            eventsChannel.send(AuthEvents.ErrorCode(100))
         }
     }
 
     fun removeFromCart(productId: Int){
         viewModelScope.launch {
             repository.deleteCartItems(productId)
+            eventsChannel.send(AuthEvents.ErrorCode(101))
         }
     }
 }

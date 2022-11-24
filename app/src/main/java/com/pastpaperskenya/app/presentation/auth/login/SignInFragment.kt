@@ -155,6 +155,7 @@ class SignInFragment : Fragment() {
             }
         }
 
+
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
             user?.let {
                 launchActivity()
