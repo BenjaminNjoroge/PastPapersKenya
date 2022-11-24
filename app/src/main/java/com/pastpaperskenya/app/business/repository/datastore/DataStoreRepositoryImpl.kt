@@ -24,9 +24,15 @@ class DataStoreRepositoryImpl( val context: Context) :DataStoreRepository{
         return context.dataStore.data.first()[stringPreferencesKey(key)]
     }
 
-    override suspend fun <T> clear(key: Preferences.Key<T>) {
+    override suspend fun <T> remove(key: Preferences.Key<T>) {
         context.dataStore.edit { preferences->
             preferences.remove(key)
+        }
+    }
+
+    override suspend fun clear() {
+        context.dataStore.edit {
+            it.clear()
         }
     }
 }

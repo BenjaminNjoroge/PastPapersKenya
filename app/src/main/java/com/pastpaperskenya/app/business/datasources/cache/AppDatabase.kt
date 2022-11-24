@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.business.datasources.cache
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -26,7 +27,7 @@ import com.pastpaperskenya.app.business.model.wishlist.WishList
         UserDetails::class,
         WishList::class
     ],
-    version = 1, exportSchema = false
+    version = 1, exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 

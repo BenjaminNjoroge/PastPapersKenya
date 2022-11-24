@@ -11,6 +11,7 @@ plugins {
 }
 
 android {
+
     compileSdk 33
 
     buildFeatures {
@@ -31,6 +32,14 @@ android {
         buildConfigField("String", "CONSUMER_SECRET",CONSUMER_SECRET)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation": "$projectDir/schemas".toString(),
+                        "room.incremental"   : "true"]
+            }
+        }
     }
 
     buildTypes {

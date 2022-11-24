@@ -74,7 +74,7 @@ interface AppDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE )
     suspend fun insertToWishlist(wishList: WishList)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUserDetails(userDetails: UserDetails):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

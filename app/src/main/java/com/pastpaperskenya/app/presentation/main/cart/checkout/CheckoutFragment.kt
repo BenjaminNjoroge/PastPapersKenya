@@ -58,10 +58,10 @@ class CheckoutFragment : Fragment() {
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
         viewModel.userResponse.observe(viewLifecycleOwner){ details->
-            if (details.email.toString().isEmpty() || details.lastname.toString().isEmpty()
+            if (details.email!!.isEmpty() || details.lastname.toString().isEmpty()
                 || details.firstname.toString().isEmpty() || details.phone.toString().isEmpty()){
 
-                findNavController().navigate(R.id.action_placeOrderFragment_to_userAddressFragment)
+                findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
             }
         }
 
@@ -134,7 +134,7 @@ class CheckoutFragment : Fragment() {
             }
 
             binding.changeAddress.setOnClickListener {
-                findNavController().navigate(R.id.action_placeOrderFragment_to_userAddressFragment)
+                findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
             }
 
         }

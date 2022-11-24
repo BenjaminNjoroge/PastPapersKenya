@@ -10,9 +10,12 @@ import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
+import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
+import com.pastpaperskenya.app.business.usecases.LocalUserService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -24,10 +27,16 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor
     (
     private val repository: FirebaseAuthRepository,
-    private val serverRepository: ServerCrudRepository
+    private val serverRepository: ServerCrudRepository,
+    private val localUserService: LocalUserService,
+    private val datastore: DataStoreRepository,
+
     ) : ViewModel() {
 
     private val TAG = "SignInViewModel"
+
+    private val _localResponse= MutableLiveData<Long>()
+    val localResponse: LiveData<Long> = _localResponse
 
     private val _firestoreUserProfile = MutableLiveData<UserDetails>()
     val firestoreUserProfile: LiveData<UserDetails> = _firestoreUserProfile
@@ -73,6 +82,10 @@ class SignInViewModel @Inject constructor
     }
 
 
+    fun writeToDataStore(key:String ,serverId: String) = viewModelScope.launch {
+        datastore.clear()
+        datastore.setValue(key, serverId)
+    }
 
     fun actualSignInUser(email: String, password: String, userServerId: Int) = viewModelScope.launch {
         try {
@@ -100,4 +113,9 @@ class SignInViewModel @Inject constructor
     }
 
 
+    fun insertUserDetails(user: UserDetails){
+        viewModelScope.launch(Dispatchers.IO) {
+            _localResponse.postValue(localUserService.insertUserToDatabase(user))
+        }
+    }
 }

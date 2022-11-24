@@ -129,19 +129,39 @@ class SignInFragment : Fragment() {
                 }
             }
         }
+        viewModel.localResponse.observe(viewLifecycleOwner){
+            Toast.makeText(context, "User data saved to database", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun registerObservers() {
 
         viewModel.userResponse.observe(viewLifecycleOwner) { response ->
+            var userServerId =0
+            var emailad = ""
+            var phone = ""
+            var firstname =""
+            var lastname = ""
+            var county =""
+            var country =""
 
             if (response.isSuccessful) {
 
-                var userServerId: Int=0
-
-                for (user in response.body()!!){
-                    userServerId = user.id!!
+                response.body()?.forEach {
+                    userServerId= it.id!!
+                    emailad= it.email.toString()
+                    phone= it.billingAddress?.phone.toString()
+                    firstname= it.firstname.toString()
+                    lastname= it.lastname.toString()
+                    county= it.billingAddress?.state.toString()
+                    country= it.billingAddress?.country.toString()
                 }
+
+                val localuser= UserDetails("", emailad, phone, firstname, lastname, country, county, userServerId)
+
+                viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
+
+                viewModel.insertUserDetails(localuser)
 
                 viewModel.actualSignInUser(email, password, userServerId)
             } else {

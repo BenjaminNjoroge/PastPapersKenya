@@ -12,19 +12,19 @@
         tools:layout="@layout/fragment_cart" >
         <action
             android:id="@+id/action_cartFragment_to_placeOrderFragment"
-            app:destination="@id/placeOrderFragment"
+            app:destination="@id/checkoutFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
-        android:id="@+id/placeOrderFragment"
+        android:id="@+id/checkoutFragment"
         android:name="com.pastpaperskenya.app.presentation.main.cart.checkout.CheckoutFragment"
         android:label="Place Order"
         tools:layout="@layout/fragment_checkout" >
         <action
-            android:id="@+id/action_placeOrderFragment_to_userAddressFragment"
+            android:id="@+id/action_checkoutFragment_to_userAddressFragment"
             app:destination="@id/userAddressFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_user_address">
         <action
             android:id="@+id/action_userAddressFragment_to_placeOrderFragment"
-            app:destination="@id/placeOrderFragment"
+            app:destination="@id/checkoutFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
