@@ -29,27 +29,6 @@ import java.io.File
 import java.io.IOException
 import java.lang.Integer.parseInt
 
-//fun Fragment.findSafeNavController(): NavController? {
-//    return try {
-//        findNavController()
-//    } catch (e: IllegalStateException) {
-//        try {
-//            findNavControllerWithFragmentManager()
-//        } catch (e: IllegalStateException) {
-//            try {
-//                findNavControllerWithActivity()
-//            } catch (e: IllegalStateException) {
-//                try {
-//                    findNavControllerWithViewPost()
-//                } catch (e: IllegalStateException) {
-//                    null
-//                } finally {
-//                    ErrorLogger.sendError(e)
-//                }
-//            }
-//        }
-//    }
-//}
 
 fun convertIntoNumeric(value: String): Int {
     return try {

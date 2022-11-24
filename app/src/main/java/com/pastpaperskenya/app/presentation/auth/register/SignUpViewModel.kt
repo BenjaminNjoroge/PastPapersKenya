@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.UserDetails
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor
-    (private val repository: FirebaseRepository,
+    (private val repository: FirebaseAuthRepository,
      private val firestoreUserService: FirestoreUserService,
      private val localUserService: LocalUserService,
      private val datastore: DataStoreRepository,

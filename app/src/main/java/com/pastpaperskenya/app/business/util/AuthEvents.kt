@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.repository.auth
+package com.pastpaperskenya.app.business.util
 
 sealed class AuthEvents{
     data class Message(val message: String): AuthEvents()

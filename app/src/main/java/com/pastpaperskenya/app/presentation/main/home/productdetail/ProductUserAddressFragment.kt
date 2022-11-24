@@ -1,8 +1,5 @@
 package com.pastpaperskenya.app.presentation.main.home.productdetail
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -12,32 +9,22 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.hbb20.CountryCodePicker
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.CustomerBilling
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
-import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.databinding.FragmentUserAddressBinding
-import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 

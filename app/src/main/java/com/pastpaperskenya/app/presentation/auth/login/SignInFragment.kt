@@ -14,20 +14,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.facebook.*
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.model.user.UserDetails
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
@@ -39,6 +28,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -122,6 +112,7 @@ class SignInFragment : Fragment() {
                             errorTxt.text = events.message
                             progressBar.isInvisible = true
                         }
+                        Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
                     }
                     is AuthEvents.ErrorCode -> {
                         if (events.code == 1)
@@ -145,7 +136,14 @@ class SignInFragment : Fragment() {
         viewModel.userResponse.observe(viewLifecycleOwner) { response ->
 
             if (response.isSuccessful) {
-                viewModel.actualSignInUser(email, password)
+
+                var userServerId: Int=0
+
+                for (user in response.body()!!){
+                    userServerId = user.id!!
+                }
+
+                viewModel.actualSignInUser(email, password, userServerId)
             } else {
                 Toast.makeText(
                     requireContext(),

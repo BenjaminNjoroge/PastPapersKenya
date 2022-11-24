@@ -13,14 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.databinding.FragmentCartBinding
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.databinding.FragmentWishListBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
-import com.pastpaperskenya.app.presentation.main.cart.cart.CartAdapter
-import com.pastpaperskenya.app.presentation.main.cart.cart.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"

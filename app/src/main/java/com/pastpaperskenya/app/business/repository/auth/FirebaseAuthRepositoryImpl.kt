@@ -4,9 +4,9 @@ import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import javax.inject.Inject
 
-class FirebaseRepositoryImpl @Inject constructor(
+class FirebaseAuthRepositoryImpl @Inject constructor(
     private val authenticator: BaseAuthenticator
-) : FirebaseRepository {
+) : FirebaseAuthRepository {
 
     override suspend fun signInWithEmailPassword(email: String, password: String): FirebaseUser? {
         return authenticator.loginUser(email, password)

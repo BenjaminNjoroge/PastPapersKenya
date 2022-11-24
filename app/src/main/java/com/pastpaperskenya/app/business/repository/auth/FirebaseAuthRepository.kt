@@ -1,11 +1,9 @@
 package com.pastpaperskenya.app.business.repository.auth
 
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.user.Customer
-import retrofit2.Response
 
 
-interface FirebaseRepository {
+interface FirebaseAuthRepository {
 
     suspend fun signInWithEmailPassword(email:String , password:String): FirebaseUser?
 

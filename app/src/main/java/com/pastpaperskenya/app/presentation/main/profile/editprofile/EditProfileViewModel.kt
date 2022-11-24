@@ -2,31 +2,26 @@ package com.pastpaperskenya.app.presentation.main.profile.editprofile
 
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.model.user.UserDetails
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.EditProfileRepository
-import com.pastpaperskenya.app.business.usecases.FirestoreUserService
-import com.pastpaperskenya.app.business.usecases.LocalUserService
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val firebaseRepository: FirebaseRepository,
+    private val firebaseAuthRepository: FirebaseAuthRepository,
     private val editProfileRepository: EditProfileRepository,
     private val datastore: DataStoreRepository,
     private val serverCrudRepository: ServerCrudRepository
@@ -129,15 +124,19 @@ class EditProfileViewModel @Inject constructor(
         userServerId: Int,
         customer: CustomerUpdate
     ) = viewModelScope.launch {
-        val response= serverCrudRepository.updateUser(userServerId, customer)
+        try {
+            val response= serverCrudRepository.updateUser(userServerId, customer)
 
-        if (response.isSuccessful) {
-            //delay(2000)
-            eventsChannel.send(AuthEvents.Message("Updated successfully"))
-            eventsChannel.send(AuthEvents.ErrorCode(100))
+            if (response.isSuccessful) {
+                eventsChannel.send(AuthEvents.Message("Updated successfully"))
+                eventsChannel.send(AuthEvents.ErrorCode(100))
 
-        } else{
-            eventsChannel.send(AuthEvents.Message("An error occurred. check your internet bundles"))
+            } else{
+                val error= response.errorBody().toString()
+                eventsChannel.send(AuthEvents.Message("$error: An error occurred. check your internet bundles"))
+            }
+        } catch (e: Exception){
+            eventsChannel.send(AuthEvents.Message("$e An error occured"))
         }
     }
 
@@ -149,7 +148,7 @@ class EditProfileViewModel @Inject constructor(
 
     fun logout() = viewModelScope.launch {
         try {
-            val user = firebaseRepository.signOut()
+            val user = firebaseAuthRepository.signOut()
             user?.let {
                 eventsChannel.send(AuthEvents.Message("logout failure"))
             } ?: eventsChannel.send(AuthEvents.Message("Logout Success"))
@@ -162,7 +161,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     private fun getCurrentUser() = viewModelScope.launch {
-        val user = firebaseRepository.getCurrentUser()
+        val user = firebaseAuthRepository.getCurrentUser()
         _firebaseUser.postValue(user)
     }
 

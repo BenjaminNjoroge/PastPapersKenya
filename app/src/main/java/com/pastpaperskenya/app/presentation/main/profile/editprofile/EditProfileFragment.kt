@@ -26,12 +26,10 @@ import com.github.siyamed.shapeimageview.CircularImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.hbb20.CountryCodePicker
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.CustomerBilling
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity

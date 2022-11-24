@@ -2,10 +2,8 @@ package com.pastpaperskenya.app.presentation.main.home.products
 
 import androidx.lifecycle.*
 import com.pastpaperskenya.app.business.model.cart.Cart
-import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.product.Product
-import com.pastpaperskenya.app.business.model.product.ProductCategory
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.repository.main.home.ProductsRepository
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

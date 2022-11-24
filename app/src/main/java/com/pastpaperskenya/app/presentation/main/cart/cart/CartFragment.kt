@@ -10,17 +10,12 @@ import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.cart.Cart
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.databinding.FragmentCartBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
-import com.pastpaperskenya.app.presentation.main.home.products.ProductsAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

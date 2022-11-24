@@ -3,6 +3,7 @@ package com.pastpaperskenya.app.business.usecases
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.business.model.user.UserDetails
+import com.pastpaperskenya.app.business.model.user.UserDetails.Companion.toUserDetails
 import com.pastpaperskenya.app.business.util.Constants
 import kotlinx.coroutines.tasks.await
 
@@ -37,18 +38,11 @@ class FirestoreUserServiceImpl : FirestoreUserService {
         )
     }
 
-//    override suspend fun getUserDetails(userId: String): UserDetails? {
-//           return Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
-//                .document(userId)
-//                .get().await().toUserDetails()
-//
-//    }
+    override suspend fun getFirestoreUserDetails(userId: String): UserDetails? {
+           return Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
+                .document(userId)
+                .get().await().toUserDetails()
 
-//    override suspend fun updateUserFcmToken(userId: String) {
-//        val token= FirebaseMessaging.getInstance().token
-//        val data= mapOf(
-//            DatabaseKeys.User.fcmToken to token
-//        )
-//        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(data).await()
-//    }
+    }
+
 }

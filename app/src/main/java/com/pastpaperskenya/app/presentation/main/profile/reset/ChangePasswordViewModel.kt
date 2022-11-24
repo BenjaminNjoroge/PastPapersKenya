@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChangePasswordViewModel @Inject constructor(private val repository: FirebaseRepository) : ViewModel(){
+class ChangePasswordViewModel @Inject constructor(private val repository: FirebaseAuthRepository) : ViewModel(){
 
     private  val TAG = "ResetPasswordViewModel"
 

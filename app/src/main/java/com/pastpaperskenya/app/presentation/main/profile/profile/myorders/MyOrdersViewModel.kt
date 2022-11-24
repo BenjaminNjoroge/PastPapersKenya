@@ -2,7 +2,7 @@ package com.pastpaperskenya.app.presentation.main.profile.profile.myorders
 
 import androidx.lifecycle.*
 import com.pastpaperskenya.app.business.model.orders.Orders
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
 import com.pastpaperskenya.app.business.util.Constants
@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel

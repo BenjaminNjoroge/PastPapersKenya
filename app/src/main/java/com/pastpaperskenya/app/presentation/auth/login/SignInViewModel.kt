@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.*
 import com.pastpaperskenya.app.business.model.user.Customer
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
-import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
-import com.pastpaperskenya.app.business.util.Constants
+import com.pastpaperskenya.app.business.model.user.UserDetails
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,13 +23,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor
     (
-    private val repository: FirebaseRepository,
-    private val serverRepository: ServerCrudRepository,
-    private val datastore: DataStoreRepository
-
-) : ViewModel() {
+    private val repository: FirebaseAuthRepository,
+    private val serverRepository: ServerCrudRepository
+    ) : ViewModel() {
 
     private val TAG = "SignInViewModel"
+
+    private val _firestoreUserProfile = MutableLiveData<UserDetails>()
+    val firestoreUserProfile: LiveData<UserDetails> = _firestoreUserProfile
 
     private var _userResponse: MutableLiveData<Response<List<Customer>>> = MutableLiveData()
     val userResponse: LiveData<Response<List<Customer>>> = _userResponse
@@ -60,31 +61,39 @@ class SignInViewModel @Inject constructor
             try {
                 val response = serverRepository.getUser(email)
                 if (!response.isSuccessful) {
-                    eventsChannel.send(AuthEvents.Message("Supplied Email address does not exits in our server. please register first"))
+                    eventsChannel.send(AuthEvents.Error("Supplied Email address does not exits in our server. please register first"))
                 } else {
                     _userResponse.value = response
                 }
             } catch (error: IOException) {
                 Log.d(TAG, "checkUserExistsInServer: ")
-                eventsChannel.send(AuthEvents.Message("Please check Internet bundles / connection"))
+                eventsChannel.send(AuthEvents.Error("Please check Internet bundles / connection"))
             }
-
-
         }
     }
 
-    fun actualSignInUser(email: String, password: String) = viewModelScope.launch {
+
+
+    fun actualSignInUser(email: String, password: String, userServerId: Int) = viewModelScope.launch {
         try {
             val user = repository.signInWithEmailPassword(email, password)
-            if(!datastore.getValue(Constants.RESET_PASSWORD).isNullOrEmpty()){
-                val value= datastore.getValue(Constants.KEY_PASSWORD)
-               // val response= serverRepository.updateUser()
-            } else {
-                user?.let {
-                    _firebaseUser.postValue(it)
-                    eventsChannel.send(AuthEvents.Message("Login Success"))
+
+            user?.let {
+
+                try {
+                    val response= serverRepository.updatePassword(userServerId, password)
+                    if (response.isSuccessful) {
+
+                        _firebaseUser.postValue(it)
+                        eventsChannel.send(AuthEvents.Message("Login Success"))
+                    } else{
+                        eventsChannel.send(AuthEvents.Error(response.message()))
+                    }
+                } catch (e: IOException){
+                    eventsChannel.send(AuthEvents.Error("$e Opps.. an error occured"))
                 }
             }
+
         } catch (e: Exception) {
             eventsChannel.send(AuthEvents.Error(e.message.toString()))
         }

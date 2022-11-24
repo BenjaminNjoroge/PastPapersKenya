@@ -4,21 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.model.user.UserDetails
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.EditProfileRepository
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -96,7 +93,7 @@ class UserAddressViewModel @Inject constructor(
         firstname: String,
         lastname: String,
         customer: CustomerUpdate
-    ) = viewModelScope.launch {
+    ) = viewModelScope.launch(Dispatchers.IO) {
         when {
             firstname.isEmpty() -> {
                 eventsChannel.send(AuthEvents.ErrorCode(1))
@@ -110,7 +107,9 @@ class UserAddressViewModel @Inject constructor(
 
             else -> {
                 if(NetworkChangeReceiver.isNetworkConnected()){
+
                     updateServerDetails(userServerId, customer)
+
                 } else{
                     eventsChannel.send(AuthEvents.Message("Error. Network not available"))
                 }
@@ -122,16 +121,19 @@ class UserAddressViewModel @Inject constructor(
         userServerId: Int,
         customer: CustomerUpdate
     ) = viewModelScope.launch {
-        val response= serverCrudRepository.updateUser(userServerId, customer)
+        try {
+            val response= serverCrudRepository.updateUser(userServerId, customer)
 
-        if (response.isSuccessful) {
-            //delay(2000)
-            eventsChannel.send(AuthEvents.Message("Updated successfully"))
-            eventsChannel.send(AuthEvents.ErrorCode(100))
+            if (response.isSuccessful) {
+                eventsChannel.send(AuthEvents.Message("Updated successfully"))
+                eventsChannel.send(AuthEvents.ErrorCode(100))
 
-        } else{
-            val error= response.errorBody().toString()
-            eventsChannel.send(AuthEvents.Message("$error: An error occurred. check your internet bundles"))
+            } else{
+                val error= response.errorBody().toString()
+                eventsChannel.send(AuthEvents.Message("$error: An error occurred. check your internet bundles"))
+            }
+        } catch (e: Exception){
+            eventsChannel.send(AuthEvents.Message("$e An error occured"))
         }
     }
 

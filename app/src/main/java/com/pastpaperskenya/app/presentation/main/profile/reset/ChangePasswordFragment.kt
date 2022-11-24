@@ -12,10 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.hideKeyboard
 import com.pastpaperskenya.app.databinding.FragmentChangePasswordBinding
-import com.pastpaperskenya.app.databinding.FragmentResetPasswordBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

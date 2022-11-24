@@ -3,8 +3,8 @@ package com.pastpaperskenya.app.di
 import android.app.Application
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
 import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepositoryImpl
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepositoryImpl
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
@@ -12,8 +12,8 @@ import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepository
-import com.pastpaperskenya.app.business.repository.auth.ServerCrudRepositoryImpl
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
+import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
 import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
@@ -38,13 +38,13 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesAuthRepository(authenticator: BaseAuthenticator): FirebaseRepository{
-        return FirebaseRepositoryImpl(authenticator)
+    fun providesAuthRepository(authenticator: BaseAuthenticator): FirebaseAuthRepository{
+        return FirebaseAuthRepositoryImpl(authenticator)
     }
 
     @Provides
     @Singleton
-    fun providesServerCrud(retrofitApiService: RetrofitApiService): ServerCrudRepository{
+    fun providesServerCrud(retrofitApiService: RetrofitApiService): ServerCrudRepository {
         return ServerCrudRepositoryImpl(retrofitApiService)
     }
 

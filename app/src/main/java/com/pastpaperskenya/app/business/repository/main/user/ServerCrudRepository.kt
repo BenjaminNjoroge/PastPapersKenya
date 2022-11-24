@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.business.repository.auth
+package com.pastpaperskenya.app.business.repository.main.user
 
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate

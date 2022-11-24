@@ -1,11 +1,9 @@
 package com.pastpaperskenya.app.presentation.auth.reset
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
-import com.pastpaperskenya.app.business.repository.auth.AuthEvents
-import com.pastpaperskenya.app.business.repository.auth.FirebaseRepository
+import com.pastpaperskenya.app.business.util.AuthEvents
+import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
-    private val repository: FirebaseRepository,
+    private val repository: FirebaseAuthRepository,
     private val datastore: DataStoreRepository
 ) : ViewModel() {
 

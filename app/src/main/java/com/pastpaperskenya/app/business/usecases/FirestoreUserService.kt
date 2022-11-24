@@ -15,7 +15,7 @@ interface FirestoreUserService {
         county: String?,
     )
 
-    //suspend fun getUserDetails(userId: String): UserDetails?
+    suspend fun getFirestoreUserDetails(userId: String): UserDetails?
 
     //suspend fun updateUserFcmToken(userId: String)
 }
