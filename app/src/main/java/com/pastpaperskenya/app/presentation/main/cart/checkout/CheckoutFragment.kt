@@ -55,7 +55,8 @@ class CheckoutFragment : Fragment() {
     private val progressStatus = 120
 
     private var netTotalAmount= 0
-    private var productId: Int= 0
+    private val lineItems= ArrayList<OrderLineItems>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,17 +91,6 @@ class CheckoutFragment : Fragment() {
         binding.checkoutProducts.layoutManager = linearLayoutManager
         binding.checkoutProducts.adapter = adapter
 
-        viewModel.cartResponse.observe(viewLifecycleOwner) { items ->
-
-            if (!items.isNullOrEmpty()) {
-                adapter.submitList(items)
-
-                for(item in items){
-                    productId= item.productId
-                }
-            }
-        }
-
         viewModel.totalPrice.observe(viewLifecycleOwner){ total->
             binding.productSubtotalPrice.text = "Total Ksh: $total"
             binding.paymentTotalPrice.text = "Total Ksh: $total"
@@ -108,6 +98,20 @@ class CheckoutFragment : Fragment() {
                 netTotalAmount= total
             }
         }
+
+        viewModel.cartResponse.observe(viewLifecycleOwner) { items ->
+
+            if (!items.isNullOrEmpty()) {
+                adapter.submitList(items)
+
+
+                for(item in items){
+                    lineItems.add(OrderLineItems(1, item.productId, item.totalPrice, item.totalPrice))
+                }
+
+            }
+        }
+
 
         viewModel.userResponse.observe(viewLifecycleOwner) { details ->
 
@@ -261,11 +265,6 @@ class CheckoutFragment : Fragment() {
 
                     binding.pbLoading.visibility= View.VISIBLE
                     val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
-
-                    val orderLineItems= OrderLineItems(1, productId, null)
-                    val lineItems= ArrayList<OrderLineItems>()
-
-                    lineItems.add(orderLineItems)
 
 
                     val order= CreateOrder("Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)

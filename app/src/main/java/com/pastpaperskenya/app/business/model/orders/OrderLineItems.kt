@@ -11,5 +11,8 @@ data class OrderLineItems (
     val productId: Int?,
 
     @SerializedName("total")
-    val total: String?
+    val total: String?,
+
+    @SerializedName("price")
+    val price: String?
         )
