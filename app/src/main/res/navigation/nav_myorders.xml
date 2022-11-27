@@ -3,24 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_myorders"
-    app:startDestination="@id/myOrdersFragment2">
+    app:startDestination="@id/myOrdersFragment">
+
 
     <fragment
-        android:id="@+id/myOrdersFragment2"
+        android:id="@+id/myOrdersFragment"
         android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersFragment"
         android:label="MyOrdersFragment"
         tools:layout="@layout/fragment_my_orders">
         <action
-            android:id="@+id/action_myOrdersFragment2_to_myOrdersDetailsFragment2"
-            app:destination="@id/myOrdersDetailsFragment2"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"/>
+            android:id="@+id/action_myOrdersFragment_to_myOrdersDetailsFragment"
+            app:destination="@id/myOrdersDetailsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/myOrdersDetailsFragment2"
+        android:id="@+id/myOrdersDetailsFragment"
         android:name="com.pastpaperskenya.app.presentation.main.profile.profile.myorders.MyOrdersDetailsFragment"
         android:label="MyOrdersDetailsFragment"
-        tools:layout="@layout/fragment_my_orders_details"/>
+        tools:layout="@layout/fragment_my_orders_details">
+
+
+        <argument android:name="id"
+            app:argType="integer"/>
+
+    </fragment>
 </navigation>

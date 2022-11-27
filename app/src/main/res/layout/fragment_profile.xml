@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.main.MainActivity">
+    tools:context=".presentation.main.MainActivity"
+    android:layout_marginBottom="@dimen/size_56dp">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -229,19 +230,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
-
-        <fragment
-            android:id="@+id/profile_fragments_container"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/size_5dp"
-            app:defaultNavHost="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tabLayout"
-            app:navGraph="@navigation/nav_account"
-            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         profileImage= view.findViewById(R.id.ivProfileImageP)
 
 
-
         clickListeners()
 
         binding.viewpager.adapter= PagerAdapter(this)
