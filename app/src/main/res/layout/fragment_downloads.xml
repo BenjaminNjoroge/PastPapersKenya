@@ -2,7 +2,7 @@
 
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parent_view"
+    android:id="@+id/swipe_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.main.MainActivity">
@@ -49,7 +49,7 @@
             android:textColor="@color/gray"
             android:text="You have no Downloads yet"
             android:layout_marginBottom="@dimen/size_10dp"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <ProgressBar
             android:id="@+id/pbLoading"

@@ -108,7 +108,7 @@ class CheckoutFragment : Fragment() {
 
 
                 for(item in items){
-                    lineItems.add(OrderLineItems(1, item.productId, item.totalPrice, item.totalPrice))
+                    lineItems.add(OrderLineItems(1, item.productId, item.productName,item.totalPrice, item.totalPrice))
                 }
 
 

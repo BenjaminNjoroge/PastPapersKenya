@@ -10,6 +10,9 @@ data class OrderLineItems (
     @SerializedName("product_id")
     val productId: Int?,
 
+    @SerializedName("name")
+    val name: String?,
+
     @SerializedName("total")
     val total: String?,
 

@@ -57,7 +57,7 @@ class DownloadsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        swipeRefreshLayout = view.findViewById(R.id.parent_view)
+        swipeRefreshLayout = view.findViewById(R.id.swipe_parent_view)
 
         if (NetworkChangeReceiver.isNetworkConnected()) {
             swipeRefreshLayout.setOnRefreshListener {
@@ -108,6 +108,8 @@ class DownloadsFragment : Fragment() {
             when (it.status) {
                 Resource.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
+                    binding.textEmpty.text= "Searching downloads"
+                    binding.textEmpty.visibility= View.VISIBLE
                     binding.downloadShimmer.shimmerCategoryLayout.visibility= View.VISIBLE
                 }
                 Resource.Status.SUCCESS -> {
