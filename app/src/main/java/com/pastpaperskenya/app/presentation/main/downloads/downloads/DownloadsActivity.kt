@@ -2,14 +2,11 @@ package com.pastpaperskenya.app.presentation.main.downloads.downloads
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -20,42 +17,29 @@ import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
 import com.pastpaperskenya.app.business.util.sealed.Resource
-import com.pastpaperskenya.app.databinding.FragmentDownloadsBinding
-import com.pastpaperskenya.app.presentation.main.MainActivity
+import com.pastpaperskenya.app.databinding.ActivityDownloadBinding
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
-class DownloadsFragment : Fragment() {
+class DownloadsActivity : AppCompatActivity() {
 
-    private var _binding: FragmentDownloadsBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityDownloadBinding
+    private val viewModel: DownloadsViewModel by viewModels()
 
-    private val viewModel: DownloadsFragmentViewModel by viewModels()
     private lateinit var downloadsAdapter: DownloadAdapter
 
     private lateinit var downloadDataList: ArrayList<Download>
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding= ActivityDownloadBinding.inflate(layoutInflater)
 
-        _binding = FragmentDownloadsBinding.inflate(inflater, container, false)
+        setContentView(binding.root)
 
-        (activity as MainActivity).supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
-
-        return binding.root
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        swipeRefreshLayout = view.findViewById(R.id.swipe_parent_view)
+        swipeRefreshLayout = findViewById(R.id.swipe_parent_view)
 
         if (NetworkChangeReceiver.isNetworkConnected()) {
             swipeRefreshLayout.setOnRefreshListener {
@@ -65,16 +49,16 @@ class DownloadsFragment : Fragment() {
         } else {
             try {
                 downloadDataList =
-                    AppPreference.getInstance(context).getDownloadList() as ArrayList<Download>;
+                    AppPreference.getInstance(this).getDownloadList() as ArrayList<Download>;
                 if (downloadDataList != null) {
                     if (downloadDataList.size > 0) {
                         binding.pbLoading.visibility = View.GONE
-                        AppPreference.getInstance(getContext()).setDownloadList(downloadDataList);
+                        AppPreference.getInstance(this).setDownloadList(downloadDataList);
                         setDownloadAdapter();
                     }
                 }
             } catch (e: Exception) {
-                Toast.makeText(context, "Downloads is empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Downloads is empty", Toast.LENGTH_LONG).show()
             }
 
         }
@@ -84,7 +68,7 @@ class DownloadsFragment : Fragment() {
     }
 
     private fun registerObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             viewModel.events.collect { events ->
                 when (events) {
                     is AuthEvents.Message -> {
@@ -102,7 +86,7 @@ class DownloadsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.downloads.observe(viewLifecycleOwner) {
+        viewModel.downloads.observe(this) {
             when (it.status) {
                 Resource.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
@@ -117,7 +101,7 @@ class DownloadsFragment : Fragment() {
                     swipeRefreshLayout.isRefreshing = false
 
                     if (downloadDataList.size > 0) {
-                        AppPreference.getInstance(context).downloadList = downloadDataList;
+                        AppPreference.getInstance(this).downloadList = downloadDataList;
                         binding.pbLoading.visibility = View.GONE
                         setDownloadAdapter();
 
@@ -130,17 +114,15 @@ class DownloadsFragment : Fragment() {
                 }
                 Resource.Status.ERROR -> {
                     binding.pbLoading.visibility = View.GONE
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
 
                     try {
                         downloadDataList =
-                            AppPreference.getInstance(context).downloadList as ArrayList<Download>;
-                        downloadsAdapter = DownloadAdapter(requireContext(), downloadDataList)
+                            AppPreference.getInstance(this).downloadList as ArrayList<Download>;
+                        downloadsAdapter = DownloadAdapter(this, downloadDataList)
                         setDownloadAdapter()
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            context,
-                            "$e oppss...there might be a problem with your internet connection",
+                        Toast.makeText(this, "$e oppss...there might be a problem with your internet connection",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -152,22 +134,20 @@ class DownloadsFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setDownloadAdapter() {
 
-        downloadsAdapter = DownloadAdapter(requireContext(), downloadDataList)
+        downloadsAdapter = DownloadAdapter(this, downloadDataList)
         binding.recyclerview.visibility= View.VISIBLE
         binding.textEmpty.visibility= View.GONE
         binding.downloadShimmer.shimmerCategoryLayout.visibility= View.GONE
 
-        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.recyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerview.adapter = downloadsAdapter
         downloadsAdapter.setItemClickListener(ViewItemListener { path ->
-            val dirPath: String = DownloadUtils.getRootDirPath(context?.applicationContext)
-            val intent = Intent(context, ViewPfdActivity::class.java)
+            val dirPath: String = DownloadUtils.getRootDirPath(this.applicationContext)
+            val intent = Intent(this, ViewPfdActivity::class.java)
             intent.putExtra("filepath", "$dirPath/$path")
             intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
             startActivity(intent)
         })
         downloadsAdapter.notifyDataSetChanged()
     }
-
-
 }
