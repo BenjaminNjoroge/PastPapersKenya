@@ -25,4 +25,8 @@ class CartRepository @Inject constructor(
         return cartService.getProductCount()
     }
 
+    suspend fun deleteAllCart(){
+        cartService.deleteAllCart()
+    }
+
 }

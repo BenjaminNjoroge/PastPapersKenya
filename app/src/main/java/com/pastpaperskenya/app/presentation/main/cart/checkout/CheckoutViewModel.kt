@@ -84,6 +84,10 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
+     fun deleteAllCart()= viewModelScope.launch{
+        cartRepository.deleteAllCart()
+    }
+
     private suspend fun getUserDetails(userId: Int){
         profileRepository.getUserDetails(userId).collect{
             _userResponse.postValue(it)

@@ -28,4 +28,8 @@ class CartServiceImpl @Inject constructor(
     override fun getProductCount(): Flow<Int?> {
         return appdao.getPriceCount()
     }
+
+    override suspend fun deleteAllCart() {
+        return appdao.deleteAllFromCart()
+    }
 }

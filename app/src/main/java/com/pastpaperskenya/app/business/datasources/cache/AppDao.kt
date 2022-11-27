@@ -92,5 +92,7 @@ interface AppDao {
     @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
     suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
 
+    @Query("DELETE FROM cart")
+    suspend fun deleteAllFromCart()
 
 }

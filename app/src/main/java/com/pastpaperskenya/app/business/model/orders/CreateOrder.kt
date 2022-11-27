@@ -3,6 +3,10 @@ package com.pastpaperskenya.app.business.model.orders
 import com.google.gson.annotations.SerializedName
 
 data class CreateOrder(
+
+    @SerializedName("customer_id")
+    val customerId: Int,
+
     @SerializedName("payment_method")
     val paymentMethod: String,
 

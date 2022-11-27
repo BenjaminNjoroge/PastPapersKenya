@@ -55,6 +55,8 @@ class CheckoutFragment : Fragment() {
     private val progressStatus = 120
 
     private var netTotalAmount= 0
+    private var customerId= 0
+
     private val lineItems= ArrayList<OrderLineItems>()
 
 
@@ -109,6 +111,7 @@ class CheckoutFragment : Fragment() {
                     lineItems.add(OrderLineItems(1, item.productId, item.totalPrice, item.totalPrice))
                 }
 
+
             }
         }
 
@@ -121,6 +124,7 @@ class CheckoutFragment : Fragment() {
              billingPhone = details.phone.toString()
             billingCounty= details.county.toString()
             billingCountry= details.country.toString()
+            customerId= details.userServerId!!
 
         }
 
@@ -130,6 +134,7 @@ class CheckoutFragment : Fragment() {
                     binding.pbLoading.visibility= View.VISIBLE
                 }
                 Resource.Status.SUCCESS->{
+                    viewModel.deleteAllCart()
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
@@ -267,7 +272,7 @@ class CheckoutFragment : Fragment() {
                     val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
 
 
-                    val order= CreateOrder("Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
+                    val order= CreateOrder(customerId,"Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
                     createNewOrder(order)
                 }
             })
