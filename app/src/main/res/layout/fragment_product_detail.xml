@@ -353,7 +353,7 @@
                         android:textStyle="bold"
                         android:layout_weight="1"/>
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <TextView
                         android:id="@+id/change_address"
                         style="@style/TextAppearance.AppCompat.Widget.Button"
                         android:layout_width="wrap_content"
@@ -365,7 +365,7 @@
                         android:background="@color/rave_lightish_grey_bg"
                         android:gravity="center"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/colorWhiteLight"
+                        android:textColor="@color/colorProgress"
                         android:text="Change Address" />
                 </LinearLayout>
 

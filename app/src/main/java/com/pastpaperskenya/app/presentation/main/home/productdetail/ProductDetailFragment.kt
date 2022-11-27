@@ -197,7 +197,6 @@ class ProductDetailFragment : Fragment() {
             }
         }
 
-        netTotalAmount= product?.sale_price!!.toInt()
 
         binding.paywithmpesa.setOnClickListener {
             showPaymentSheet()
