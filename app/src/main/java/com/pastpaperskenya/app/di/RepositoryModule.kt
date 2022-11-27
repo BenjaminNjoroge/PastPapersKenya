@@ -94,8 +94,8 @@ object RepositoryModule {
         ProductsRepository(cartService, retrofitApiService)
 
     @Provides
-    fun providesMyOrdersRepository(remoteDataSource: RemoteDataSource, database: AppDatabase): MyOrdersRepository=
-        MyOrdersRepository(remoteDataSource, database)
+    fun providesMyOrdersRepository(remoteDataSource: RemoteDataSource, database: AppDatabase, retrofitApiService: RetrofitApiService): MyOrdersRepository=
+        MyOrdersRepository(remoteDataSource, database, retrofitApiService)
 
     @Provides
     fun providesMyOrderDetailsRepository(database: AppDatabase, remoteDatasource: RemoteDataSource): MyOrdersDetailRepository=

@@ -19,7 +19,11 @@ import com.flutterwave.raveandroid.rave_java_commons.RaveConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.orders.CreateOrder
+import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
+import com.pastpaperskenya.app.business.model.orders.OrderLineItems
 import com.pastpaperskenya.app.business.util.Constants
+import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,12 +47,15 @@ class CheckoutFragment : Fragment() {
     private lateinit var billingFirstname:String
     private lateinit var billingLastname: String
     private lateinit var billingPhone: String
+    private lateinit var billingCounty: String
+    private lateinit var billingCountry: String
 
     private lateinit var mProgressDialog:ProgressDialog
 
     private val progressStatus = 120
 
     private var netTotalAmount= 0
+    private var productId: Int= 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,6 +94,10 @@ class CheckoutFragment : Fragment() {
 
             if (!items.isNullOrEmpty()) {
                 adapter.submitList(items)
+
+                for(item in items){
+                    productId= item.productId
+                }
             }
         }
 
@@ -104,7 +115,27 @@ class CheckoutFragment : Fragment() {
              billingFirstname = details.firstname.toString()
              billingLastname = details.lastname.toString()
              billingPhone = details.phone.toString()
+            billingCounty= details.county.toString()
+            billingCountry= details.country.toString()
 
+        }
+
+        viewModel.orderResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                Resource.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                Resource.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
+
+                }
+                Resource.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.paywithcard.setOnClickListener {
@@ -227,6 +258,18 @@ class CheckoutFragment : Fragment() {
                 } else {
                     mBottomSheetDialog.dismiss()
                     //generateToken(false, mobileNo)
+
+                    binding.pbLoading.visibility= View.VISIBLE
+                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
+
+                    val orderLineItems= OrderLineItems(1, productId, null)
+                    val lineItems= ArrayList<OrderLineItems>()
+
+                    lineItems.add(orderLineItems)
+
+
+                    val order= CreateOrder("Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
+                    createNewOrder(order)
                 }
             })
 
@@ -234,5 +277,9 @@ class CheckoutFragment : Fragment() {
             mBottomSheetDialog.show()
         }
 
+
+    private fun createNewOrder(order: CreateOrder){
+        viewModel.createOrder(order)
+    }
 
     }

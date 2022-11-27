@@ -6,11 +6,13 @@ import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
+import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.util.Constants.*
+import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -113,10 +115,6 @@ interface RetrofitApiService {
         @Field("accesstoken") accesstoken: String
     )
 
-    @POST()
-    @FormUrlEncoded
-    suspend fun createOrderNote(
-//        @Path("id") id: Int,
-//        @FieldMap()
-    )
+    @POST(API_REQUEST_ORDER)
+    suspend fun createOrder(@Body createOrder: CreateOrder): Response<CreateOrder>
 }

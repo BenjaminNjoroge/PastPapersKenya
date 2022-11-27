@@ -96,6 +96,10 @@
     <string name="empty_cart">You have no items in your shopping cart.\n Lets go buy something!</string>
     <string name="price">Price</string>
     <string name="pay_amount_text">Pay Amount</string>
+    <string name="downloads_available">Downloads Available</string>
+    <string name="myDownloads">My Downloads</string>
+    <string name="thanks_for_order">Sucess. Thankyou !!!</string>
+    <string name="order_confirmed">Order Confirmed</string>
 
     <string-array name="counties">
         <item>Mombasa</item>

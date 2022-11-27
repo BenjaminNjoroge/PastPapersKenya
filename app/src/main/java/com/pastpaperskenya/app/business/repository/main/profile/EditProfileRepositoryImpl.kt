@@ -1,17 +1,10 @@
 package com.pastpaperskenya.app.business.repository.main.profile
 
 import com.pastpaperskenya.app.business.datasources.remote.BaseDataSource
-import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
-import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
-import com.pastpaperskenya.app.business.util.sealed.Resource
-import dagger.hilt.android.scopes.ActivityRetainedScoped
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 

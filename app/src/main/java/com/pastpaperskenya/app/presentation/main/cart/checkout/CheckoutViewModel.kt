@@ -5,16 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
+import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
 import com.pastpaperskenya.app.business.repository.main.profile.ProfileRepository
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.sealed.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class CheckoutViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val profileRepository: ProfileRepository,
-    private val datastore: DataStoreRepository
+    private val datastore: DataStoreRepository,
+    private val orderRepository: MyOrdersRepository
 ) : ViewModel() {
 
     private var  _cartResponse= MutableLiveData<List<Cart>>()
@@ -37,6 +40,10 @@ class CheckoutViewModel @Inject constructor(
 
     private var _totalPrice= MutableLiveData<Int?>(0)
     val totalPrice: LiveData<Int?> = _totalPrice
+
+    private var _orderResponse= MutableLiveData<Resource<CreateOrder>>()
+    val orderResponse: LiveData<Resource<CreateOrder>> = _orderResponse
+
 
     init {
 
@@ -65,6 +72,10 @@ class CheckoutViewModel @Inject constructor(
         viewModelScope.launch {
             getTotalPrice()
         }
+    }
+
+     fun createOrder(order: CreateOrder)= viewModelScope.launch{
+        _orderResponse.value= orderRepository.createOrder(order)
     }
 
     private suspend fun getCartItems(){

@@ -52,7 +52,6 @@ class MyOrdersDetailsFragment : Fragment() {
                         billingEmail.text= it.data?.billing?.email
                         billingPhone.text= it.data?.billing?.phone
                         billingZone.text= it.data?.billing?.country + " | " + it.data?.billing?.state
-                        billingPostalAddress.text= it.data?.billing?.address_1
                         checkoutTotal.text= it.data?.line_items?.get(0)?.total
                     }
                 }
