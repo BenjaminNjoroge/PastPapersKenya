@@ -18,6 +18,7 @@ import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.ActivityDownloadBinding
+import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -149,5 +150,13 @@ class DownloadsActivity : AppCompatActivity() {
             startActivity(intent)
         })
         downloadsAdapter.notifyDataSetChanged()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent= Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
