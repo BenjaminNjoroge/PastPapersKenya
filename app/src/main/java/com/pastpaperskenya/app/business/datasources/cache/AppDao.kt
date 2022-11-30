@@ -44,7 +44,7 @@ interface AppDao {
     @Query("SELECT * FROM orders")
     fun getMyOrdersDetails(): LiveData<Orders>
 
-    @Query("SELECT * FROM orders WHERE customer_id= :customerId")
+    @Query("SELECT * FROM orders WHERE customer_id= :customerId ORDER BY date_created DESC")
     fun getMyOrders(customerId: Int): LiveData<List<Orders>>
 
     @Query("SELECT * FROM users WHERE userServerId=:userServerId")

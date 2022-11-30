@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse.MpesaPaymentReqResponseData
 
 class MpesaPaymentReqResponse {
+
     @SerializedName("status")
     var status: String? = null
 

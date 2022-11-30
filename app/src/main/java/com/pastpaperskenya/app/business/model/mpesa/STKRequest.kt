@@ -3,8 +3,16 @@ package com.pastpaperskenya.app.business.model.mpesa
 import com.google.gson.annotations.SerializedName
 
 class STKRequest(
-    @field:SerializedName("total_amount") var total_amount: String,
-    @field:SerializedName("phone_number") var phone_number: String,
-    @field:SerializedName("order_id") var order_id: String,
-    @field:SerializedName("accesstoken") var accesstoken: String
+
+    @SerializedName("total_amount")
+    val total_amount: String,
+
+    @SerializedName("phone_number")
+    val phone_number: String,
+
+    @SerializedName("order_id")
+    val order_id: String,
+
+    @SerializedName("accesstoken")
+    val accesstoken: String
 )

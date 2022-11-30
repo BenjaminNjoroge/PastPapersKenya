@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
+import com.pastpaperskenya.app.business.repository.main.payment.PaymentRepository
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
 import com.pastpaperskenya.app.business.repository.main.profile.ProfileRepository
 import com.pastpaperskenya.app.business.util.AuthEvents
@@ -26,7 +28,8 @@ class CheckoutViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val profileRepository: ProfileRepository,
     private val datastore: DataStoreRepository,
-    private val orderRepository: MyOrdersRepository
+    private val orderRepository: MyOrdersRepository,
+    private val paymentRepository: PaymentRepository
 ) : ViewModel() {
 
     private var  _cartResponse= MutableLiveData<List<Cart>>()
@@ -43,6 +46,9 @@ class CheckoutViewModel @Inject constructor(
 
     private var _orderResponse= MutableLiveData<Resource<CreateOrder>>()
     val orderResponse: LiveData<Resource<CreateOrder>> = _orderResponse
+
+    private var _mpesaTokenResponse= MutableLiveData<Resource<MpesaTokenResponse>>()
+    val mpesaTokenResponse: LiveData<Resource<MpesaTokenResponse>> = _mpesaTokenResponse
 
 
     init {
@@ -72,6 +78,10 @@ class CheckoutViewModel @Inject constructor(
         viewModelScope.launch {
             getTotalPrice()
         }
+    }
+
+    fun getMpesaToken()= viewModelScope.launch{
+        _mpesaTokenResponse.value= paymentRepository.getMpesaToken()
     }
 
      fun createOrder(order: CreateOrder)= viewModelScope.launch{

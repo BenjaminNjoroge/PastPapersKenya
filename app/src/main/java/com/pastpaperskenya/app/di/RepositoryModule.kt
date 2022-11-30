@@ -16,6 +16,7 @@ import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepositor
 import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepositoryImpl
 import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
+import com.pastpaperskenya.app.business.repository.main.payment.PaymentRepository
 import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
 import com.pastpaperskenya.app.business.usecases.CartService
 import com.pastpaperskenya.app.business.usecases.LocalUserService
@@ -29,6 +30,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+
+    @Provides
+    @Singleton
+    fun providesPaymentRepository(retrofitApiService: RetrofitApiService):PaymentRepository{
+        return PaymentRepository(retrofitApiService)
+    }
 
     @Provides
     @Singleton

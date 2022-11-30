@@ -2,9 +2,9 @@ package com.pastpaperskenya.app.di
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
+import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
+import com.pastpaperskenya.app.business.repository.main.payment.PaymentRepository
 import com.pastpaperskenya.app.business.usecases.*
 import dagger.Module
 import dagger.Provides
@@ -37,4 +37,5 @@ object AppModule {
 
     @Provides
     fun providesWishlistService(database: AppDatabase): WishlistService= WishlistServiceImpl(database)
+
 }

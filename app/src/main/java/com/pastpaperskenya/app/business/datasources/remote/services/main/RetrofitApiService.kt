@@ -5,12 +5,16 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
+import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
+import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
+import com.pastpaperskenya.app.business.model.mpesa.STKRequest
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
+import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.Constants.*
 import org.json.JSONObject
 import retrofit2.Response
@@ -103,18 +107,27 @@ interface RetrofitApiService {
         @Path("id") id: Int?
     ):Response<Orders>
 
-    @PUT(MPESA_TOKEN)
-    suspend fun getMpesaToken(): MpesaTokenResponse
+    @POST(API_REQUEST_ORDER)
+    suspend fun createOrder(@Body createOrder: CreateOrder): Response<CreateOrder>
 
-    @POST(MPESA_STK_REQUEST)
+
+    @PUT(Constants.MPESA_TOKEN)
+    suspend fun getMpesaToken(): Response<MpesaTokenResponse>
+
+    @POST(Constants.MPESA_STK_REQUEST)
     @FormUrlEncoded
-    suspend fun stkpushRequest(
+    suspend fun stkPushRequest(
         @Field("total_amount") total_amount: String,
         @Field("phone_number") phone_number: String,
         @Field("order_id") order_id: String,
         @Field("accesstoken") accesstoken: String
-    )
+    ): Response<MpesaPaymentReqResponse>
 
-    @POST(API_REQUEST_ORDER)
-    suspend fun createOrder(@Body createOrder: CreateOrder): Response<CreateOrder>
+    @POST(Constants.CHECK_PAYMENT_STATUS)
+    @FormUrlEncoded
+    suspend fun checkPaymentStatus(
+        @Field("checkout_id") checkoutId: String,
+        @Field("accesstoken") accessToken: String,
+    ): Response<CheckMpesaPaymentStatus>
+
 }

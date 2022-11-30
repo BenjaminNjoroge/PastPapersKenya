@@ -44,20 +44,20 @@ class CheckoutFragment : Fragment() {
     private lateinit var mBehavior: BottomSheetBehavior<*>
 
     private lateinit var billingEmail: String
-    private lateinit var billingFirstname:String
+    private lateinit var billingFirstname: String
     private lateinit var billingLastname: String
     private lateinit var billingPhone: String
     private lateinit var billingCounty: String
     private lateinit var billingCountry: String
 
-    private lateinit var mProgressDialog:ProgressDialog
+    private lateinit var mProgressDialog: ProgressDialog
 
     private val progressStatus = 120
 
-    private var netTotalAmount= 0
-    private var customerId= 0
+    private var netTotalAmount = 0
+    private var customerId = 0
 
-    private val lineItems= ArrayList<OrderLineItems>()
+    private val lineItems = ArrayList<OrderLineItems>()
 
 
     override fun onCreateView(
@@ -67,9 +67,10 @@ class CheckoutFragment : Fragment() {
 
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
-        viewModel.userResponse.observe(viewLifecycleOwner){ details->
+        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
             if (details.email!!.isEmpty() || details.lastname.toString().isEmpty()
-                || details.firstname.toString().isEmpty() || details.phone.toString().isEmpty()){
+                || details.firstname.toString().isEmpty() || details.phone.toString().isEmpty()
+            ) {
 
                 findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
             }
@@ -79,7 +80,6 @@ class CheckoutFragment : Fragment() {
 
         return binding.root
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,59 +93,123 @@ class CheckoutFragment : Fragment() {
         binding.checkoutProducts.layoutManager = linearLayoutManager
         binding.checkoutProducts.adapter = adapter
 
-        viewModel.totalPrice.observe(viewLifecycleOwner){ total->
+        viewModel.totalPrice.observe(viewLifecycleOwner) { total ->
             binding.productSubtotalPrice.text = "Total Ksh: $total"
             binding.paymentTotalPrice.text = "Total Ksh: $total"
             if (total != null) {
-                netTotalAmount= total
+                netTotalAmount = total
             }
         }
 
+        registerObservers()
+
+        clickListeners()
+    }
+
+
+    private fun showPaymentProcessingDialog() {
+        mProgressDialog.setMessage("Processing your request")
+        mProgressDialog.setTitle("Please Wait... " + progressStatus.toString() + "sec")
+        mProgressDialog.setIndeterminate(true)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+        mProgressDialog.show()
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
+
+        if (requestCode == RaveConstants.RAVE_REQUEST_CODE && data != null) {
+            val message = data.getStringExtra("response")
+            if (resultCode == RavePayActivity.RESULT_SUCCESS) {
+                // placeOrderWithCard()
+
+                //Toast.makeText(this, "SUCCESS " + message, Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RavePayActivity.RESULT_ERROR) {
+                Toast.makeText(requireContext(), "ERROR $message", Toast.LENGTH_SHORT).show()
+            } else if (resultCode == RavePayActivity.RESULT_CANCELLED) {
+                Toast.makeText(requireContext(), "CANCELLED $message", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    private fun createNewOrder(order: CreateOrder) {
+        viewModel.createOrder(order)
+    }
+
+    private fun registerObservers() {
+        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
+
+            billingEmail = details.email.toString()
+            billingFirstname = details.firstname.toString()
+            billingLastname = details.lastname.toString()
+            billingPhone = details.phone.toString()
+            billingCounty = details.county.toString()
+            billingCountry = details.country.toString()
+            customerId = details.userServerId!!
+
+        }
         viewModel.cartResponse.observe(viewLifecycleOwner) { items ->
 
             if (!items.isNullOrEmpty()) {
                 adapter.submitList(items)
 
 
-                for(item in items){
-                    lineItems.add(OrderLineItems(1, item.productId, item.productName,item.totalPrice, item.totalPrice))
+                for (item in items) {
+                    lineItems.add(
+                        OrderLineItems(
+                            1,
+                            item.productId,
+                            item.productName,
+                            item.totalPrice,
+                            item.totalPrice
+                        )
+                    )
                 }
 
 
             }
         }
 
+        viewModel.orderResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Resource.Status.LOADING -> {
+                    binding.pbLoading.visibility = View.VISIBLE
+                }
+                Resource.Status.SUCCESS -> {
+                    viewModel.deleteAllCart()
+                    binding.pbLoading.visibility = View.GONE
+                    Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
 
-        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
-
-             billingEmail = details.email.toString()
-             billingFirstname = details.firstname.toString()
-             billingLastname = details.lastname.toString()
-             billingPhone = details.phone.toString()
-            billingCounty= details.county.toString()
-            billingCountry= details.country.toString()
-            customerId= details.userServerId!!
-
+                }
+                Resource.Status.ERROR -> {
+                    binding.pbLoading.visibility = View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
-        viewModel.orderResponse.observe(viewLifecycleOwner){
+        viewModel.mpesaTokenResponse.observe(viewLifecycleOwner){
             when(it.status){
                 Resource.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
                 Resource.Status.SUCCESS->{
-                    viewModel.deleteAllCart()
                     binding.pbLoading.visibility= View.GONE
-                    Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
-
+                    Toast.makeText(context, it.data?.mpesaTokenData?.token, Toast.LENGTH_SHORT).show()
                 }
                 Resource.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
                 }
             }
         }
+    }
+
+    private fun clickListeners() {
 
         binding.paywithcard.setOnClickListener {
             Log.d(TAG, "onViewCreated: onclick")
@@ -169,62 +233,8 @@ class CheckoutFragment : Fragment() {
 
         }
 
-            binding.paywithmpesa.setOnClickListener {
-                showPaymentSheet()
-            }
+        binding.paywithmpesa.setOnClickListener {
 
-            binding.changeAddress.setOnClickListener {
-                findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
-            }
-
-        }
-
-
-    private fun showPaymentProcessingDialog() {
-        mProgressDialog.setMessage("Processing your request")
-        mProgressDialog.setTitle("Please Wait... " + progressStatus.toString() + "sec")
-        mProgressDialog.setIndeterminate(true)
-        mProgressDialog.setCanceledOnTouchOutside(false)
-        mProgressDialog.show()
-//        // Start lengthy operation in a background thread
-//        Thread {
-//            while (progressStatus > 1) {
-//                try {
-//                    // Here I'm making thread sleep to show progress
-//                    Thread.sleep(1000)
-//                    progressStatus -= 1
-//                } catch (e: InterruptedException) {
-//                    e.printStackTrace()
-//                }
-//                // Update the progress bar
-//                handler.post(Runnable { mProgressDialog.setTitle("Please Wait... " + progressStatus.toString() + "sec") })
-//            }
-//            mProgressDialog.dismiss()
-//            progressStatus = timerCount
-//        }.start()
-    }
-
-        override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
-
-            if (requestCode == RaveConstants.RAVE_REQUEST_CODE && data != null) {
-                val message = data.getStringExtra("response")
-                if (resultCode == RavePayActivity.RESULT_SUCCESS) {
-                    // placeOrderWithCard()
-
-                    //Toast.makeText(this, "SUCCESS " + message, Toast.LENGTH_SHORT).show();
-                } else if (resultCode == RavePayActivity.RESULT_ERROR) {
-                    Toast.makeText(requireContext(), "ERROR $message", Toast.LENGTH_SHORT).show()
-                } else if (resultCode == RavePayActivity.RESULT_CANCELLED) {
-                    Toast.makeText(requireContext(), "CANCELLED $message", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            } else {
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-        }
-
-
-        private fun showPaymentSheet() {
             mBottomSheetDialog = BottomSheetDialog(requireContext())
             val view: View = layoutInflater.inflate(
                 R.layout.mpesa_payment_sheet,
@@ -239,14 +249,14 @@ class CheckoutFragment : Fragment() {
             val img_close: ImageView = view.findViewById(R.id.img_close)
             img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
             val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
-            amount_tv.text = "Pay $netTotalAmount"+"ksh"
+            amount_tv.text = "Pay $netTotalAmount" + "ksh"
 
             val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
             val payNow_Btn: Button = view.findViewById(R.id.btnPay)
 
-        if (!billingPhone.isNullOrEmpty()) {
-            phoneNo.setText(billingPhone)
-        }
+            if (!billingPhone.isNullOrEmpty()) {
+                phoneNo.setText(billingPhone)
+            }
             payNow_Btn.setOnClickListener(View.OnClickListener {
                 val mobileNo = phoneNo.text.toString().trim { it <= ' ' }
                 if (mobileNo.isEmpty()) {
@@ -268,12 +278,14 @@ class CheckoutFragment : Fragment() {
                     mBottomSheetDialog.dismiss()
                     //generateToken(false, mobileNo)
 
-                    binding.pbLoading.visibility= View.VISIBLE
-                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
+                    binding.pbLoading.visibility = View.VISIBLE
+//                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
+//
+//
+//                    val order= CreateOrder(customerId,"Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
+//                    createNewOrder(order)
 
-
-                    val order= CreateOrder(customerId,"Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
-                    createNewOrder(order)
+                    viewModel.getMpesaToken()
                 }
             })
 
@@ -281,9 +293,9 @@ class CheckoutFragment : Fragment() {
             mBottomSheetDialog.show()
         }
 
-
-    private fun createNewOrder(order: CreateOrder){
-        viewModel.createOrder(order)
+        binding.changeAddress.setOnClickListener {
+            findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
+        }
     }
 
-    }
+}
