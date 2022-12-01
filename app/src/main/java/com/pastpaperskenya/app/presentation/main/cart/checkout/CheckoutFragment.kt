@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +24,7 @@ import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
 import com.pastpaperskenya.app.business.model.orders.OrderLineItems
 import com.pastpaperskenya.app.business.util.Constants
+import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
 import com.pastpaperskenya.app.business.util.sealed.Resource
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,11 +61,10 @@ class CheckoutFragment : Fragment() {
 
     private val lineItems = ArrayList<OrderLineItems>()
 
+    private var orderId: Int= 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
 
@@ -135,9 +136,6 @@ class CheckoutFragment : Fragment() {
         }
     }
 
-    private fun createNewOrder(order: CreateOrder) {
-        viewModel.createOrder(order)
-    }
 
     private fun registerObservers() {
         viewModel.userResponse.observe(viewLifecycleOwner) { details ->
@@ -181,8 +179,10 @@ class CheckoutFragment : Fragment() {
                 Resource.Status.SUCCESS -> {
                     viewModel.deleteAllCart()
                     binding.pbLoading.visibility = View.GONE
-                    Toast.makeText(context, "Order success", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
+
+                    Toast.makeText(context, "Please wait...", Toast.LENGTH_SHORT).show()
+                    orderId= it.data?.orderId!!
+
 
                 }
                 Resource.Status.ERROR -> {
@@ -199,11 +199,51 @@ class CheckoutFragment : Fragment() {
                 }
                 Resource.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
-                    Toast.makeText(context, it.data?.mpesaTokenData?.token, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
+                    viewModel.createStkpush(netTotalAmount.toString(), sanitizePhoneNumber(billingPhone), orderId.toString(),
+                        it.data?.mpesaTokenData?.token!!
+                    )
                 }
                 Resource.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
+                }
+            }
+        }
+
+        viewModel.stkpushResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                Resource.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+
+                }
+                Resource.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
+                    viewModel.updateOrder(orderId, true, customerId)
+
+                }
+                Resource.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
+
+        viewModel.updateorderResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                Resource.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                Resource.Status.SUCCESS->{
+                    Toast.makeText(context, "Order Success", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
+                }
+                Resource.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -276,16 +316,14 @@ class CheckoutFragment : Fragment() {
                     phoneNo.requestFocus()
                 } else {
                     mBottomSheetDialog.dismiss()
-                    //generateToken(false, mobileNo)
 
                     binding.pbLoading.visibility = View.VISIBLE
-//                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, billingPhone)
-//
-//
-//                    val order= CreateOrder(customerId,"Mpesa", "Paid with mpesa", true, orderBillingProperties, lineItems)
-//                    createNewOrder(order)
+                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, sanitizePhoneNumber(billingPhone))
 
+                    val order= CreateOrder(null, null, customerId,"Mpesa", "Paid with mpesa", false, orderBillingProperties, lineItems)
+                    viewModel.createOrder(order)
                     viewModel.getMpesaToken()
+
                 }
             })
 
@@ -297,5 +335,7 @@ class CheckoutFragment : Fragment() {
             findNavController().navigate(R.id.action_checkoutFragment_to_userAddressFragment)
         }
     }
+
+
 
 }

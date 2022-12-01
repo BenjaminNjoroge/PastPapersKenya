@@ -7,7 +7,6 @@ import com.pastpaperskenya.app.business.datasources.remote.services.main.Retrofi
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.util.networkBoundResource
 import com.pastpaperskenya.app.business.util.sealed.Resource
-import retrofit2.Response
 import javax.inject.Inject
 
 class MyOrdersRepository @Inject constructor(
@@ -26,5 +25,9 @@ class MyOrdersRepository @Inject constructor(
 
     suspend fun createOrder(order: CreateOrder): Resource<CreateOrder>{
         return safeApiCall { retrofitApiService.createOrder(order) }
+    }
+
+    suspend fun updateOrder(id: Int, paid: Boolean, customerId: Int): Resource<CreateOrder>{
+        return safeApiCall { retrofitApiService.updateOrder(id, paid, customerId) }
     }
 }

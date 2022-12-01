@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.user.UserDetails
@@ -47,8 +48,14 @@ class CheckoutViewModel @Inject constructor(
     private var _orderResponse= MutableLiveData<Resource<CreateOrder>>()
     val orderResponse: LiveData<Resource<CreateOrder>> = _orderResponse
 
+    private var _updateorderResponse= MutableLiveData<Resource<CreateOrder>>()
+    val updateorderResponse: LiveData<Resource<CreateOrder>> = _updateorderResponse
+
     private var _mpesaTokenResponse= MutableLiveData<Resource<MpesaTokenResponse>>()
     val mpesaTokenResponse: LiveData<Resource<MpesaTokenResponse>> = _mpesaTokenResponse
+
+    private var _stkpushResponse= MutableLiveData<Resource<MpesaPaymentReqResponse>>()
+    val stkpushResponse: LiveData<Resource<MpesaPaymentReqResponse>> = _stkpushResponse
 
 
     init {
@@ -86,6 +93,14 @@ class CheckoutViewModel @Inject constructor(
 
      fun createOrder(order: CreateOrder)= viewModelScope.launch{
         _orderResponse.value= orderRepository.createOrder(order)
+    }
+
+    fun updateOrder(id: Int, paid: Boolean,  customerId: Int)= viewModelScope.launch{
+        _updateorderResponse.value= orderRepository.updateOrder(id, paid, customerId)
+    }
+
+    fun createStkpush(total_amount: String, phone_number: String, order_id: String, accesstoken: String)= viewModelScope.launch {
+        _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
     }
 
     private suspend fun getCartItems(){

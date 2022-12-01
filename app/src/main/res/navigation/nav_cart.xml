@@ -55,5 +55,15 @@
         android:id="@+id/orderConfirmedFragment"
         android:name="com.pastpaperskenya.app.presentation.main.cart.orderconfirmed.OrderConfirmedFragment"
         android:label="Order Confirmed"
-        tools:layout="@layout/fragment_order_confirmed"/>
+        tools:layout="@layout/fragment_order_confirmed">
+        <action
+            android:id="@+id/action_orderConfirmedFragment_to_cartFragment"
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/cartFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+    </fragment>
 </navigation>

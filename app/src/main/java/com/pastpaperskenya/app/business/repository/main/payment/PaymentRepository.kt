@@ -24,4 +24,5 @@ class PaymentRepository @Inject constructor(
     suspend fun checkPaymentStatus(checkoutId: String, accesstoken: String): Resource<CheckMpesaPaymentStatus> {
         return safeApiCall { retrofitApiService.checkPaymentStatus(checkoutId, accesstoken) }
     }
+
 }

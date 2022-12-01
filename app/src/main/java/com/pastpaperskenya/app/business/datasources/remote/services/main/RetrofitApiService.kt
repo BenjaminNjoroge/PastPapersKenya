@@ -8,15 +8,26 @@ import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
-import com.pastpaperskenya.app.business.model.mpesa.STKRequest
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.product.ProductTag
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
-import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.Constants.*
-import org.json.JSONObject
+import com.pastpaperskenya.app.business.util.Constants.API_CANCEL_ORDER
+import com.pastpaperskenya.app.business.util.Constants.API_CUSTOMER
+import com.pastpaperskenya.app.business.util.Constants.API_CUSTOMER_ID
+import com.pastpaperskenya.app.business.util.Constants.API_DOWNLOAD
+import com.pastpaperskenya.app.business.util.Constants.API_PRODUCTS
+import com.pastpaperskenya.app.business.util.Constants.API_PRODUCT_CATEGORIES
+import com.pastpaperskenya.app.business.util.Constants.API_PRODUCT_DETAIL
+import com.pastpaperskenya.app.business.util.Constants.API_PRODUCT_FILTER_TAGS
+import com.pastpaperskenya.app.business.util.Constants.API_PRODUCT_TAGS_ID
+import com.pastpaperskenya.app.business.util.Constants.API_REQUEST_ORDER
+import com.pastpaperskenya.app.business.util.Constants.API_UPDATE_ORDER
+import com.pastpaperskenya.app.business.util.Constants.CHECK_PAYMENT_STATUS
+import com.pastpaperskenya.app.business.util.Constants.KEY_ID
+import com.pastpaperskenya.app.business.util.Constants.MPESA_STK_REQUEST
+import com.pastpaperskenya.app.business.util.Constants.MPESA_TOKEN
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -110,11 +121,19 @@ interface RetrofitApiService {
     @POST(API_REQUEST_ORDER)
     suspend fun createOrder(@Body createOrder: CreateOrder): Response<CreateOrder>
 
+    @PUT(API_UPDATE_ORDER)
+    @FormUrlEncoded
+    suspend fun updateOrder(
+        @Path (KEY_ID) id: Int,
+        @Field ("set_paid") paid: Boolean,
+        @Field ("customer_id") customerId: Int
+    ): Response<CreateOrder>
 
-    @PUT(Constants.MPESA_TOKEN)
+
+    @PUT(MPESA_TOKEN)
     suspend fun getMpesaToken(): Response<MpesaTokenResponse>
 
-    @POST(Constants.MPESA_STK_REQUEST)
+    @POST(MPESA_STK_REQUEST)
     @FormUrlEncoded
     suspend fun stkPushRequest(
         @Field("total_amount") total_amount: String,
@@ -123,7 +142,7 @@ interface RetrofitApiService {
         @Field("accesstoken") accesstoken: String
     ): Response<MpesaPaymentReqResponse>
 
-    @POST(Constants.CHECK_PAYMENT_STATUS)
+    @POST(CHECK_PAYMENT_STATUS)
     @FormUrlEncoded
     suspend fun checkPaymentStatus(
         @Field("checkout_id") checkoutId: String,

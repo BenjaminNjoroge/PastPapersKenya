@@ -198,7 +198,7 @@
                     <EditText
                         android:id="@+id/input_billing_phone"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/size_15dp"
                         android:layout_toEndOf="@+id/billing_icon_phone"

@@ -22,6 +22,7 @@ import com.pastpaperskenya.app.business.model.user.CustomerBilling
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
 import com.pastpaperskenya.app.databinding.FragmentUserAddressBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -109,28 +110,15 @@ class UserAddressFragment : Fragment() {
             val lastname = binding.inputBillingLastName.text.toString()
             val phone = binding.inputBillingPhone.text.toString()
 
-            viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
-            viewModel.updateLocalDetails(
-                phone,
-                firstname,
-                lastname,
-                country,
-                county,
-                convertIntoNumeric(userServerId)
-            )
+            viewModel.updateFirestoreDetails(userId, sanitizePhoneNumber(phone), firstname, lastname, country, county)
+            viewModel.updateLocalDetails(sanitizePhoneNumber(phone), firstname, lastname, country, county, convertIntoNumeric(userServerId))
 
             binding.rotateProgress.visibility = View.VISIBLE
 
             val billing= CustomerBilling(county, country, phone)
             val customer= CustomerUpdate(firstname, lastname, billing)
 
-            viewModel.fieldsChecker(
-                convertIntoNumeric(userServerId),
-                phone,
-                firstname,
-                lastname,
-                customer
-            )
+            viewModel.fieldsChecker(convertIntoNumeric(userServerId), sanitizePhoneNumber(phone), firstname, lastname, customer)
 
         }
 

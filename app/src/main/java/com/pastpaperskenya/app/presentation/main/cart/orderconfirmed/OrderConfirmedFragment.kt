@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.fragment.findNavController
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.databinding.FragmentOrderConfirmedBinding
 import com.pastpaperskenya.app.databinding.FragmentResetPasswordBinding
@@ -16,6 +18,15 @@ class OrderConfirmedFragment : Fragment() {
 
     private var _binding: FragmentOrderConfirmedBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_orderConfirmedFragment_to_cartFragment)
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,5 +47,7 @@ class OrderConfirmedFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+
 
 }
