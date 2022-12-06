@@ -2,6 +2,9 @@ package com.pastpaperskenya.app.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
+
+    private var isPressedOnce: Boolean = false
 
     private lateinit var navHostController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -66,4 +71,16 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
     }
 
 
+    override fun onBackPressed() {
+        if(isPressedOnce){
+            super.onBackPressed()
+            return
+        }
+        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+        isPressedOnce= true
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            isPressedOnce= false
+        }, 2000)
+    }
 }

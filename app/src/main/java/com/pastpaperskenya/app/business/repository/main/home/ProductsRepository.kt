@@ -4,7 +4,7 @@ import com.pastpaperskenya.app.business.datasources.remote.services.main.Retrofi
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.usecases.CartService
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -17,13 +17,13 @@ class ProductsRepository @Inject constructor(
     private val retrofitApiService: RetrofitApiService,
 ) {
 
-    fun getProducts(perpage: Int, category:String):Flow<Resource<List<Product>>>{
+    fun getProducts(perpage: Int, category:String):Flow<NetworkResult<List<Product>>>{
         return flow {
-            emit(Resource.loading())
+            emit(NetworkResult.loading())
             val response= retrofitApiService.getProductsList(perpage, category)
-            emit(Resource.success(response))
+            emit(NetworkResult.success(response))
         }.catch { e->
-            emit(Resource.error(e.message ?: "Unkwown error"))
+            emit(NetworkResult.error(e.message ?: "Unkwown error"))
         }.flowOn(Dispatchers.IO)
     }
 

@@ -14,7 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentSubCategoryBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,15 +62,15 @@ class SubCategoryFragment : Fragment(), SubCategoryAdapter.ClickListener{
     private fun registerObservers(){
         subCategoryViewModel.category.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility=View.GONE
                     if (!it.data.isNullOrEmpty()) subCategoryAdapter.submitList(it.data) else binding.pbLoading.visibility= View.VISIBLE
                 }
 
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }

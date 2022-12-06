@@ -1,7 +1,7 @@
 package com.pastpaperskenya.app.business.repository.main.downloads
 
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -13,12 +13,12 @@ class DownloadsRepository @Inject constructor(
 ){
 
         suspend fun getDownloads(id: Int?) = flow{
-        emit(Resource.loading())
+        emit(NetworkResult.loading())
 
         val downloadsResponse= retrofitApiService.getDownloads(id)
-        emit(Resource.success(downloadsResponse))
+        emit(NetworkResult.success(downloadsResponse))
     }.catch { e->
-        emit(Resource.error(e.message ?: "Unkwown error"))
+        emit(NetworkResult.error(e.message ?: "Unkwown error"))
     }.flowOn(Dispatchers.IO)
 
 

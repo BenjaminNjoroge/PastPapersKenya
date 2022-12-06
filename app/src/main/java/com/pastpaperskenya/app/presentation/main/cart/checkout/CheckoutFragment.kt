@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Nullable
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.flutterwave.raveandroid.RavePayActivity
@@ -23,18 +25,18 @@ import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
 import com.pastpaperskenya.app.business.model.orders.OrderLineItems
+import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
-
+import kotlinx.coroutines.launch
 
 private const val TAG = "CheckoutFragment"
 
 @AndroidEntryPoint
 class CheckoutFragment : Fragment() {
-
 
     private val viewModel: CheckoutViewModel by viewModels()
     private var _binding: FragmentCheckoutBinding? = null
@@ -52,6 +54,8 @@ class CheckoutFragment : Fragment() {
     private lateinit var billingCounty: String
     private lateinit var billingCountry: String
 
+    private lateinit var accessToken: String
+
     private lateinit var mProgressDialog: ProgressDialog
 
     private val progressStatus = 120
@@ -63,6 +67,21 @@ class CheckoutFragment : Fragment() {
 
     private var orderId: Int= 0
 
+    private var paymentSuccess: String?=null
+    private var paymentError: String?= null
+
+    private val startActivityForResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+        if(result.resultCode == 1001) {
+            paymentSuccess= result.data?.getStringExtra("success_result")
+
+            viewModel.updateOrder(orderId, true, customerId)
+
+        } else if(result.resultCode== 2001){
+            val results= result.data
+            paymentError= results?.getStringExtra("error_result")
+            Toast.makeText(context, paymentError, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -105,6 +124,8 @@ class CheckoutFragment : Fragment() {
         registerObservers()
 
         clickListeners()
+
+        listenToChannels()
     }
 
 
@@ -173,11 +194,10 @@ class CheckoutFragment : Fragment() {
 
         viewModel.orderResponse.observe(viewLifecycleOwner) {
             when (it.status) {
-                Resource.Status.LOADING -> {
+                NetworkResult.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
                 }
-                Resource.Status.SUCCESS -> {
-                    viewModel.deleteAllCart()
+                NetworkResult.Status.SUCCESS -> {
                     binding.pbLoading.visibility = View.GONE
 
                     Toast.makeText(context, "Please wait...", Toast.LENGTH_SHORT).show()
@@ -185,7 +205,7 @@ class CheckoutFragment : Fragment() {
 
 
                 }
-                Resource.Status.ERROR -> {
+                NetworkResult.Status.ERROR -> {
                     binding.pbLoading.visibility = View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
@@ -194,17 +214,19 @@ class CheckoutFragment : Fragment() {
 
         viewModel.mpesaTokenResponse.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
+                    accessToken= it.data?.mpesaTokenData?.token.toString()
+
                     viewModel.createStkpush(netTotalAmount.toString(), sanitizePhoneNumber(billingPhone), orderId.toString(),
-                        it.data?.mpesaTokenData?.token!!
+                        accessToken
                     )
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
@@ -214,17 +236,20 @@ class CheckoutFragment : Fragment() {
 
         viewModel.stkpushResponse.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
 
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
-                    viewModel.updateOrder(orderId, true, customerId)
+
+                    val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
+                    viewModel.checkMpesaPayment(checkoutId.toString(), accessToken)
+
 
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
@@ -232,21 +257,22 @@ class CheckoutFragment : Fragment() {
             }
         }
 
-        viewModel.updateorderResponse.observe(viewLifecycleOwner){
+        viewModel.updateResponse.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
-                    Toast.makeText(context, "Order Success", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
-                }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+
                 }
             }
         }
+
     }
 
     private fun clickListeners() {
@@ -336,6 +362,28 @@ class CheckoutFragment : Fragment() {
         }
     }
 
+    private fun listenToChannels() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.events.collect { events ->
+                when (events) {
+
+                    is AuthEvents.Message -> {
+                        Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is AuthEvents.Error -> {
+
+                        binding.pbLoading.isInvisible = true
+                        Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
+                    }
+                    is AuthEvents.ErrorCode -> {
+                        if (events.code == 100){
+                            viewModel.updateOrder(orderId, true, customerId)
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 }

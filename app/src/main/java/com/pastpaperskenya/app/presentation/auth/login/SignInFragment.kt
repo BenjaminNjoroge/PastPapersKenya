@@ -144,6 +144,7 @@ class SignInFragment : Fragment() {
             var lastname = ""
             var county =""
             var country =""
+            var profileImage=""
 
             if (response.isSuccessful) {
 
@@ -155,9 +156,10 @@ class SignInFragment : Fragment() {
                     lastname= it.lastname.toString()
                     county= it.billingAddress?.state.toString()
                     country= it.billingAddress?.country.toString()
+                    profileImage= it.image.toString()
                 }
 
-                val localuser= UserDetails("", emailad, phone, firstname, lastname, country, county, userServerId)
+                val localuser= UserDetails("", emailad, phone, firstname, lastname, country, county, userServerId, profileImage)
 
                 viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
 

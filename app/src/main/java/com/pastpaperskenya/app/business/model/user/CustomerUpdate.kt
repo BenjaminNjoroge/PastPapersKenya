@@ -4,13 +4,16 @@ import com.google.gson.annotations.SerializedName
 
 data class CustomerUpdate (
     @SerializedName("first_name")
-    val firstname: String?,
+    val firstname: String?=null,
 
     @SerializedName("last_name")
-    val lastname: String?,
+    val lastname: String?=null,
 
     @SerializedName("billing")
-    val billing: CustomerBilling?
+    val billing: CustomerBilling?=null,
+
+    @SerializedName("avatar_url")
+    val profileImage: String?=null
     )
 
 data class CustomerBilling (

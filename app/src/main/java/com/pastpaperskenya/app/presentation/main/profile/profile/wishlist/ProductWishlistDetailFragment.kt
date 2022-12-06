@@ -19,7 +19,7 @@ import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
 import com.pastpaperskenya.app.databinding.FragmentWishlistProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -88,16 +88,16 @@ class ProductWishlistDetailFragment : Fragment() {
 
         viewModel.response.observe(viewLifecycleOwner){
             when(it.status){
-                 Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                      binding.pbLoading.visibility= View.VISIBLE
                  }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
 
                     bindDetails(it.data)
 
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                 }

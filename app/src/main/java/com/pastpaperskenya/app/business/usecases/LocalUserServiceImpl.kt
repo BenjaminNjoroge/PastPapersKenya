@@ -16,8 +16,8 @@ class LocalUserServiceImpl @Inject constructor(
 
     override fun getUserFromDatabase(userServerId: Int)= appDao.getUserDetails(userServerId)
 
-    override suspend fun updateUserInDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int) {
-        appDao.updateUserDetails(phone, firstname, lastname, country, county, userServerId)
+    override suspend fun updateUserInDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?) {
+        appDao.updateUserDetails(phone, firstname, lastname, country, county, userServerId, photo)
     }
 
 }

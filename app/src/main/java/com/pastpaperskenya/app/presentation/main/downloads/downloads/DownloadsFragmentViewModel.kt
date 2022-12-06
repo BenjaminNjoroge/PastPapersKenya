@@ -10,7 +10,7 @@ import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -23,8 +23,8 @@ class DownloadsFragmentViewModel @Inject constructor(
     private val datastore: DataStoreRepository
 ): ViewModel() {
 
-    private var _downloads = MutableLiveData<Resource<List<Download>>>()
-    val downloads: LiveData<Resource<List<Download>>> = _downloads
+    private var _downloads = MutableLiveData<NetworkResult<List<Download>>>()
+    val downloads: LiveData<NetworkResult<List<Download>>> = _downloads
 
     private var eventsChannel= Channel<AuthEvents>()
     val events= eventsChannel.receiveAsFlow()

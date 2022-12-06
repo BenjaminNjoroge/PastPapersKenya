@@ -55,49 +55,16 @@ class EditProfileViewModel @Inject constructor(
         }
     }
 
-    fun updateFirestoreDetails(
-        userId: String,
-        phone: String,
-        firstname: String,
-        lastname: String,
-        country: String,
-        county: String
-    ) = viewModelScope.launch {
-        editProfileRepository.updateUserToFirebase(
-            userId,
-            phone,
-            firstname,
-            lastname,
-            country,
-            county
-        )
+    fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String) = viewModelScope.launch {
+        editProfileRepository.updateUserToFirebase(userId, phone, firstname, lastname, country, county)
     }
 
-    fun updateLocalDetails(
-        phone: String,
-        firstname: String,
-        lastname: String,
-        country: String,
-        county: String,
-        userServerId: Int
-    ) = viewModelScope.launch {
-        editProfileRepository.updateUserToDatabase(
-            phone,
-            firstname,
-            lastname,
-            country,
-            county,
-            userServerId
-        )
+    fun updateLocalDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?) = viewModelScope.launch {
+        editProfileRepository.updateUserToDatabase(phone, firstname, lastname, country, county, userServerId, photo)
     }
 
 
-    fun fieldsChecker(
-        userServerId: Int,
-        phone: String,
-        firstname: String,
-        lastname: String,
-        customer: CustomerUpdate
+    fun fieldsChecker(userServerId: Int, phone: String, firstname: String, lastname: String, customer: CustomerUpdate
     ) = viewModelScope.launch {
         when {
             firstname.isEmpty() -> {

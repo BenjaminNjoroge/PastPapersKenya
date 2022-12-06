@@ -74,7 +74,8 @@ class UserAddressViewModel @Inject constructor(
         lastname: String,
         country: String,
         county: String,
-        userServerId: Int
+        userServerId: Int,
+        photo: String?
     ) = viewModelScope.launch {
         editProfileRepository.updateUserToDatabase(
             phone,
@@ -82,7 +83,8 @@ class UserAddressViewModel @Inject constructor(
             lastname,
             country,
             county,
-            userServerId
+            userServerId,
+            photo
         )
     }
 

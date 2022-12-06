@@ -11,7 +11,6 @@ import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.model.orders.Orders
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.wishlist.WishList
-import com.pastpaperskenya.app.business.util.sealed.Resource
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -89,8 +88,8 @@ interface AppDao {
     @Query("DELETE FROM wishlist WHERE product_id= :productId")
     suspend fun deleteWishlistItem(productId: Int)
 
-    @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county WHERE userServerId= :userServerId")
-    suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
+    @Query("UPDATE users SET phone=:phone, firstname=:firstname, lastname=:lastname, country=:country, county=:county, image= :photo WHERE userServerId= :userServerId")
+    suspend fun updateUserDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo:String?)
 
     @Query("DELETE FROM cart")
     suspend fun deleteAllFromCart()

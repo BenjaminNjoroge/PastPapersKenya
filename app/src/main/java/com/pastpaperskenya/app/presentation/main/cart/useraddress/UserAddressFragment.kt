@@ -111,12 +111,12 @@ class UserAddressFragment : Fragment() {
             val phone = binding.inputBillingPhone.text.toString()
 
             viewModel.updateFirestoreDetails(userId, sanitizePhoneNumber(phone), firstname, lastname, country, county)
-            viewModel.updateLocalDetails(sanitizePhoneNumber(phone), firstname, lastname, country, county, convertIntoNumeric(userServerId))
+            viewModel.updateLocalDetails(sanitizePhoneNumber(phone), firstname, lastname, country, county, convertIntoNumeric(userServerId),null)
 
             binding.rotateProgress.visibility = View.VISIBLE
 
             val billing= CustomerBilling(county, country, phone)
-            val customer= CustomerUpdate(firstname, lastname, billing)
+            val customer= CustomerUpdate(firstname, lastname, billing, null)
 
             viewModel.fieldsChecker(convertIntoNumeric(userServerId), sanitizePhoneNumber(phone), firstname, lastname, customer)
 

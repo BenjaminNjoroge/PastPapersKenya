@@ -58,6 +58,22 @@ class EditProfileFragment : Fragment() {
 
     private lateinit var profileImage: CircularImageView
 
+    private val startForProfileImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+        val resultCode= result.resultCode
+        val data= result.data
+
+        if (resultCode == Activity.RESULT_OK){
+            val fileUri= data!!.data
+            profileUri = fileUri
+
+            Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
+
+        } else if(resultCode == ImagePicker.RESULT_ERROR){
+            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else{
+            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,7 +143,9 @@ class EditProfileFragment : Fragment() {
                 val phone= binding.inputBillingPhone.text.toString()
 
                 viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
-                viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId))
+                viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId),
+                    profileUri.toString()
+                )
 
                 binding.rotateProgress.visibility= View.VISIBLE
 
@@ -149,7 +167,7 @@ class EditProfileFragment : Fragment() {
                 ImagePicker.with(requireActivity())
 
                     .createIntent { intent->
-                        startForBackgroundImageResult.launch(intent)
+                        //startForBackgroundImageResult.launch(intent)
                     }
             }
 
@@ -231,22 +249,6 @@ class EditProfileFragment : Fragment() {
         requireActivity().finish()
     }
 
-    private val startForProfileImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-        val resultCode= result.resultCode
-        val data= result.data
-
-        if (resultCode == Activity.RESULT_OK){
-            val fileUri= data!!.data
-            profileUri = fileUri
-
-            Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
-
-        } else if(resultCode == ImagePicker.RESULT_ERROR){
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else{
-            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     private val startForBackgroundImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
         val resultCode= result.resultCode

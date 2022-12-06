@@ -7,7 +7,7 @@ import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.profile.MyOrdersRepository
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -42,7 +42,7 @@ class MyOrdersViewModel @Inject constructor(
         }
     }
 
-    val response:LiveData<Resource<List<Orders>>> = _category
+    val response:LiveData<NetworkResult<List<Orders>>> = _category
 
     private suspend fun getUserId():String?{
         return datastore.getValue(Constants.USER_SERVER_ID)

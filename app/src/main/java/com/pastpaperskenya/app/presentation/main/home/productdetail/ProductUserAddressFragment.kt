@@ -110,14 +110,7 @@ class ProductUserAddressFragment : Fragment() {
             val phone = binding.inputBillingPhone.text.toString()
 
             viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
-            viewModel.updateLocalDetails(
-                phone,
-                firstname,
-                lastname,
-                country,
-                county,
-                convertIntoNumeric(userServerId)
-            )
+            viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId), null)
 
 
             binding.rotateProgress.visibility = View.VISIBLE

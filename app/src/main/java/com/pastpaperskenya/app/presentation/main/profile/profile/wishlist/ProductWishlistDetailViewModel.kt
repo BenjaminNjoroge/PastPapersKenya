@@ -10,7 +10,7 @@ import com.pastpaperskenya.app.business.repository.main.profile.ProfileRepositor
 import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -37,7 +37,7 @@ class ProductWishlistDetailViewModel @Inject constructor(
         repository.getProductsDetail(id)
     }
 
-    val response: LiveData<Resource<Product>> = _response
+    val response: LiveData<NetworkResult<Product>> = _response
 
     fun start(id: Int){
         _id.value= id

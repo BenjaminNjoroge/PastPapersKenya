@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.util.AuthEvents
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentProductsBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -77,14 +77,14 @@ class ProductsFragment : Fragment(), ProductsAdapter.ClickListener {
     private fun registerObservers(){
         viewModel.products.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.progressBar.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.progressBar.visibility= View.GONE
                     if (!it.data.isNullOrEmpty()) adapter.submitList(it.data) else binding.progressBar.visibility= View.VISIBLE
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.progressBar.visibility= View.GONE
                     toast(it.message.toString())
                 }

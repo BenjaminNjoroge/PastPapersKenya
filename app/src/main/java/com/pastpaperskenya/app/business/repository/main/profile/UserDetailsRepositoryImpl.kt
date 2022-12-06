@@ -15,8 +15,9 @@ class UserDetailsRepositoryImpl @Inject constructor
         lastname: String,
         county: String,
         country: String,
-        userServerId: Int
+        userServerId: Int,
+        profileImage: String
     ) {
-        firestoreUserService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county, userServerId))
+        firestoreUserService.saveUserDetails(UserDetails(userId, email, phone, firstname, lastname, country, county, userServerId, profileImage))
     }
 }

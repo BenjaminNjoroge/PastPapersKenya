@@ -10,6 +10,7 @@ interface UserDetailsRepository {
         lastname: String,
         county: String,
         country: String,
-        userServerId:Int
+        userServerId:Int,
+        profileImage: String
     )
 }

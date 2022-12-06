@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
-import com.pastpaperskenya.app.business.model.category.HomeCategory
 import com.pastpaperskenya.app.business.model.category.SubCategory
 import com.pastpaperskenya.app.business.repository.main.home.SubCategoryRepository
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ class SubCategoryViewModel @Inject constructor(
         subCategoryRepository.getSubCategory(id, 100)
     }
 
-    val category:LiveData<Resource<List<SubCategory>>> = _category
+    val category:LiveData<NetworkResult<List<SubCategory>>> = _category
 
     fun start(id:Int){
         _id.value= id

@@ -3,27 +3,27 @@ package com.pastpaperskenya.app.business.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import kotlinx.coroutines.Dispatchers
 
 
  fun <T, A> networkBoundResource (
      databaseQuery : () -> LiveData<T>,
-     networkFetch : suspend ()-> Resource<A>,
+     networkFetch : suspend ()-> NetworkResult<A>,
      saveNetworkData: suspend (A) -> Unit
-): LiveData<Resource<T & Any>> =
+): LiveData<NetworkResult<T & Any>> =
 
     liveData(Dispatchers.IO){
-        emit(Resource.loading())
+        emit(NetworkResult.loading())
 
-        val source= databaseQuery.invoke().map { Resource.success(it) }
+        val source= databaseQuery.invoke().map { NetworkResult.success(it) }
         emitSource(source)
 
         val response= networkFetch.invoke()
-        if (response.status == Resource.Status.SUCCESS){
+        if (response.status == NetworkResult.Status.SUCCESS){
             saveNetworkData(response.data!!)
-        } else if(response.status == Resource.Status.ERROR){
-            emit(Resource.error(response.message!!))
+        } else if(response.status == NetworkResult.Status.ERROR){
+            emit(NetworkResult.error(response.message!!))
             emitSource(source)
         }
     }

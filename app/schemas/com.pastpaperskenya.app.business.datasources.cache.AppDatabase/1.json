@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ac6794189591c5ec1541442dfe700b8e",
+    "identityHash": "0b6b2d9c88cad4473623430ddec2c8f0",
     "entities": [
       {
         "tableName": "homecategory",
@@ -992,7 +992,7 @@
       },
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT, `email` TEXT, `phone` TEXT, `firstname` TEXT, `lastname` TEXT, `country` TEXT, `county` TEXT, `userServerId` INTEGER, PRIMARY KEY(`userServerId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` TEXT, `email` TEXT, `phone` TEXT, `firstname` TEXT, `lastname` TEXT, `country` TEXT, `county` TEXT, `userServerId` INTEGER, `image` TEXT, PRIMARY KEY(`userServerId`))",
         "fields": [
           {
             "fieldPath": "userId",
@@ -1040,6 +1040,12 @@
             "fieldPath": "userServerId",
             "columnName": "userServerId",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -1136,7 +1142,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac6794189591c5ec1541442dfe700b8e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0b6b2d9c88cad4473623430ddec2c8f0')"
     ]
   }
 }

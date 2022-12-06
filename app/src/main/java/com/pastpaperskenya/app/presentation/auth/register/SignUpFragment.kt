@@ -38,6 +38,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
     private lateinit var phone: String
     private lateinit var country:String
     private lateinit var county: String
+    private lateinit var profileImage: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +67,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
                 phone= ""
                 country= ""
                 county=""
+                profileImage=""
 
                 hideKeyboard()
                 progressBar.isVisible= true
@@ -89,7 +91,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             if(response.isSuccessful){
                 val userServerId= response.body()?.id
 
-                val localuser= UserDetails("", email, phone, firstname, lastname, country, county, userServerId)
+                val localuser= UserDetails("", email, phone, firstname, lastname, country, county, userServerId, profileImage)
 
                 viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
 

@@ -1,11 +1,13 @@
 package com.pastpaperskenya.app.business.model.user
 
+import android.media.Image
 import android.os.Parcelable
 import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 private const val TAG = "UserDetails"
@@ -21,7 +23,8 @@ data class UserDetails(
     val country: String?=null,
     val county: String?=null,
     @PrimaryKey(autoGenerate = false)
-    val userServerId: Int?=null
+    val userServerId: Int?=null,
+    val image: String?=null
 ) : Parcelable {
 
 

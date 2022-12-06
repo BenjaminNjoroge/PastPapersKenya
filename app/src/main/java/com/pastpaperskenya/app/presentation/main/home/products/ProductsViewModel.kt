@@ -5,7 +5,7 @@ import com.pastpaperskenya.app.business.model.cart.Cart
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.repository.main.home.ProductsRepository
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -24,13 +24,13 @@ class ProductsViewModel @Inject constructor(
 
     private var _categoryId= MutableLiveData<Int>()
 
-    private val _products :LiveData<Resource<List<Product>>> get() = _categoryId.switchMap { id->
+    private val _products :LiveData<NetworkResult<List<Product>>> get() = _categoryId.switchMap { id->
         repository.getProducts(100, id.toString()).asLiveData(context = Dispatchers.IO)
 
     }
 
 
-    val products: LiveData<Resource<List<Product>>> = _products
+    val products: LiveData<NetworkResult<List<Product>>> = _products
 
 
     fun start(id: Int){

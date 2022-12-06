@@ -1,6 +1,6 @@
 package com.pastpaperskenya.app.business.datasources.remote
 
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -10,12 +10,12 @@ import java.io.IOException
 
 abstract class BaseDataSource {
 
-    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
+    protected suspend fun <T> getResult(call: suspend () -> Response<T>): NetworkResult<T> {
         try {
             val response = call()
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null) return Resource.success(body)
+                if (body != null) return NetworkResult.success(body)
             }
             return error1(" ${response.code()} ${response.message()}")
         } catch (e: Exception) {
@@ -24,30 +24,30 @@ abstract class BaseDataSource {
     }
 
 
-    private fun <T> error1(message: String): Resource<T> {
+    private fun <T> error1(message: String): NetworkResult<T> {
         Timber.d(message)
-        return Resource.error("Network call has failed for a following reason: $message")
+        return NetworkResult.error("Network call has failed for a following reason: $message")
     }
 
-    suspend fun <T>safeApiCall(api: suspend () -> Response<T>): Resource<T>{
+    suspend fun <T>safeApiCall(api: suspend () -> Response<T>): NetworkResult<T>{
 
         return withContext(Dispatchers.IO){
             try {
                 val response: Response<T> = api()
                 if (response.isSuccessful){
-                    Resource.success(data = response.body()!!)
+                    NetworkResult.success(data = response.body()!!)
                 } else{
-                    Resource.error(message = "Something went wrong "+response.errorBody().toString(), null)
+                    NetworkResult.error(message = "Something went wrong "+response.errorBody().toString(), null)
                 }
             } catch (e: HttpException){
                 //http exception
-                Resource.error(message = "Http error "+e.message(), null)
+                NetworkResult.error(message = "Http error "+e.message(), null)
             } catch (e: IOException){
                 //no internet
-                Resource.error(message = "Please check your network connection", null)
+                NetworkResult.error(message = "Please check your network connection", null)
             } catch (e: Exception){
                 // of unknown error wrapped in Resource.Error
-                  Resource.error(message = "Something went wrong", null)
+                NetworkResult.error(message = "Something went wrong", null)
             }
         }
     }

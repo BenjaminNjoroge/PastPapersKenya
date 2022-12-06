@@ -1,8 +1,8 @@
 package com.pastpaperskenya.app.business.datasources.remote
 
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
-import com.pastpaperskenya.app.business.model.orders.CreateOrder
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class RemoteDataSource @Inject constructor(
@@ -25,5 +25,4 @@ class RemoteDataSource @Inject constructor(
 
     suspend fun getMyOrders(id:Int)=
         getResult { retrofitApiService.getMyOrders(id)}
-
 }

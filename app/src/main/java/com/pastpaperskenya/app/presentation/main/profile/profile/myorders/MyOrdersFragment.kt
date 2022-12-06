@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.util.AuthEvents
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentMyOrdersBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -104,10 +104,10 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
     private fun setupobserver(){
         viewmodel.response.observe(viewLifecycleOwner) { items->
             when (items.status) {
-                Resource.Status.LOADING -> {
+                NetworkResult.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
                 }
-                Resource.Status.SUCCESS -> {
+                NetworkResult.Status.SUCCESS -> {
 
                     if(!items.data.isNullOrEmpty()){
                         binding.myOrdersRecycler.visibility= View.VISIBLE
@@ -125,7 +125,7 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
                         swipeRefreshLayout.isRefreshing= false
                     }
                 }
-                Resource.Status.ERROR -> {
+                NetworkResult.Status.ERROR -> {
                     binding.myOrdersRecycler.visibility= View.GONE
                     binding.pbLoading.visibility = View.GONE
                     binding.holderLayout.visibility= View.VISIBLE

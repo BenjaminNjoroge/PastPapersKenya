@@ -28,6 +28,8 @@ import com.pastpaperskenya.app.business.util.Constants.CHECK_PAYMENT_STATUS
 import com.pastpaperskenya.app.business.util.Constants.KEY_ID
 import com.pastpaperskenya.app.business.util.Constants.MPESA_STK_REQUEST
 import com.pastpaperskenya.app.business.util.Constants.MPESA_TOKEN
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -53,7 +55,14 @@ interface RetrofitApiService {
     @PUT(API_CUSTOMER_ID)
     suspend fun updateUserPassword(
         @Path (KEY_ID) id: Int,
-        @Field("password") password: String,
+        @Field("password") password: String
+    ): Response<Customer>
+
+    @PUT(API_CUSTOMER_ID)
+    @Multipart
+    suspend fun uploadProfileImage(
+        @Part file: MultipartBody.Part,
+        @Part preset: RequestBody
     ): Response<Customer>
 
     @GET(API_CUSTOMER)

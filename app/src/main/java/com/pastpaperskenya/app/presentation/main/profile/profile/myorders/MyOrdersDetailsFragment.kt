@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.business.util.toast
 import com.pastpaperskenya.app.databinding.FragmentMyOrdersDetailsBinding
 
@@ -38,10 +38,10 @@ class MyOrdersDetailsFragment : Fragment() {
         }
         viewModel.response.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.shimmerOrderDetail.shimmerLayout.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
                     binding.shimmerOrderDetail.shimmerLayout.visibility= View.GONE
 
                     binding.apply {
@@ -55,7 +55,7 @@ class MyOrdersDetailsFragment : Fragment() {
                         checkoutTotal.text= it.data?.line_items?.get(0)?.total
                     }
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     binding.shimmerOrderDetail.shimmerLayout.visibility= View.VISIBLE
                     toast(it.message.toString())
                 }

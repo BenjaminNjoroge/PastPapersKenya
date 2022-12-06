@@ -6,7 +6,7 @@ import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.util.networkBoundResource
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import javax.inject.Inject
 
 class MyOrdersRepository @Inject constructor(
@@ -23,11 +23,11 @@ class MyOrdersRepository @Inject constructor(
         saveNetworkData = {appdao.insertMyOrders(it)}
     )
 
-    suspend fun createOrder(order: CreateOrder): Resource<CreateOrder>{
+    suspend fun createOrder(order: CreateOrder): NetworkResult<CreateOrder>{
         return safeApiCall { retrofitApiService.createOrder(order) }
     }
 
-    suspend fun updateOrder(id: Int, paid: Boolean, customerId: Int): Resource<CreateOrder>{
+    suspend fun updateOrder(id: Int, paid: Boolean, customerId: Int): NetworkResult<CreateOrder> {
         return safeApiCall { retrofitApiService.updateOrder(id, paid, customerId) }
     }
 }

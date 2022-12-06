@@ -17,11 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
+
         <activity
             android:name=".presentation.main.downloads.downloads.DownloadsActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".presentation.main.downloads.viewpdf.ViewPfdActivity"
             android:exported="false" />

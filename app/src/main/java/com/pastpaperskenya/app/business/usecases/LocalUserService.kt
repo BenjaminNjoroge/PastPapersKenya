@@ -8,5 +8,5 @@ interface LocalUserService {
 
     fun getUserFromDatabase(userServerId: Int): Flow<UserDetails>
 
-    suspend fun updateUserInDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int)
+    suspend fun updateUserInDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?)
 }

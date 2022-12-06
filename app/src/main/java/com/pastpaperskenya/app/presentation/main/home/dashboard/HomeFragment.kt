@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.category.SliderCategory
-import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentHomeBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.smarteist.autoimageslider.SliderView
@@ -60,14 +59,14 @@ class HomeFragment : Fragment(), HomeAdapter.ClickListener {
     private fun setupObservers() {
         viewModel.homeResponse.observe(viewLifecycleOwner){
             when(it.status){
-                 Resource.Status.SUCCESS->{
+                 NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
                     if (!it.data.isNullOrEmpty()) homeAdapter.submitList(it.data) else binding.pbLoading.visibility= View.VISIBLE
                 }
-                 Resource.Status.ERROR->{
+                 NetworkResult.Status.ERROR->{
                     Toast.makeText(requireContext(), it.message,Toast.LENGTH_SHORT).show()
                 }
-                 Resource.Status.LOADING->{
+                 NetworkResult.Status.LOADING->{
                     binding.pbLoading.visibility= View.VISIBLE
                 }
             }
@@ -75,10 +74,10 @@ class HomeFragment : Fragment(), HomeAdapter.ClickListener {
 
         viewModel.sliderResponse.observe(viewLifecycleOwner){
             when(it.status){
-                Resource.Status.LOADING->{
+                NetworkResult.Status.LOADING->{
                     binding.sliderShimmerView.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS->{
+                NetworkResult.Status.SUCCESS->{
 
                     binding.sliderShimmerView.visibility= View.GONE
                     binding.homeCard.visibility= View.VISIBLE
@@ -94,7 +93,7 @@ class HomeFragment : Fragment(), HomeAdapter.ClickListener {
                     binding.imageSlider.startAutoCycle()
 
                 }
-                Resource.Status.ERROR->{
+                NetworkResult.Status.ERROR->{
                     Toast.makeText(requireContext(), it.message,Toast.LENGTH_SHORT).show()
                 }
             }

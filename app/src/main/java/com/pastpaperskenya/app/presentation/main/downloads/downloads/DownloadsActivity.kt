@@ -16,7 +16,7 @@ import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.DownloadUtils
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
-import com.pastpaperskenya.app.business.util.sealed.Resource
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.ActivityDownloadBinding
 import com.pastpaperskenya.app.presentation.main.MainActivity
 import com.pastpaperskenya.app.presentation.main.downloads.viewpdf.ViewPfdActivity
@@ -89,13 +89,13 @@ class DownloadsActivity : AppCompatActivity() {
     private fun setupObservers() {
         viewModel.downloads.observe(this) {
             when (it.status) {
-                Resource.Status.LOADING -> {
+                NetworkResult.Status.LOADING -> {
                     binding.pbLoading.visibility = View.VISIBLE
                     binding.textEmpty.text= "Searching downloads"
                     binding.textEmpty.visibility= View.VISIBLE
                     binding.downloadShimmer.shimmerCategoryLayout.visibility= View.VISIBLE
                 }
-                Resource.Status.SUCCESS -> {
+                NetworkResult.Status.SUCCESS -> {
                     binding.pbLoading.visibility = View.GONE
                     binding.emptyListLayout.visibility = View.GONE
                     downloadDataList = it.data as ArrayList<Download>
@@ -113,7 +113,7 @@ class DownloadsActivity : AppCompatActivity() {
                     }
 
                 }
-                Resource.Status.ERROR -> {
+                NetworkResult.Status.ERROR -> {
                     binding.pbLoading.visibility = View.GONE
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
 
