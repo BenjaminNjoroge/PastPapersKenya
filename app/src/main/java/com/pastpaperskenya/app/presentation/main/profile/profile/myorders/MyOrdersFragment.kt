@@ -137,10 +137,10 @@ class MyOrdersFragment : Fragment(R.layout.fragment_my_orders),
 
     override fun onClick(position: Int, id: Int) {
         val bundle = bundleOf("id" to id)
-        findNavController().navigate(
-            R.id.action_myOrdersFragment_to_myOrdersDetailsFragment,
-            bundle
-        )
+//        findNavController().navigate(
+//            R.id.action_myOrdersFragment_to_myOrdersDetailsFragment,
+//            bundle
+//        )
     }
 
 }

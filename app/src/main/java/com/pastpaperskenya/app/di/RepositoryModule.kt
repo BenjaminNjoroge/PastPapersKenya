@@ -1,6 +1,10 @@
 package com.pastpaperskenya.app.di
 
 import android.app.Application
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.pastpaperskenya.app.business.datasources.cache.AppDatabase
 import com.pastpaperskenya.app.business.datasources.remote.RemoteDataSource
 import com.pastpaperskenya.app.business.repository.auth.FirebaseAuthRepository
@@ -68,8 +72,13 @@ object RepositoryModule {
 
 
     @Provides
-    fun providesEditProfileRepository(localUserService: LocalUserService, firestoreUserService: FirestoreUserService, retrofitApiService: RetrofitApiService): EditProfileRepository =
-        EditProfileRepositoryImpl(localUserService, firestoreUserService, retrofitApiService)
+    fun providesEditProfileRepository(localUserService: LocalUserService,
+                                      firestoreUserService: FirestoreUserService,
+                                      retrofitApiService: RetrofitApiService,
+                                      storage: FirebaseStorage,
+                                      database: FirebaseFirestore
+    ): EditProfileRepository =
+        EditProfileRepositoryImpl(localUserService, firestoreUserService, retrofitApiService, storage, database)
 
 
     @Provides

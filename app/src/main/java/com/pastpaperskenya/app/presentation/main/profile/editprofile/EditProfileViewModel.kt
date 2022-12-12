@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.presentation.main.profile.editprofile
 
+import android.net.Uri
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
@@ -12,6 +13,7 @@ import com.pastpaperskenya.app.business.repository.main.profile.EditProfileRepos
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -43,6 +45,12 @@ class EditProfileViewModel @Inject constructor(
     private var _userServerId = MutableLiveData<String>()
     val userServerId: LiveData<String> = _userServerId
 
+    private var _addImageStorageResponse= MutableLiveData<NetworkResult<Uri>>()
+    val addImageStorageResponse: LiveData<NetworkResult<Uri>> = _addImageStorageResponse
+
+    private var _addImageDatabaseResponse= MutableLiveData<NetworkResult<Boolean>>()
+    val addImageDatabaseResponse: LiveData<NetworkResult<Boolean>> = _addImageDatabaseResponse
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val id = datastore.getValue(Constants.USER_SERVER_ID)
@@ -54,6 +62,20 @@ class EditProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun addBackgroundImageToStorage(imagename: String, imageuri: Uri)= viewModelScope.launch {
+        editProfileRepository.addImageToFirebaseStorage(imagename, imageuri).collect{
+            _addImageStorageResponse.postValue(it)
+        }
+    }
+
+    fun addBackgoundImageToFirestore(uid: String, imageUrl: String)= viewModelScope.launch {
+        editProfileRepository.addImageToFirebaseFirestore(uid, imageUrl).collect{
+            _addImageDatabaseResponse.postValue(it)
+        }
+    }
+
+
 
     fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String) = viewModelScope.launch {
         editProfileRepository.updateUserToFirebase(userId, phone, firstname, lastname, country, county)

@@ -30,6 +30,8 @@ import com.pastpaperskenya.app.business.model.user.CustomerBilling
 import com.pastpaperskenya.app.business.model.user.CustomerUpdate
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.getFileName
+import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentEditProfileBinding
 import com.pastpaperskenya.app.presentation.auth.AuthActivity
 import com.pastpaperskenya.app.presentation.main.MainActivity
@@ -68,12 +70,34 @@ class EditProfileFragment : Fragment() {
 
             Glide.with(requireContext()).load(profileUri).into(binding.ivProfileImageP)
 
+
         } else if(resultCode == ImagePicker.RESULT_ERROR){
             Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else{
             Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private val startForBackgroundImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
+        val resultCode= result.resultCode
+        val data= result.data
+
+        if (resultCode == Activity.RESULT_OK){
+            val fileUri= data!!.data
+            profileUri = fileUri
+
+            Glide.with(requireContext()).load(profileUri).into(binding.backgroundProfile)
+
+            viewModel.addBackgroundImageToStorage(getFileName(profileUri!!).toString(), profileUri!!)
+
+
+        } else if(resultCode == ImagePicker.RESULT_ERROR){
+            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else{
+            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,11 +188,9 @@ class EditProfileFragment : Fragment() {
             }
 
             backgroundProfile.setOnClickListener {
-                ImagePicker.with(requireActivity())
-
-                    .createIntent { intent->
-                        //startForBackgroundImageResult.launch(intent)
-                    }
+//                ImagePicker.with(requireActivity()).createIntent { intent->
+//                        startForBackgroundImageResult.launch(intent)
+//                    }
             }
 
         }
@@ -181,6 +203,39 @@ class EditProfileFragment : Fragment() {
                 //do nothing
             }else{
                 launchActivity()
+            }
+        }
+
+        viewModel.addImageStorageResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.rotateProgress.visibility= View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.rotateProgress.visibility= View.GONE
+                    viewModel.addBackgoundImageToFirestore(userId, it.data?.path.toString())
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.rotateProgress.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+        viewModel.addImageDatabaseResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.rotateProgress.visibility= View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.rotateProgress.visibility= View.GONE
+                    Toast.makeText(context, "Profile updated", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.rotateProgress.visibility= View.GONE
+                }
             }
         }
 
@@ -250,21 +305,6 @@ class EditProfileFragment : Fragment() {
     }
 
 
-    private val startForBackgroundImageResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-        val resultCode= result.resultCode
-        val data= result.data
-
-        if (resultCode == Activity.RESULT_OK){
-            val fileUri= data!!.data
-            profileUri = fileUri
-
-            Glide.with(requireContext()).load(profileUri).into(binding.backgroundProfile)
-        } else if(resultCode == ImagePicker.RESULT_ERROR){
-            Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else{
-            Toast.makeText(requireContext(),"Task Cancelled", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onDestroy() {
         super.onDestroy()

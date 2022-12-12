@@ -69,6 +69,7 @@ class CheckoutFragment : Fragment() {
 
     private var paymentSuccess: String?=null
     private var paymentError: String?= null
+    private var checkout_id: String?=null
 
     private val startActivityForResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
         if(result.resultCode == 1001) {
@@ -222,7 +223,8 @@ class CheckoutFragment : Fragment() {
                     Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
                     accessToken= it.data?.mpesaTokenData?.token.toString()
 
-                    viewModel.createStkpush(netTotalAmount.toString(), sanitizePhoneNumber(billingPhone), orderId.toString(),
+                    viewModel.createStkpush("2",//netTotalAmount.toString(),
+                         sanitizePhoneNumber(billingPhone), orderId.toString(),
                         accessToken
                     )
                 }
@@ -245,6 +247,7 @@ class CheckoutFragment : Fragment() {
                     Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
 
                     val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
+                    checkout_id= checkoutId
                     viewModel.checkMpesaPayment(checkoutId.toString(), accessToken)
 
 
@@ -257,21 +260,6 @@ class CheckoutFragment : Fragment() {
             }
         }
 
-        viewModel.updateResponse.observe(viewLifecycleOwner){
-            when(it.status){
-                NetworkResult.Status.LOADING->{
-                    binding.pbLoading.visibility= View.VISIBLE
-                }
-                NetworkResult.Status.SUCCESS->{
-                    binding.pbLoading.visibility= View.GONE
-
-                }
-                NetworkResult.Status.ERROR->{
-                    binding.pbLoading.visibility= View.GONE
-
-                }
-            }
-        }
 
     }
 
@@ -368,6 +356,7 @@ class CheckoutFragment : Fragment() {
                 when (events) {
 
                     is AuthEvents.Message -> {
+                        binding.pbLoading.isInvisible = true
                         Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
                     }
                     is AuthEvents.Error -> {
@@ -378,6 +367,15 @@ class CheckoutFragment : Fragment() {
                     is AuthEvents.ErrorCode -> {
                         if (events.code == 100){
                             viewModel.updateOrder(orderId, true, customerId)
+                        }
+
+                        if(events.code== 10){
+                            checkout_id?.let { viewModel.checkMpesaPayment(it, accessToken) }
+                        }
+
+                        if (events.code== 101){
+                            Toast.makeText(requireContext(), "Order successful", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
                         }
                     }
                 }

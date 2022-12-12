@@ -61,7 +61,7 @@
                     app:siBorderColor="@color/danger"
                     android:scaleType="fitXY"
                     android:background="@drawable/circle_profile"
-                    android:src="@drawable/ic_baseline_person_24"
+                    android:src="@drawable/image_placeholder"
                     app:fabSize="normal" />
 
             </RelativeLayout>

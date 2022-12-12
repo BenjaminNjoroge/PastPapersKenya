@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -135,6 +136,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun registerObservers(){
+
+        viewModel.backgroundImageResponse.observe(viewLifecycleOwner){
+            //Glide.with(requireParentFragment()).load(it.data.toString()).into(binding.bannerImage)
+        }
 
         viewModel.userProfile.observe(viewLifecycleOwner) {
             binding.tvUserNameP.text = it.firstname + " " + it.lastname

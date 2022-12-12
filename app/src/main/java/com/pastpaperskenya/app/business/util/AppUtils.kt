@@ -1,16 +1,19 @@
 package com.pastpaperskenya.app.business.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
-import android.util.MutableInt
+import android.provider.OpenableColumns
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -19,16 +22,35 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Response
-import retrofit2.Retrofit
 import java.io.File
-import java.io.IOException
 import java.lang.Integer.parseInt
 
+
+@SuppressLint("Range")
+fun Fragment.getFileName(uri: Uri): String? {
+    var result: String? = null
+    if (uri.getScheme().equals("content")) {
+        val cursor: Cursor? = context?.contentResolver?.query(uri, null, null, null, null)
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        } finally {
+            cursor?.close()
+        }
+    }
+    if (result == null) {
+        result = uri.getPath()
+        val cut = result?.lastIndexOf('/')
+        if (cut != -1) {
+            if (cut != null) {
+                result = result?.substring(cut + 1)
+            }
+        }
+    }
+    return result
+}
 
 fun convertIntoNumeric(value: String): Int {
     return try {

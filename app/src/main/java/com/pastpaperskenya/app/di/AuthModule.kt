@@ -1,6 +1,9 @@
 package com.pastpaperskenya.app.di
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.AuthenticatorImpl
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
 import com.pastpaperskenya.app.business.usecases.FirestoreUserService
@@ -17,7 +20,11 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun providesFirestore()= FirebaseFirestore.getInstance()
+    fun providesFirebaseFirestore()= Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun providesFirebaseStorage()= Firebase.storage
 
     @Provides
     @Singleton

@@ -1,5 +1,7 @@
 package com.pastpaperskenya.app.presentation.main.cart.checkout
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +26,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -105,13 +108,21 @@ class CheckoutViewModel @Inject constructor(
     fun checkMpesaPayment(checkoutId: String, accesstoken: String)= viewModelScope.launch {
         try{
             val response= paymentRepository.checkPaymentStatus(checkoutId, accesstoken)
-            if (!response.isSuccessful){
+            if (response.isSuccessful){
                 if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "0"){
                     eventsChannel.send(AuthEvents.Message("Payment made successfully"))
                     eventsChannel.send(AuthEvents.ErrorCode(100))
-                } else{
-                    //delay(1000)
+                } else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "1037"){
                     eventsChannel.send(AuthEvents.Error("Unable to process payment"))
+                    eventsChannel.send(AuthEvents.Message(response.body()?.checkMpesaPaymentStatusData?.errorMessage!!))
+                }
+                else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "1032"){
+                    eventsChannel.send(AuthEvents.Error("Unable to process payment"))
+                    eventsChannel.send(AuthEvents.Message(response.body()?.checkMpesaPaymentStatusData?.errorMessage!!))
+                }
+                else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== null){
+                    delay(1500)
+                    eventsChannel.send(AuthEvents.ErrorCode(10))
                 }
             } else{
                 eventsChannel.send(AuthEvents.Error(response.errorBody().toString()))
@@ -123,7 +134,20 @@ class CheckoutViewModel @Inject constructor(
     }
 
     fun updateOrder(id: Int, paid: Boolean,  customerId: Int)= viewModelScope.launch{
-        orderRepository.updateOrder(id, paid, customerId)
+
+        try {
+            val response= orderRepository.updateOrder(id, paid, customerId)
+
+            if(response.isSuccessful){
+                if(response.body() !=null){
+                    eventsChannel.send(AuthEvents.ErrorCode(101))
+                }
+            } else{
+                eventsChannel.send(AuthEvents.Error(response.errorBody().toString()))
+            }
+        } catch (e: Exception){
+            eventsChannel.send(AuthEvents.Error("$e Please check Internet bundles / connection"))
+        }
     }
 
 

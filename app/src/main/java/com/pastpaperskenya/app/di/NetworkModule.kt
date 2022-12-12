@@ -21,8 +21,6 @@ import javax.inject.Singleton
 
 object NetworkModule {
 
-    private const val PAYMENTS_URL= Constants.PAYMENTS_URL
-
     private const val BASE_URL= Constants.BASE_URL
 
     @Singleton
@@ -41,16 +39,6 @@ object NetworkModule {
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
             .addInterceptor(httpLoggingInterceptor)
-            .build()
-
-    @Singleton
-    @Provides
-    @Named("payments")
-    fun providePaymentsRetrofit(okHttpClient: OkHttpClient): Retrofit=
-        Retrofit.Builder()
-            .baseUrl(PAYMENTS_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
             .build()
 
     @Provides
