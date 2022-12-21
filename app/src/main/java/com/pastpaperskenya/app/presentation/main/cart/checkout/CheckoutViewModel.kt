@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
+import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
@@ -103,6 +104,10 @@ class CheckoutViewModel @Inject constructor(
 
     fun createStkpush(total_amount: String, phone_number: String, order_id: String, accesstoken: String)= viewModelScope.launch {
         _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
+    }
+
+    fun savePendingPaymentFirestore(paymentDetails: PaymentDetails)= viewModelScope.launch {
+        paymentRepository.savePendingPaymentFirebase(paymentDetails)
     }
 
     fun checkMpesaPayment(checkoutId: String, accesstoken: String)= viewModelScope.launch {

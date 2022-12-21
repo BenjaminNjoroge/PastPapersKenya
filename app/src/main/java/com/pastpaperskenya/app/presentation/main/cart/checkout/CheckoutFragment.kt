@@ -21,7 +21,10 @@ import com.flutterwave.raveandroid.RaveUiManager
 import com.flutterwave.raveandroid.rave_java_commons.RaveConstants
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
 import com.pastpaperskenya.app.business.model.orders.OrderLineItems
@@ -223,7 +226,7 @@ class CheckoutFragment : Fragment() {
                     Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
                     accessToken= it.data?.mpesaTokenData?.token.toString()
 
-                    viewModel.createStkpush("2",//netTotalAmount.toString(),
+                    viewModel.createStkpush("1",//netTotalAmount.toString(),
                          sanitizePhoneNumber(billingPhone), orderId.toString(),
                         accessToken
                     )
@@ -247,8 +250,13 @@ class CheckoutFragment : Fragment() {
                     Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
 
                     val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
+                    val merchantRequestId= it.data?.mpesaPaymentReqResponseData?.merchantRequestID
+                    val firebaseId= FirebaseAuth.getInstance().currentUser?.uid
                     checkout_id= checkoutId
-                    viewModel.checkMpesaPayment(checkoutId.toString(), accessToken)
+                    val firestoreDetails= PaymentDetails(
+                        orderId.toString(), merchantRequestId!!, checkoutId!!, firebaseId!!, customerId.toString())
+                    viewModel.savePendingPaymentFirestore(firestoreDetails)
+                    //viewModel.checkMpesaPayment(checkoutId.toString(), accessToken)
 
 
                 }

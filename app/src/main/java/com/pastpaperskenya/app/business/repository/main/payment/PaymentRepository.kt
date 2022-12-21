@@ -2,9 +2,11 @@ package com.pastpaperskenya.app.business.repository.main.payment
 
 import com.pastpaperskenya.app.business.datasources.remote.BaseDataSource
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
+import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
+import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -12,7 +14,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class PaymentRepository @Inject constructor(
-    private val retrofitApiService: RetrofitApiService
+    private val retrofitApiService: RetrofitApiService,
+    private val firestoreUserService: FirestoreUserService
 ): BaseDataSource() {
 
 
@@ -27,5 +30,6 @@ class PaymentRepository @Inject constructor(
     suspend fun checkPaymentStatus(checkoutId: String, accesstoken: String): Response<CheckMpesaPaymentStatus> =
         retrofitApiService.checkPaymentStatus(checkoutId, accesstoken)
 
-
+    suspend fun savePendingPaymentFirebase(paymentDetails: PaymentDetails)=
+        firestoreUserService.savePendingPaymentFirebase(paymentDetails)
 }

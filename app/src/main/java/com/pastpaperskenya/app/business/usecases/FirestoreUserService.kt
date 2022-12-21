@@ -1,5 +1,6 @@
 package com.pastpaperskenya.app.business.usecases
 
+import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.user.UserDetails
 
 interface FirestoreUserService {
@@ -17,5 +18,5 @@ interface FirestoreUserService {
 
     suspend fun getFirestoreUserDetails(userId: String): UserDetails?
 
-    //suspend fun updateUserFcmToken(userId: String)
+    suspend fun savePendingPaymentFirebase(paymentDetails: PaymentDetails)
 }

@@ -2,6 +2,7 @@ package com.pastpaperskenya.app.business.usecases
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.model.user.UserDetails.Companion.toUserDetails
 import com.pastpaperskenya.app.business.util.Constants
@@ -43,6 +44,12 @@ class FirestoreUserServiceImpl : FirestoreUserService {
                 .document(userId)
                 .get().await().toUserDetails()
 
+    }
+
+    override suspend fun savePendingPaymentFirebase(paymentDetails: PaymentDetails) {
+         Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_PAYMENTS)
+            .document(paymentDetails.checkoutRequestId)
+             .set(paymentDetails).await()
     }
 
 }
