@@ -116,4 +116,6 @@ object RepositoryModule {
     @Provides
     fun providesMyOrderDetailsRepository(database: AppDatabase, remoteDatasource: RemoteDataSource): MyOrdersDetailRepository=
         MyOrdersDetailRepository(database, remoteDatasource)
+
+
 }

@@ -7,10 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pastpaperskenya.app.business.model.cart.Cart
-import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
 import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
+import com.pastpaperskenya.app.business.model.mpesa.Payment
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.user.UserDetails
 import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
@@ -64,7 +64,6 @@ class CheckoutViewModel @Inject constructor(
     val updateResponse: LiveData<NetworkResult<CreateOrder>> = _updateResponse
 
 
-
     init {
 
         viewModelScope.launch {
@@ -106,36 +105,32 @@ class CheckoutViewModel @Inject constructor(
         _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
     }
 
-    fun savePendingPaymentFirestore(paymentDetails: PaymentDetails)= viewModelScope.launch {
+    fun savePendingPaymentFirestore(paymentDetails: Payment, orderId: String)= viewModelScope.launch {
         paymentRepository.savePendingPaymentFirebase(paymentDetails)
-    }
 
-    fun checkMpesaPayment(checkoutId: String, accesstoken: String)= viewModelScope.launch {
-        try{
-            val response= paymentRepository.checkPaymentStatus(checkoutId, accesstoken)
-            if (response.isSuccessful){
-                if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "0"){
-                    eventsChannel.send(AuthEvents.Message("Payment made successfully"))
-                    eventsChannel.send(AuthEvents.ErrorCode(100))
-                } else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "1037"){
-                    eventsChannel.send(AuthEvents.Error("Unable to process payment"))
-                    eventsChannel.send(AuthEvents.Message(response.body()?.checkMpesaPaymentStatusData?.errorMessage!!))
-                }
-                else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== "1032"){
-                    eventsChannel.send(AuthEvents.Error("Unable to process payment"))
-                    eventsChannel.send(AuthEvents.Message(response.body()?.checkMpesaPaymentStatusData?.errorMessage!!))
-                }
-                else if(response.body()?.checkMpesaPaymentStatusData?.resultCode== null){
-                    delay(1500)
-                    eventsChannel.send(AuthEvents.ErrorCode(10))
-                }
-            } else{
-                eventsChannel.send(AuthEvents.Error(response.errorBody().toString()))
+        delay(4000)
+
+        paymentRepository.checkPaymentStatus(orderId).collect{
+
+            val startTime: Long= System.currentTimeMillis()
+            val endTime: Long= startTime + 45000L
+
+            while(startTime < endTime){
+                   if (it?.status== null){
+                      // do nothing
+                   } else{
+                       if(it.status== "Failed"){
+                           eventsChannel.send(AuthEvents.ErrorCode(99))
+                           startTime>= endTime
+                       } else if(it.status =="Success" && it.mpesaReceiptNumber !=null){
+                           eventsChannel.send(AuthEvents.ErrorCode(100))
+                           startTime>= endTime
+                       }
+                   }
             }
-
-        }catch (e: Exception){
-            eventsChannel.send(AuthEvents.Error("$e Please check Internet bundles / connection"))
         }
+
+
     }
 
     fun updateOrder(id: Int, paid: Boolean,  customerId: Int)= viewModelScope.launch{

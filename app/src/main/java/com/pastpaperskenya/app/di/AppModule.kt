@@ -31,6 +31,9 @@ object AppModule {
     @Singleton
     fun providesFirestoreUserService(): FirestoreUserService= FirestoreUserServiceImpl()
 
+    @Provides
+    @Singleton
+    fun providesFirestorePayments(): PaymentsService= PaymentsService()
 
     @Provides
     fun providesCartService(database: AppDatabase): CartService= CartServiceImpl(database)

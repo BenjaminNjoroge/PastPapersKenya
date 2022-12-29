@@ -24,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.lipanampesa.PaymentDetails
+import com.pastpaperskenya.app.business.model.mpesa.Payment
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
 import com.pastpaperskenya.app.business.model.orders.OrderLineItems
@@ -74,18 +74,6 @@ class CheckoutFragment : Fragment() {
     private var paymentError: String?= null
     private var checkout_id: String?=null
 
-    private val startActivityForResult= registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
-        if(result.resultCode == 1001) {
-            paymentSuccess= result.data?.getStringExtra("success_result")
-
-            viewModel.updateOrder(orderId, true, customerId)
-
-        } else if(result.resultCode== 2001){
-            val results= result.data
-            paymentError= results?.getStringExtra("error_result")
-            Toast.makeText(context, paymentError, Toast.LENGTH_SHORT).show()
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -253,11 +241,10 @@ class CheckoutFragment : Fragment() {
                     val merchantRequestId= it.data?.mpesaPaymentReqResponseData?.merchantRequestID
                     val firebaseId= FirebaseAuth.getInstance().currentUser?.uid
                     checkout_id= checkoutId
-                    val firestoreDetails= PaymentDetails(
-                        orderId.toString(), merchantRequestId!!, checkoutId!!, firebaseId!!, customerId.toString())
-                    viewModel.savePendingPaymentFirestore(firestoreDetails)
-                    //viewModel.checkMpesaPayment(checkoutId.toString(), accessToken)
+                    val firestoreDetails= Payment(checkoutId, customerId.toString(), null, merchantRequestId,
+                        orderId.toString(), null, null, null, null, firebaseId)
 
+                    viewModel.savePendingPaymentFirestore(firestoreDetails, orderId.toString())
 
                 }
                 NetworkResult.Status.ERROR->{
@@ -267,7 +254,6 @@ class CheckoutFragment : Fragment() {
                 }
             }
         }
-
 
     }
 
@@ -373,18 +359,21 @@ class CheckoutFragment : Fragment() {
                         Toast.makeText(requireContext(), events.message, Toast.LENGTH_SHORT).show()
                     }
                     is AuthEvents.ErrorCode -> {
-                        if (events.code == 100){
+
+                        if (events.code== 99){
+                            Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_SHORT).show()
+                        }
+                        if(events.code== 100){
+                            Toast.makeText(requireContext(), "Payment success", Toast.LENGTH_SHORT).show()
                             viewModel.updateOrder(orderId, true, customerId)
-                        }
+                            viewModel.deleteAllCart()
 
-                        if(events.code== 10){
-                            checkout_id?.let { viewModel.checkMpesaPayment(it, accessToken) }
                         }
-
                         if (events.code== 101){
                             Toast.makeText(requireContext(), "Order successful", Toast.LENGTH_SHORT).show()
                             findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
                         }
+
                     }
                 }
             }
