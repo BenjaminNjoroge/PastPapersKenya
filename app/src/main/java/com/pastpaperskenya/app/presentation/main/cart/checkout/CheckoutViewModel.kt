@@ -122,7 +122,7 @@ class CheckoutViewModel @Inject constructor(
                        if(it.status== "Failed"){
                            eventsChannel.send(AuthEvents.ErrorCode(99))
                            startTime>= endTime
-                       } else if(it.status =="Success" && it.mpesaReceiptNumber !=null){
+                       } else if(it.status =="Completed" && it.mpesaReceiptNumber !=null){
                            eventsChannel.send(AuthEvents.ErrorCode(100))
                            startTime>= endTime
                        }

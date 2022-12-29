@@ -14,7 +14,6 @@ import com.pastpaperskenya.app.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.app.business.repository.main.downloads.DownloadsRepository
 import com.pastpaperskenya.app.business.repository.main.profile.*
 import com.pastpaperskenya.app.business.datasources.remote.services.auth.BaseAuthenticator
-import com.pastpaperskenya.app.business.usecases.FirestoreUserService
 import com.pastpaperskenya.app.business.datasources.remote.services.main.RetrofitApiService
 import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.app.business.repository.main.user.ServerCrudRepositoryImpl
@@ -22,9 +21,7 @@ import com.pastpaperskenya.app.business.repository.main.cart.CartRepository
 import com.pastpaperskenya.app.business.repository.main.home.*
 import com.pastpaperskenya.app.business.repository.main.payment.PaymentRepository
 import com.pastpaperskenya.app.business.repository.main.wishlist.WishlistRepository
-import com.pastpaperskenya.app.business.usecases.CartService
-import com.pastpaperskenya.app.business.usecases.LocalUserService
-import com.pastpaperskenya.app.business.usecases.WishlistService
+import com.pastpaperskenya.app.business.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,8 +34,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesPaymentRepository(retrofitApiService: RetrofitApiService, firestoreUserService: FirestoreUserService):PaymentRepository{
-        return PaymentRepository(retrofitApiService, firestoreUserService)
+    fun providesPaymentRepository(retrofitApiService: RetrofitApiService, firestoreUserService: FirestoreUserService, firestorePaymentsService: PaymentsService):PaymentRepository{
+        return PaymentRepository(retrofitApiService, firestoreUserService, firestorePaymentsService)
     }
 
     @Provides
