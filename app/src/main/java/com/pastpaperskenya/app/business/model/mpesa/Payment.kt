@@ -6,16 +6,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Payment(
-    val checkoutRequestId: String?=null,
-    val customerId: String?=null,
-    val date: Long?=null,
-    val merchantRequestId: String?=null,
-    val orderId: String?=null,
-    val resultDesc: String?=null,
-    val status: String?=null,
-    val mpesaReceiptNumber: String?=null,
-    val phoneNumber: String?=null,
-    val customerFirebaseId: String?=null,
+    val CheckoutRequestID: String?=null,
+    val CustomerId: String?=null,
+    val Date: Long?=null,
+    val MerchantRequestID: String?=null,
+    val OrderId: String?=null,
+    val ResultDesc: String?=null,
+    val Status: String?=null,
+    val MpesaReceiptNumber: String?=null,
+    val PhoneNumber: String?=null,
+    val CustomerFirebaseID: String?=null,
 ) : Parcelable{
 
     companion object {

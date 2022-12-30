@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/colorWhite">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/parent_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/size_7dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/size_0dp"
+        app:cardElevation="@dimen/size_3dp"
+        app:cardUseCompatPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/app_logo2"
+                android:layout_width="@dimen/size_80dp"
+                android:layout_height="@dimen/size_80dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_40dp"
+                android:layout_marginBottom="@dimen/size_40dp"
+                android:src="@drawable/ic_error"
+                app:civ_border_color="@color/colorPrimary2"
+                app:civ_border_width="2dp" />
+
+            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_7dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/order_failed"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_22sp"
+                android:textStyle="bold" />
+
+            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_15dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:text="@string/payment_not_successful"
+                android:textSize="@dimen/text_18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/check_downloads_status"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginStart="@dimen/size_12dp"
+                android:layout_marginTop="@dimen/size_15dp"
+                android:layout_marginEnd="@dimen/size_12dp"
+                android:layout_marginBottom="@dimen/size_20dp"
+                android:background="@color/colorProgress"
+                android:backgroundTint="@color/danger"
+                android:text="@string/ok"
+                android:textSize="@dimen/text_16sp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

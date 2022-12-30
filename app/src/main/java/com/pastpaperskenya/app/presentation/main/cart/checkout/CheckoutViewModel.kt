@@ -116,13 +116,13 @@ class CheckoutViewModel @Inject constructor(
             val endTime: Long= startTime + 45000L
 
             while(startTime < endTime){
-                   if (it?.status== null){
+                   if (it?.Status== null){
                       // do nothing
                    } else{
-                       if(it.status== "Failed"){
+                       if(it.Status== "Failed"){
                            eventsChannel.send(AuthEvents.ErrorCode(99))
                            startTime>= endTime
-                       } else if(it.status =="Completed" && it.mpesaReceiptNumber !=null){
+                       } else if(it.Status =="Completed" && it.MpesaReceiptNumber !=null){
                            eventsChannel.send(AuthEvents.ErrorCode(100))
                            startTime>= endTime
                        }

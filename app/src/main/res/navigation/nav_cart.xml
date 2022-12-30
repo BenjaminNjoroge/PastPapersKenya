@@ -37,6 +37,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_checkoutFragment_to_orderFailedFragment"
+            app:destination="@id/orderFailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/userAddressFragment"
@@ -65,5 +68,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/orderFailedFragment"
+        android:name="com.pastpaperskenya.app.presentation.main.cart.orderfailed.OrderFailedFragment"
+        android:label="OrderFailedFragment"
+        tools:layout="@layout/fragment_order_failed">
+        <action
+            android:id="@+id/action_orderFailedFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
     </fragment>
 </navigation>

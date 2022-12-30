@@ -100,6 +100,8 @@
     <string name="myDownloads">My Downloads</string>
     <string name="thanks_for_order">Sucess. Thankyou !!!</string>
     <string name="order_confirmed">Order Confirmed</string>
+    <string name="order_failed">Order Failed</string>
+    <string name="payment_not_successful">Payment Not Successful</string>
 
     <string-array name="counties">
         <item>Mombasa</item>

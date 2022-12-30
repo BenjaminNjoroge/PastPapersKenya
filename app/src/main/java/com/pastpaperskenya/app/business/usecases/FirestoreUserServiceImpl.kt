@@ -53,9 +53,8 @@ class FirestoreUserServiceImpl : FirestoreUserService {
 
     override suspend fun savePendingPaymentFirebase(paymentDetails: Payment) {
          Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_PAYMENTS)
-            .document(paymentDetails.checkoutRequestId!!)
+            .document(paymentDetails.CheckoutRequestID!!)
              .set(paymentDetails).await()
     }
-
 
 }

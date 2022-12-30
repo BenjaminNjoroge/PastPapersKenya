@@ -362,6 +362,8 @@ class CheckoutFragment : Fragment() {
 
                         if (events.code== 99){
                             Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFailedFragment)
+
                         }
                         if(events.code== 100){
                             Toast.makeText(requireContext(), "Payment success", Toast.LENGTH_SHORT).show()
