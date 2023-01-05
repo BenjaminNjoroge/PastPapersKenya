@@ -16,12 +16,16 @@ import kotlinx.coroutines.tasks.await
 
 class PaymentsService {
 
-    suspend fun getPaymentData(orderId: String): Flow<Payment?> {
+    suspend fun getPaymentData(orderId: String, email: String): Flow<Payment?> {
         val db= FirebaseFirestore.getInstance()
         
         return callbackFlow { 
-            val listenerRegistration= db.collection(Constants.FIREBASE_DATABASE_COLLECTION_PAYMENTS)
-                .document(orderId).addSnapshotListener { document: DocumentSnapshot?, firebaseFirestoreException: FirebaseFirestoreException? ->
+            val listenerRegistration=
+                db.collection(Constants.FIREBASE_DATABASE_COLLECTION_ORDER)
+                .document(email)
+                    .collection("orderId")
+                    .document(orderId)
+                    .addSnapshotListener { document: DocumentSnapshot?, firebaseFirestoreException: FirebaseFirestoreException? ->
                     if (firebaseFirestoreException !=null){
                         cancel(message = "Error fetching payments")
                         return@addSnapshotListener

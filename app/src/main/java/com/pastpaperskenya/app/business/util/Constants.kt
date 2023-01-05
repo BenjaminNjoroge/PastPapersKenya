@@ -18,6 +18,7 @@ object Constants {
     //KEY CONSTANT
     const val FIREBASE_DATABASE_COLLECTION_USER = "users"
     const val FIREBASE_DATABASE_COLLECTION_PAYMENTS = "payments"
+    const val FIREBASE_DATABASE_COLLECTION_ORDER= "orders"
     const val FIREBASE_DATABASE_COLLECTION_IMAGES = "images"
     const val USER_SERVER_ID = "userServerId"
     const val KEY_ID = "id"

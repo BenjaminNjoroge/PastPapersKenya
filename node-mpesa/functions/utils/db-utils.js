@@ -39,7 +39,7 @@ function getUserEmail(checkoutRequestID){
 function setOrderToPaid(email, orderId){
     return db.collection("orders")
     .doc(email)
-    .collection(orderId)
+    .collection("orderId")
     .doc(orderId)
     .set({
         paymentStatus: "paid",
@@ -50,7 +50,7 @@ function setOrderToPaid(email, orderId){
 function setOrderToUnPaid(email, orderId){
     return db.collection("orders")
     .doc(email)
-    .collection(orderId)
+    .collection("orderId")
     .doc(orderId)
     .set({
         paymentStatus: "unpaid",
