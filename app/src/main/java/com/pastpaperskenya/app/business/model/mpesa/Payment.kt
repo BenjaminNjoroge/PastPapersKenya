@@ -16,6 +16,7 @@ data class Payment(
     val MpesaReceiptNumber: String?=null,
     val PhoneNumber: String?=null,
     val CustomerFirebaseID: String?=null,
+    val email: String?=null
 ) : Parcelable{
 
     companion object {

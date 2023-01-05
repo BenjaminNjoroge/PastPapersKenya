@@ -240,9 +240,11 @@ class CheckoutFragment : Fragment() {
                     val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
                     val merchantRequestId= it.data?.mpesaPaymentReqResponseData?.merchantRequestID
                     val firebaseId= FirebaseAuth.getInstance().currentUser?.uid
+                    val email= FirebaseAuth.getInstance().currentUser?.email
+
                     checkout_id= checkoutId
                     val firestoreDetails= Payment(checkoutId, customerId.toString(), null, merchantRequestId,
-                        orderId.toString(), null, null, null, null, firebaseId)
+                        orderId.toString(), null, null, null, null, firebaseId, email)
 
                     viewModel.savePendingPaymentFirestore(firestoreDetails, orderId.toString())
 
