@@ -108,29 +108,6 @@ class CheckoutViewModel @Inject constructor(
     fun savePendingPaymentFirestore(paymentDetails: Payment, orderId: String)= viewModelScope.launch {
         paymentRepository.savePendingPaymentFirebase(paymentDetails)
 
-        delay(4000)
-
-        paymentRepository.checkPaymentStatus(orderId).collect{
-
-            val startTime: Long= System.currentTimeMillis()
-            val endTime: Long= startTime + 45000L
-
-            while(startTime < endTime){
-                   if (it?.Status== null){
-                      // do nothing
-                   } else{
-                       if(it.Status== "Failed"){
-                           eventsChannel.send(AuthEvents.ErrorCode(99))
-                           startTime>= endTime
-                       } else if(it.Status =="Completed" && it.MpesaReceiptNumber !=null){
-                           eventsChannel.send(AuthEvents.ErrorCode(100))
-                           startTime>= endTime
-                       }
-                   }
-            }
-        }
-
-
     }
 
     fun updateOrder(id: Int, paid: Boolean,  customerId: Int)= viewModelScope.launch{

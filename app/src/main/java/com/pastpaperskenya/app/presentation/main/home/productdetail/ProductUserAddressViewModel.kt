@@ -56,7 +56,8 @@ class ProductUserAddressViewModel @Inject constructor(
         firstname: String,
         lastname: String,
         country: String,
-        county: String
+        county: String,
+        email: String
     ) = viewModelScope.launch {
         editProfileRepository.updateUserToFirebase(
             userId,
@@ -64,7 +65,8 @@ class ProductUserAddressViewModel @Inject constructor(
             firstname,
             lastname,
             country,
-            county
+            county,
+            email
         )
     }
 

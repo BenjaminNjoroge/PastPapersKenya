@@ -12,7 +12,7 @@ import okhttp3.Response
 interface EditProfileRepository {
     suspend fun getUserDetails(userId: Int) : Flow<UserDetails?>?
 
-    suspend fun updateUserToFirebase(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String)
+    suspend fun updateUserToFirebase(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String, email: String)
 
     suspend fun updateUserToDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?)
 

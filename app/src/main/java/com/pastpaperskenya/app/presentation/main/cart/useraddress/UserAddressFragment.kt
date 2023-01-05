@@ -109,8 +109,10 @@ class UserAddressFragment : Fragment() {
             val firstname = binding.inputBillingFirstName.text.toString()
             val lastname = binding.inputBillingLastName.text.toString()
             val phone = binding.inputBillingPhone.text.toString()
+            val email= FirebaseAuth.getInstance().currentUser?.email
 
-            viewModel.updateFirestoreDetails(userId, sanitizePhoneNumber(phone), firstname, lastname, country, county)
+            viewModel.updateFirestoreDetails(userId, sanitizePhoneNumber(phone), firstname, lastname, country, county, email.toString())
+
             viewModel.updateLocalDetails(sanitizePhoneNumber(phone), firstname, lastname, country, county, convertIntoNumeric(userServerId),null)
 
             binding.rotateProgress.visibility = View.VISIBLE

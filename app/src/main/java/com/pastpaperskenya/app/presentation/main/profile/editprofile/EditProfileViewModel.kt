@@ -77,8 +77,8 @@ class EditProfileViewModel @Inject constructor(
 
 
 
-    fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String) = viewModelScope.launch {
-        editProfileRepository.updateUserToFirebase(userId, phone, firstname, lastname, country, county)
+    fun updateFirestoreDetails(userId: String, phone: String, firstname: String, lastname: String, country: String, county: String, email: String) = viewModelScope.launch {
+        editProfileRepository.updateUserToFirebase(userId, phone, firstname, lastname, country, county, email)
     }
 
     fun updateLocalDetails(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?) = viewModelScope.launch {

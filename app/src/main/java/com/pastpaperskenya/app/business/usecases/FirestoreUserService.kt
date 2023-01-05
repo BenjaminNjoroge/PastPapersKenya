@@ -14,9 +14,10 @@ interface FirestoreUserService {
         lastname: String?,
         country: String?,
         county: String?,
+        email: String
     )
 
-    suspend fun getFirestoreUserDetails(userId: String): UserDetails?
+    suspend fun getFirestoreUserDetails(email: String): UserDetails?
 
     suspend fun savePendingPaymentFirebase(paymentDetails: Payment)
 

@@ -16,7 +16,7 @@ class FirestoreUserServiceImpl : FirestoreUserService {
     private val db: FirebaseFirestore= FirebaseFirestore.getInstance()
 
     override suspend fun saveUserDetails(userDetails: UserDetails) {
-        userDetails.userId?.let {
+        userDetails.email?.let {
             Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(
                 it
             ).set(userDetails).await()
@@ -30,6 +30,7 @@ class FirestoreUserServiceImpl : FirestoreUserService {
         lastname: String?,
         country: String?,
         county: String?,
+        email: String
     ) {
         val user= hashMapOf(
             "phone" to phone,
@@ -39,14 +40,14 @@ class FirestoreUserServiceImpl : FirestoreUserService {
             "county" to county,
         )
 
-        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(userId).update(
+        Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER).document(email).update(
             user as Map<String, Any>
         )
     }
 
-    override suspend fun getFirestoreUserDetails(userId: String): UserDetails? {
+    override suspend fun getFirestoreUserDetails(email: String): UserDetails? {
            return Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
-                .document(userId)
+                .document(email)
                 .get().await().toUserDetails()
 
     }

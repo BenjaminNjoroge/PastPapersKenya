@@ -108,8 +108,9 @@ class ProductUserAddressFragment : Fragment() {
             val firstname = binding.inputBillingFirstName.text.toString()
             val lastname = binding.inputBillingLastName.text.toString()
             val phone = binding.inputBillingPhone.text.toString()
+            val email= FirebaseAuth.getInstance().currentUser?.email
 
-            viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county)
+            viewModel.updateFirestoreDetails(userId, phone, firstname, lastname, country, county, email.toString())
             viewModel.updateLocalDetails(phone, firstname, lastname, country, county, convertIntoNumeric(userServerId), null)
 
 
