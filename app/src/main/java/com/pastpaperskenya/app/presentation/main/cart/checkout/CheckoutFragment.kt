@@ -34,12 +34,15 @@ import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentCheckoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 private const val TAG = "CheckoutFragment"
 
 @AndroidEntryPoint
-class CheckoutFragment : Fragment() {
+class CheckoutFragment : Fragment(), MpesaListener {
+
 
     private val viewModel: CheckoutViewModel by viewModels()
     private var _binding: FragmentCheckoutBinding? = null
@@ -78,6 +81,7 @@ class CheckoutFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentCheckoutBinding.inflate(inflater, container, false)
+
 
         viewModel.userResponse.observe(viewLifecycleOwner) { details ->
             if (details.email!!.isEmpty() || details.lastname.toString().isEmpty()
@@ -243,10 +247,11 @@ class CheckoutFragment : Fragment() {
                     val email= FirebaseAuth.getInstance().currentUser?.email
 
                     checkout_id= checkoutId
+
                     val firestoreDetails= Payment(checkoutId, customerId.toString(), null, merchantRequestId,
                         orderId.toString(), null, null, null, null, firebaseId, email)
 
-                    viewModel.savePendingPaymentFirestore(firestoreDetails, orderId.toString())
+                    viewModel.savePendingPaymentFirestore(firestoreDetails)
 
                 }
                 NetworkResult.Status.ERROR->{
@@ -362,17 +367,6 @@ class CheckoutFragment : Fragment() {
                     }
                     is AuthEvents.ErrorCode -> {
 
-                        if (events.code== 99){
-                            Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFailedFragment)
-
-                        }
-                        if(events.code== 100){
-                            Toast.makeText(requireContext(), "Payment success", Toast.LENGTH_SHORT).show()
-                            viewModel.updateOrder(orderId, true, customerId)
-                            viewModel.deleteAllCart()
-
-                        }
                         if (events.code== 101){
                             Toast.makeText(requireContext(), "Order successful", Toast.LENGTH_SHORT).show()
                             findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
@@ -382,6 +376,16 @@ class CheckoutFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun sendingSuccessful(title: String, body: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            Toast.makeText(context, title +"\n" + body, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun sendingFailed(cause: String) {
+        TODO("Not yet implemented")
     }
 
 

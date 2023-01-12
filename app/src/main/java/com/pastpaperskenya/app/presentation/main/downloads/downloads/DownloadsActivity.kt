@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -14,6 +15,7 @@ import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.util.AuthEvents
 import com.pastpaperskenya.app.business.util.DownloadUtils
+import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.network.NetworkChangeReceiver
 import com.pastpaperskenya.app.business.util.preferences.AppPreference
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
@@ -34,6 +36,8 @@ class DownloadsActivity : AppCompatActivity() {
     private lateinit var downloadDataList: ArrayList<Download>
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
+    private var userServerId: String?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityDownloadBinding.inflate(layoutInflater)
@@ -42,11 +46,19 @@ class DownloadsActivity : AppCompatActivity() {
 
         swipeRefreshLayout = findViewById(R.id.swipe_parent_view)
 
+        viewModel.userProfile.observe(this){ details->
+
+            userServerId= details.userServerId.toString()
+        }
+
         if (NetworkChangeReceiver.isNetworkConnected()) {
             swipeRefreshLayout.setOnRefreshListener {
-                setupObservers()
+                viewModel.fetchMyDownloads(convertIntoNumeric(userServerId!!))
+
+                swipeRefreshLayout.isRefreshing= false
             }
             setupObservers()
+
         } else {
             try {
                 downloadDataList =

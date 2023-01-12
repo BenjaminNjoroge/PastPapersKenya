@@ -5,7 +5,6 @@ import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.model.category.SliderCategory
 import com.pastpaperskenya.app.business.model.user.Customer
 import com.pastpaperskenya.app.business.model.category.SubCategory
-import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
@@ -150,12 +149,5 @@ interface RetrofitApiService {
         @Field("order_id") order_id: String,
         @Field("accesstoken") accesstoken: String
     ): Response<MpesaPaymentReqResponse>
-
-    @POST(CHECK_PAYMENT_STATUS)
-    @FormUrlEncoded
-    suspend fun checkPaymentStatus(
-        @Field("checkout_id") checkoutId: String,
-        @Field("accesstoken") accessToken: String,
-    ): Response<CheckMpesaPaymentStatus>
 
 }

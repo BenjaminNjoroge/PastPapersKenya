@@ -6,7 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.business.model.mpesa.Payment
-import com.pastpaperskenya.app.business.model.mpesa.Payment.Companion.toPayments
+import com.pastpaperskenya.app.business.model.mpesa.PaymentStatus
+import com.pastpaperskenya.app.business.model.mpesa.PaymentStatus.Companion.toPaymentStatus
 import com.pastpaperskenya.app.business.util.Constants
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
@@ -16,7 +17,7 @@ import kotlinx.coroutines.tasks.await
 
 class PaymentsService {
 
-    suspend fun getPaymentData(orderId: String, email: String): Flow<Payment?> {
+    suspend fun getPaymentData(orderId: String, email: String): Flow<PaymentStatus> {
         val db= FirebaseFirestore.getInstance()
         
         return callbackFlow { 
@@ -30,8 +31,8 @@ class PaymentsService {
                         cancel(message = "Error fetching payments")
                         return@addSnapshotListener
                     }
-                    val map= document?.toPayments()
-                    trySend(map).isSuccess
+                    val map= document?.toPaymentStatus()
+                    trySend(map!!).isSuccess
                 }
             awaitClose {
                 listenerRegistration.remove()

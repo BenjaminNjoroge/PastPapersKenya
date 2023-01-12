@@ -9,6 +9,7 @@ app.use(cors({origin: true}));
 
 const mpesaUtils= require("./utils/mpesa-utils");
 const dbUtils= require("./utils/db-utils");
+const woocommerceApi= require("./utils/woocommerce-orders");
 
 
 app.post("/mpesa/callback", async(req, res)=>{
@@ -40,7 +41,7 @@ app.post("/mpesa/callback", async(req, res)=>{
             message: `The request was successful. ${parsedData.resultDesc}`
         });
 
-    
+        woocommerceApi.updateOrder(orderId);
 
     } catch(error){
         console.log(error);

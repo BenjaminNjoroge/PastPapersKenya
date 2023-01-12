@@ -1,13 +1,11 @@
 package com.pastpaperskenya.app.presentation.main.cart.checkout
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.pastpaperskenya.app.business.model.cart.Cart
-import com.pastpaperskenya.app.business.model.mpesa.CheckMpesaPaymentStatus
 import com.pastpaperskenya.app.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.app.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.app.business.model.mpesa.Payment
@@ -24,11 +22,11 @@ import com.pastpaperskenya.app.business.util.convertIntoNumeric
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
+
+private const val TAG = "CheckoutViewModel"
 
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
@@ -105,26 +103,10 @@ class CheckoutViewModel @Inject constructor(
         _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
     }
 
-    fun savePendingPaymentFirestore(paymentDetails: Payment, orderId: String)= viewModelScope.launch {
+    fun savePendingPaymentFirestore(paymentDetails: Payment)= viewModelScope.launch {
         paymentRepository.savePendingPaymentFirebase(paymentDetails)
 
-    }
-
-    fun updateOrder(id: Int, paid: Boolean,  customerId: Int)= viewModelScope.launch{
-
-        try {
-            val response= orderRepository.updateOrder(id, paid, customerId)
-
-            if(response.isSuccessful){
-                if(response.body() !=null){
-                    eventsChannel.send(AuthEvents.ErrorCode(101))
-                }
-            } else{
-                eventsChannel.send(AuthEvents.Error(response.errorBody().toString()))
-            }
-        } catch (e: Exception){
-            eventsChannel.send(AuthEvents.Error("$e Please check Internet bundles / connection"))
-        }
+        FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.CheckoutRequestID.toString())
     }
 
 

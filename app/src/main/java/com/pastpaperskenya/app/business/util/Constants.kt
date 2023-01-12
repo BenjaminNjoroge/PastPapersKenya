@@ -114,4 +114,6 @@ object Constants {
     //CARD PAYMENTS
     const val FLUTTER_PUBLIC_KEY = "FLWPUBK-0ff040c1844abe453dea0eb666b5ee27-X"
     const val FLUTTER_ENCRYPTION_KEY = "4b6869c753dee7d6cc7cf187"
+
+    const val NOTIFICATION_CHANNEL= "pastpapers_channel"
 }

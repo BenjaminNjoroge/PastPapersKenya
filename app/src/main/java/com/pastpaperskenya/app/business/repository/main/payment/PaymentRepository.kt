@@ -32,6 +32,8 @@ class PaymentRepository @Inject constructor(
         firestoreUserService.savePendingPaymentFirebase(paymentDetails)
 
 
-    suspend fun checkPaymentStatus(orderId: String) =
-        firestorePaymentsService.getPaymentData(orderId)
+    suspend fun checkPaymentStatus(orderId: String, email: String) =
+        firestorePaymentsService.getPaymentData(orderId, email)
+
+
 }
