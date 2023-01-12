@@ -36,12 +36,15 @@ app.post("/mpesa/callback", async(req, res)=>{
         
         await dbUtils.setOrderToPaid(email, orderId);
 
+        woocommerceApi.updateOrder(orderId);
+
+        
         res.status(200).send({
             status: "Success",
             message: `The request was successful. ${parsedData.resultDesc}`
         });
 
-        woocommerceApi.updateOrder(orderId);
+        
 
     } catch(error){
         console.log(error);

@@ -117,7 +117,35 @@ class CheckoutFragment : Fragment(), MpesaListener {
             }
         }
 
-        registerObservers()
+        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
+
+            billingEmail = details.email.toString()
+            billingFirstname = details.firstname.toString()
+            billingLastname = details.lastname.toString()
+            billingPhone = details.phone.toString()
+            billingCounty = details.county.toString()
+            billingCountry = details.country.toString()
+            customerId = details.userServerId!!
+
+        }
+        viewModel.cartResponse.observe(viewLifecycleOwner) { items ->
+
+            if (!items.isNullOrEmpty()) {
+                adapter.submitList(items)
+
+                for (item in items) {
+                    lineItems.add(
+                        OrderLineItems(
+                            1,
+                            item.productId,
+                            item.productName,
+                            item.totalPrice,
+                            item.totalPrice
+                        )
+                    )
+                }
+            }
+        }
 
         clickListeners()
 
@@ -139,7 +167,7 @@ class CheckoutFragment : Fragment(), MpesaListener {
         if (requestCode == RaveConstants.RAVE_REQUEST_CODE && data != null) {
             val message = data.getStringExtra("response")
             if (resultCode == RavePayActivity.RESULT_SUCCESS) {
-                // placeOrderWithCard()
+                 //placeOrderWithCard()
 
                 //Toast.makeText(this, "SUCCESS " + message, Toast.LENGTH_SHORT).show();
             } else if (resultCode == RavePayActivity.RESULT_ERROR) {
@@ -155,38 +183,6 @@ class CheckoutFragment : Fragment(), MpesaListener {
 
 
     private fun registerObservers() {
-        viewModel.userResponse.observe(viewLifecycleOwner) { details ->
-
-            billingEmail = details.email.toString()
-            billingFirstname = details.firstname.toString()
-            billingLastname = details.lastname.toString()
-            billingPhone = details.phone.toString()
-            billingCounty = details.county.toString()
-            billingCountry = details.country.toString()
-            customerId = details.userServerId!!
-
-        }
-        viewModel.cartResponse.observe(viewLifecycleOwner) { items ->
-
-            if (!items.isNullOrEmpty()) {
-                adapter.submitList(items)
-
-
-                for (item in items) {
-                    lineItems.add(
-                        OrderLineItems(
-                            1,
-                            item.productId,
-                            item.productName,
-                            item.totalPrice,
-                            item.totalPrice
-                        )
-                    )
-                }
-
-
-            }
-        }
 
         viewModel.orderResponse.observe(viewLifecycleOwner) {
             when (it.status) {
@@ -339,6 +335,7 @@ class CheckoutFragment : Fragment(), MpesaListener {
                     viewModel.createOrder(order)
                     viewModel.getMpesaToken()
 
+                    registerObservers()
                 }
             })
 

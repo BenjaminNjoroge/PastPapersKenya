@@ -36,8 +36,8 @@ class MessagingService constructor(
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val title= message.data.get("title")
-        val content= message.data.get("body")
+        val title= message.data["title"]
+        val content= message.data["body"]
         val defaultSound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val intent = Intent(this, MainActivity::class.java)
