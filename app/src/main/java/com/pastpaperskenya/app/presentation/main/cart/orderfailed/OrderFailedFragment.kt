@@ -27,7 +27,7 @@ class OrderFailedFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
 
         binding.checkDownloadsStatus.setOnClickListener {
-            activity?.finish()
+            activity?.fragmentManager?.popBackStack();
         }
     }
 }
