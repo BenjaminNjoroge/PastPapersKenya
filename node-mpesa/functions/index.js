@@ -33,12 +33,19 @@ app.post("/mpesa/callback", async(req, res)=>{
         const orderId =await dbUtils.savePaymentSuccessDetails(docId1, parsedData);
 
         console.log(orderId);
+
+        const status= await dbUtils.getPaymentStatus(docId1);
+        console.log(status);
+
+        const reason= await dbUtils.getReason(docId1);
         
         await dbUtils.setOrderToPaid(email, orderId);
 
         woocommerceApi.updateOrder(orderId);
 
-        
+
+        await dbUtils.sendHotNotification(`Order ${orderId} Payment Sucess`,"Your pastpaper is ready to view",docId1, email, status, orderId, reason, docId1);
+
         res.status(200).send({
             status: "Success",
             message: `The request was successful. ${parsedData.resultDesc}`
@@ -62,11 +69,19 @@ app.post("/mpesa/callback", async(req, res)=>{
         const email= await dbUtils.getUserEmail(docId2);
         console.log(email);
 
+        const reason= await dbUtils.getReason(docId2);
+
+        const status= await dbUtils.getPaymentStatus(docId2);
+        console.log(status);
+
         try{
             
             const orderId =await dbUtils.savePaymentFailedDetails(docId2, responseData);
 
             await dbUtils.setOrderToUnPaid(email, orderId);
+
+            await dbUtils.sendHotNotification(`Order ${orderId} Failed`, "Sorry!. We could not complete your order", docId2, email, status, orderId, reason, docId2);
+
 
              res.status(200).send({
                 status: "Response Success",

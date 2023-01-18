@@ -34,8 +34,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesPaymentRepository(retrofitApiService: RetrofitApiService, firestoreUserService: FirestoreUserService, firestorePaymentsService: PaymentsService):PaymentRepository{
-        return PaymentRepository(retrofitApiService, firestoreUserService, firestorePaymentsService)
+    fun providesPaymentRepository(retrofitApiService: RetrofitApiService, firestoreUserService: FirestoreUserService):PaymentRepository{
+        return PaymentRepository(retrofitApiService, firestoreUserService)
     }
 
     @Provides

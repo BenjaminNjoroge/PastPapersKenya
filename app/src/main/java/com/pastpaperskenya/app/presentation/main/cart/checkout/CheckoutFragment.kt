@@ -24,6 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.mpesa.MpesaStatus
 import com.pastpaperskenya.app.business.model.mpesa.Payment
 import com.pastpaperskenya.app.business.model.orders.CreateOrder
 import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
@@ -37,11 +38,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 private const val TAG = "CheckoutFragment"
 
 @AndroidEntryPoint
-class CheckoutFragment : Fragment(), MpesaListener {
+class CheckoutFragment : Fragment() {
 
 
     private val viewModel: CheckoutViewModel by viewModels()
@@ -375,15 +379,19 @@ class CheckoutFragment : Fragment(), MpesaListener {
         }
     }
 
-    override fun sendingSuccessful(title: String, body: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            Toast.makeText(context, title +"\n" + body, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun sendingFailed(cause: String) {
-        TODO("Not yet implemented")
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    fun onEventBus(status: MpesaStatus){
+        Log.d(TAG, "onEventBus: Displaying event"+ status)
     }
 
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
 }

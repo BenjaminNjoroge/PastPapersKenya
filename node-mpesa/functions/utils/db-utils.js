@@ -1,20 +1,72 @@
-const admin= require("firebase-admin");
-
-const serviceAccount= require("../config.json");
-
-const moment= require("moment");
-var date = moment();
-var currentDate = date.format('MMMM Do YYYY, h:mm:ss a');
-
+var admin= require("firebase-admin");
+var serviceAccount= require("../config.json");
 
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://pastpaperskenya-default-rtdb.firebaseio.com"
-});
+  });
+
+const moment= require("moment");
+var date = moment();
+var currentDate = date.format('MMMM Do YYYY, h:mm:ss a');
 
 const db= admin.firestore();
 
+const notification_options= {
+    priority: "high",
+    timeToLive : 60 * 60 *24
+};
+
+function sendHotNotification(title, body, topic, email, status, orderId, resultDesc, checkoutRequestID){
+
+    const options= notification_options;
+    const payload= {
+        notification:{
+            title: title,
+            body: body
+        },
+        data:{
+            email:email,
+            status: status,
+            orderId: orderId,
+            resultDesc: resultDesc,
+            checkoutRequestID: checkoutRequestID
+        }
+    };
+
+    return admin.messaging().sendToTopic(topic, payload, options).then((response)=>{
+        console.log("Successfully sent notification: ",response);
+    }).catch((error)=>{
+        console.log(" An error occured when sending notification: ", error)
+    });
+
+
+}
+
+function getReason(checkoutRequestID){
+    return db.collection("payments")
+    .doc(checkoutRequestID)
+    .get()
+    .then(snapshot=>{
+        return db.collection("payments")
+        .doc(checkoutRequestID)
+        .get()
+        .then(() => snapshot.data().resultDesc); 
+    });
+}
+
+function getPaymentStatus(checkoutRequestID){
+    return db.collection("payments")
+    .doc(checkoutRequestID)
+    .get()
+    .then(snapshot=>{
+        return db.collection("payments")
+        .doc(checkoutRequestID)
+        .get()
+        .then(() => snapshot.data().status); 
+    });
+}
 
 function getDocumentId(checkoutRequestID){
     return db.collection("payments")
@@ -103,6 +155,9 @@ function savePaymentFailedDetails(id, parsedData){
 }
 
 module.exports= {
+    getReason,
+    getPaymentStatus,
+    sendHotNotification,
     getDocumentId,
     savePaymentSuccessDetails,
     savePaymentFailedDetails,

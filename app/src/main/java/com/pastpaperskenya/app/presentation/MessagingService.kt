@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -16,28 +17,41 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.mpesa.PaymentFcm
+import com.pastpaperskenya.app.business.model.mpesa.MpesaStatus
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.presentation.main.MainActivity
-import com.pastpaperskenya.app.presentation.main.cart.checkout.MpesaListener
 import okhttp3.internal.notify
+import org.greenrobot.eventbus.EventBus
 
 
-class MessagingService constructor(
-    private val mpesaListener: MpesaListener): FirebaseMessagingService() {
+private const val TAG = "MessagingService"
+
+class MessagingService : FirebaseMessagingService() {
 
     val channel_id= Constants.NOTIFICATION_CHANNEL
 
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
+        Log.d(TAG, "onNewToken: "+token)
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
-        val title= message.data["title"]
-        val content= message.data["body"]
+        val title= message.notification?.title
+        val content= message.notification?.body
+
+        val status= message.data.get("status")
+        val resultDesc= message.data.get("resultDesc")
+        val orderId= message.data.get("orderId")
+        val email= message.data.get("email")
+
+
+        Log.d(TAG, "onMessageReceived: "+ title +" "+content)
+        Log.d(TAG, "onMessageReceived: "+ email +"\n" +status + "\n"+ orderId)
+
+        EventBus.getDefault().post(MpesaStatus(status.toString()))
+
         val defaultSound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val intent = Intent(this, MainActivity::class.java)
