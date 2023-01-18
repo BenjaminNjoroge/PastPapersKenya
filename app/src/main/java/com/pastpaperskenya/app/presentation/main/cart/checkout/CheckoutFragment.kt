@@ -369,8 +369,7 @@ class CheckoutFragment : Fragment() {
                     is AuthEvents.ErrorCode -> {
 
                         if (events.code== 101){
-                            Toast.makeText(requireContext(), "Order successful", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
+
                         }
 
                     }
@@ -380,8 +379,18 @@ class CheckoutFragment : Fragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
-    fun onEventBus(status: MpesaStatus){
-        Log.d(TAG, "onEventBus: Displaying event"+ status)
+    fun onEventBus(mpesa: MpesaStatus){
+        Log.d(TAG, "onEventBus: Displaying event"+ mpesa.status)
+
+        if (mpesa.status == "completed"){
+            viewModel.deleteAllCart()
+            Toast.makeText(requireContext(), "Order ${mpesa.status}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment)
+        } else{
+            Toast.makeText(requireContext(), "Order ${mpesa.status}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_checkoutFragment_to_orderFailedFragment)
+        }
+
     }
 
 

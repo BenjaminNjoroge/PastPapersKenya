@@ -69,10 +69,7 @@ app.post("/mpesa/callback", async(req, res)=>{
         const email= await dbUtils.getUserEmail(docId2);
         console.log(email);
 
-        const reason= await dbUtils.getReason(docId2);
 
-        const status= await dbUtils.getPaymentStatus(docId2);
-        console.log(status);
 
         try{
             
@@ -80,6 +77,12 @@ app.post("/mpesa/callback", async(req, res)=>{
 
             await dbUtils.setOrderToUnPaid(email, orderId);
 
+            const reason= await dbUtils.getReason(docId2);
+            console.log(reason);
+            
+            const status= await dbUtils.getPaymentStatus(docId2);
+            console.log(status);
+            
             await dbUtils.sendHotNotification(`Order ${orderId} Failed`, "Sorry!. We could not complete your order", docId2, email, status, orderId, reason, docId2);
 
 

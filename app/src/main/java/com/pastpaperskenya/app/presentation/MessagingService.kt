@@ -45,12 +45,17 @@ class MessagingService : FirebaseMessagingService() {
         val resultDesc= message.data.get("resultDesc")
         val orderId= message.data.get("orderId")
         val email= message.data.get("email")
+        val checkoutRequestID= message.data.get("checkoutRequestID")
 
 
         Log.d(TAG, "onMessageReceived: "+ title +" "+content)
         Log.d(TAG, "onMessageReceived: "+ email +"\n" +status + "\n"+ orderId)
 
-        EventBus.getDefault().post(MpesaStatus(status.toString()))
+        if (status != null) {
+            if (status.isNotEmpty()){
+                EventBus.getDefault().post(MpesaStatus(status.toString(), resultDesc.toString(), orderId.toString()))
+            }
+        }
 
         val defaultSound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -75,7 +80,7 @@ class MessagingService : FirebaseMessagingService() {
         val notificationManager= getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1,notification.build())
 
-        //FirebaseMessaging.getInstance().unsubscribeFromTopic(topicId)
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(checkoutRequestID.toString())
 
     }
 
