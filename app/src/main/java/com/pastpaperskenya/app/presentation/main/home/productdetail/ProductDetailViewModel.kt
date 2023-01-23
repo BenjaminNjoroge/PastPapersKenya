@@ -109,7 +109,4 @@ class ProductDetailViewModel @Inject constructor(
         FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.CheckoutRequestID.toString())
     }
 
-    fun deleteAllCart()= viewModelScope.launch{
-        cartRepository.deleteAllCart()
-    }
 }

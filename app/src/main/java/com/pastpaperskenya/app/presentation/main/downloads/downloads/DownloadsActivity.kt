@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pastpaperskenya.app.R
 import com.pastpaperskenya.app.business.model.download.Download
 import com.pastpaperskenya.app.business.util.AuthEvents
@@ -34,7 +33,6 @@ class DownloadsActivity : AppCompatActivity() {
     private lateinit var downloadsAdapter: DownloadAdapter
 
     private lateinit var downloadDataList: ArrayList<Download>
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     private var userServerId: String?=null
 
@@ -44,19 +42,13 @@ class DownloadsActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        swipeRefreshLayout = findViewById(R.id.swipe_parent_view)
-
         viewModel.userProfile.observe(this){ details->
 
             userServerId= details.userServerId.toString()
         }
 
         if (NetworkChangeReceiver.isNetworkConnected()) {
-            swipeRefreshLayout.setOnRefreshListener {
-                viewModel.fetchMyDownloads(convertIntoNumeric(userServerId!!))
 
-                swipeRefreshLayout.isRefreshing= false
-            }
             setupObservers()
 
         } else {
@@ -111,7 +103,6 @@ class DownloadsActivity : AppCompatActivity() {
                     binding.pbLoading.visibility = View.GONE
                     binding.emptyListLayout.visibility = View.GONE
                     downloadDataList = it.data as ArrayList<Download>
-                    swipeRefreshLayout.isRefreshing = false
 
                     if (downloadDataList.size > 0) {
                         AppPreference.getInstance(this).downloadList = downloadDataList;

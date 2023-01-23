@@ -152,14 +152,16 @@ class ProductDetailFragment : Fragment() {
 
 
     private fun bindDetails(product: Product?){
-        pId= product?.id!!
+        if (product != null) {
+            pId= product.id
+        }
         pName= product?.name.toString()
         val productId= product?.id
         val productName= product?.name
         val productRegularPrice= product?.regular_price
         val productPrice= product?.sale_price
 
-        netTotalAmount= convertIntoNumeric(product.sale_price.toString())
+        netTotalAmount= convertIntoNumeric(product?.sale_price.toString())
 
         if (product?.images.isNullOrEmpty()){
             productImage= R.drawable.image_placeholder.toString()
@@ -381,7 +383,6 @@ class ProductDetailFragment : Fragment() {
         Log.d(TAG, "onEventBus: Displaying event"+ mpesa.status)
 
         if (mpesa.status == "completed"){
-            viewModel.deleteAllCart()
             Toast.makeText(requireContext(), "Order ${mpesa.status}", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_productDetailFragment_to_orderConfirmedFragment2)
         } else{
