@@ -1,6 +1,7 @@
 package com.pastpaperskenya.app.presentation.main.home.productdetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +15,28 @@ import com.bumptech.glide.Glide
 import com.flutterwave.raveandroid.RaveUiManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.pastpaperskenya.app.R
+import com.pastpaperskenya.app.business.model.mpesa.MpesaStatus
+import com.pastpaperskenya.app.business.model.mpesa.Payment
+import com.pastpaperskenya.app.business.model.orders.CreateOrder
+import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
+import com.pastpaperskenya.app.business.model.orders.OrderLineItems
 import com.pastpaperskenya.app.business.model.product.Product
 import com.pastpaperskenya.app.business.model.wishlist.WishList
 import com.pastpaperskenya.app.business.util.Constants
 import com.pastpaperskenya.app.business.util.convertIntoNumeric
+import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
 import com.pastpaperskenya.app.business.util.sealed.NetworkResult
 import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+private const val TAG = "ProductDetailFragment"
 @AndroidEntryPoint
 class ProductDetailFragment : Fragment() {
 
@@ -46,10 +57,20 @@ class ProductDetailFragment : Fragment() {
     private lateinit var billingLastname:String
     private lateinit var billingFirstname: String
     private lateinit var billingEmail: String
+    private lateinit var billingCounty: String
+    private lateinit var billingCountry: String
+    private lateinit var accessToken: String
+    private lateinit var pName: String
 
     private lateinit var productImage: String
 
     private var netTotalAmount= 0
+    private var customerId = 0
+    private var orderId: Int= 0
+    private var pId: Int= 0
+
+    private var checkout_id: String?=null
+    private val lineItems = ArrayList<OrderLineItems>()
 
 
     override fun onCreateView(
@@ -92,6 +113,8 @@ class ProductDetailFragment : Fragment() {
             }
 
         }
+
+        clickListeners()
     }
 
     private fun setupObservers(){
@@ -101,13 +124,16 @@ class ProductDetailFragment : Fragment() {
             billingFirstname= it.firstname.toString()
             billingLastname= it.lastname.toString()
             billingPhone= it.phone.toString()
+            billingCountry= it.country.toString()
+            billingCounty= it.county.toString()
+            customerId= it.userServerId!!
         }
 
         viewModel.response.observe(viewLifecycleOwner){
             when(it.status){
-                 NetworkResult.Status.LOADING->{
-                     binding.pbLoading.visibility= View.VISIBLE
-                 }
+                NetworkResult.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
                 NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
 
@@ -126,11 +152,15 @@ class ProductDetailFragment : Fragment() {
 
 
     private fun bindDetails(product: Product?){
-
+        pId= product?.id!!
+        pName= product?.name.toString()
         val productId= product?.id
         val productName= product?.name
         val productRegularPrice= product?.regular_price
         val productPrice= product?.sale_price
+
+        netTotalAmount= convertIntoNumeric(product.sale_price.toString())
+
         if (product?.images.isNullOrEmpty()){
             productImage= R.drawable.image_placeholder.toString()
         }else{
@@ -170,38 +200,6 @@ class ProductDetailFragment : Fragment() {
                 .into(binding.productImageSlider)
         }
 
-        binding.paywithcard.setOnClickListener {
-            paymentMethod = Constants.PAYMENT_METHOD_CARD;
-            paymentTitle = getString(R.string.payment_title_card);
-
-            val txRef = currentDateandTime;
-
-            if (num2 != null) {
-                RaveUiManager(requireParentFragment()).setAmount(num2.toDouble())
-                    .setCurrency("KES")
-                    .setCountry("KE")
-                    .setEmail(billingEmail)
-                    .setfName(billingFirstname)
-                    .setlName(billingLastname)
-                    .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
-                    .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
-                    //.setTxRef(txRef)
-                    .setPhoneNumber(billingPhone, false)
-                    .acceptCardPayments(true)
-                    .allowSaveCardFeature(false)
-                    .onStagingEnv(false)
-                    .isPreAuth(false)
-                    .shouldDisplayFee(true)
-                    .showStagingLabel(false)
-                    .initialize()
-            }
-        }
-
-
-        binding.paywithmpesa.setOnClickListener {
-            showPaymentSheet()
-        }
-
         binding.productFavourite.setOnClickListener {
             viewModel.addToWishlist(WishList(productId, productName, productRegularPrice, productPrice, productImage,
                 categoryIds, productDescription, percent, productCount, productRating
@@ -214,56 +212,190 @@ class ProductDetailFragment : Fragment() {
 
     }
 
-    private fun showPaymentSheet() {
-        mBottomSheetDialog = BottomSheetDialog(requireContext())
-        val view: View = layoutInflater.inflate(
-            R.layout.mpesa_payment_sheet,
-            requireActivity().getWindow().getDecorView().getRootView() as ViewGroup,
-            false
-        )
-        mBottomSheetDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+    private fun registerObservers() {
 
-        mBottomSheetDialog.setContentView(view)
-        mBehavior = BottomSheetBehavior.from(view.parent as View)
+        viewModel.orderResponse.observe(viewLifecycleOwner) {
+            when (it.status) {
+                NetworkResult.Status.LOADING -> {
+                    binding.pbLoading.visibility = View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS -> {
+                    binding.pbLoading.visibility = View.GONE
 
-        val img_close: ImageView = view.findViewById(R.id.img_close)
-        img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
-        val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
-        amount_tv.text = "Pay $netTotalAmount"+"ksh"
+                    Toast.makeText(context, "Please wait...", Toast.LENGTH_SHORT).show()
+                    orderId= it.data?.orderId!!
 
-        val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
-        val payNow_Btn: Button = view.findViewById(R.id.btnPay)
 
-        if (!billingPhone.isNullOrEmpty()) {
-            phoneNo.setText(billingPhone)
-        }
-        payNow_Btn.setOnClickListener(View.OnClickListener {
-            val mobileNo = phoneNo.text.toString().trim { it <= ' ' }
-            if (mobileNo.isEmpty()) {
-                phoneNo.error = "Enter Phone No"
-                phoneNo.requestFocus()
-            } else if (mobileNo.length < 10) {
-                phoneNo.error = "Phone No too small"
-                phoneNo.requestFocus()
-            } else if (mobileNo.startsWith("0") && mobileNo.length != 10) {
-                phoneNo.error = "Enter valid Phone No"
-                phoneNo.requestFocus()
-            } else if (mobileNo.startsWith("254") && mobileNo.length != 12) {
-                phoneNo.error = "Enter valid Phone No"
-                phoneNo.requestFocus()
-            } else if (!mobileNo.startsWith("0") && !mobileNo.startsWith("254") && mobileNo.length != 9) {
-                phoneNo.error = "Enter valid Phone No"
-                phoneNo.requestFocus()
-            } else {
-                mBottomSheetDialog.dismiss()
-                //generateToken(false, mobileNo)
+                }
+                NetworkResult.Status.ERROR -> {
+                    binding.pbLoading.visibility = View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
             }
-        })
+        }
 
-        mBottomSheetDialog.setCanceledOnTouchOutside(false)
-        mBottomSheetDialog.show()
+        viewModel.mpesaTokenResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
+                    accessToken= it.data?.mpesaTokenData?.token.toString()
+
+                    viewModel.createStkpush(netTotalAmount.toString(),
+                        sanitizePhoneNumber(billingPhone), orderId.toString(),
+                        accessToken
+                    )
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
+
+        viewModel.stkpushResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
+
+                    val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
+                    val merchantRequestId= it.data?.mpesaPaymentReqResponseData?.merchantRequestID
+                    val firebaseId= FirebaseAuth.getInstance().currentUser?.uid
+                    val email= FirebaseAuth.getInstance().currentUser?.email
+
+                    checkout_id= checkoutId
+
+                    val firestoreDetails= Payment(checkoutId, customerId.toString(), null, merchantRequestId,
+                        orderId.toString(), null, null, null, null, firebaseId, email)
+
+                    viewModel.savePendingPaymentFirestore(firestoreDetails)
+
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.pbLoading.visibility= View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        }
+
     }
 
+    private fun clickListeners(){
+
+        binding.paywithcard.setOnClickListener {
+            Log.d(TAG, "onViewCreated: onclick")
+            RaveUiManager(requireParentFragment()).setAmount(1.0)
+                .setCurrency("KES")
+                .setCountry("KE")
+                .setEmail(billingEmail)
+                .setfName(billingFirstname)
+                .setlName(billingLastname)
+                .setPublicKey(Constants.FLUTTER_PUBLIC_KEY)
+                .setEncryptionKey(Constants.FLUTTER_ENCRYPTION_KEY)
+                //.setTxRef(txRef)
+                .setPhoneNumber(billingPhone, false)
+                .acceptCardPayments(true)
+                .allowSaveCardFeature(false)
+                .onStagingEnv(false)
+                .isPreAuth(false)
+                .shouldDisplayFee(true)
+                .showStagingLabel(false)
+                .initialize()
+
+        }
+
+        binding.paywithmpesa.setOnClickListener {
+
+            mBottomSheetDialog = BottomSheetDialog(requireContext())
+            val view: View = layoutInflater.inflate(
+                R.layout.mpesa_payment_sheet,
+                requireActivity().getWindow().getDecorView().getRootView() as ViewGroup,
+                false
+            )
+            mBottomSheetDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+
+            mBottomSheetDialog.setContentView(view)
+            mBehavior = BottomSheetBehavior.from(view.parent as View)
+
+            val img_close: ImageView = view.findViewById(R.id.img_close)
+            img_close.setOnClickListener(View.OnClickListener { mBottomSheetDialog.dismiss() })
+            val amount_tv = view.findViewById<TextView>(R.id.tv_Title)
+            amount_tv.text = "Pay $netTotalAmount" + "ksh"
+
+            val phoneNo = view.findViewById<EditText>(R.id.et_Phone)
+            val payNow_Btn: Button = view.findViewById(R.id.btnPay)
+
+            if (!billingPhone.isNullOrEmpty()) {
+                phoneNo.setText(billingPhone)
+            }
+            payNow_Btn.setOnClickListener(View.OnClickListener {
+                val mobileNo = phoneNo.text.toString().trim { it <= ' ' }
+                if (mobileNo.isEmpty()) {
+                    phoneNo.error = "Enter Phone No"
+                    phoneNo.requestFocus()
+                } else if (mobileNo.length < 10) {
+                    phoneNo.error = "Phone No too small"
+                    phoneNo.requestFocus()
+                } else if (mobileNo.startsWith("0") && mobileNo.length != 10) {
+                    phoneNo.error = "Enter valid Phone No"
+                    phoneNo.requestFocus()
+                } else if (mobileNo.startsWith("254") && mobileNo.length != 12) {
+                    phoneNo.error = "Enter valid Phone No"
+                    phoneNo.requestFocus()
+                } else if (!mobileNo.startsWith("0") && !mobileNo.startsWith("254") && mobileNo.length != 9) {
+                    phoneNo.error = "Enter valid Phone No"
+                    phoneNo.requestFocus()
+                } else {
+                    mBottomSheetDialog.dismiss()
+
+                    binding.pbLoading.visibility = View.VISIBLE
+                    val orderBillingProperties= OrderBillingProperties(billingFirstname, billingLastname, billingCounty, billingCountry, billingEmail, sanitizePhoneNumber(billingPhone))
+
+                    lineItems.add(OrderLineItems(1, pId, pName, netTotalAmount.toString(), netTotalAmount.toString()))
+
+                    val order= CreateOrder(null, null, customerId,"Mpesa", "Paid with mpesa", false, orderBillingProperties, lineItems)
+                    viewModel.createOrder(order)
+                    viewModel.getMpesaToken()
+
+                    registerObservers()
+                }
+            })
+
+            mBottomSheetDialog.setCanceledOnTouchOutside(false)
+            mBottomSheetDialog.show()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    fun onEventBus(mpesa: MpesaStatus){
+        Log.d(TAG, "onEventBus: Displaying event"+ mpesa.status)
+
+        if (mpesa.status == "completed"){
+            viewModel.deleteAllCart()
+            Toast.makeText(requireContext(), "Order ${mpesa.status}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_productDetailFragment_to_orderConfirmedFragment2)
+        } else{
+            Toast.makeText(requireContext(), "Order ${mpesa.status}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_productDetailFragment_to_orderFailedFragment2)
+        }
+
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -273,5 +405,6 @@ class ProductDetailFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        EventBus.getDefault().unregister(this)
     }
 }

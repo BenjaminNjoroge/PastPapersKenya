@@ -366,7 +366,8 @@
                         android:gravity="center"
                         android:layout_gravity="center_vertical"
                         android:textColor="@color/colorProgress"
-                        android:text="Change Address" />
+                        android:text="Change Address"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
                 <View

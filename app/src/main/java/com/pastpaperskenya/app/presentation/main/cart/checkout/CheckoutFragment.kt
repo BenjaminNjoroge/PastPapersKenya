@@ -171,7 +171,7 @@ class CheckoutFragment : Fragment() {
         if (requestCode == RaveConstants.RAVE_REQUEST_CODE && data != null) {
             val message = data.getStringExtra("response")
             if (resultCode == RavePayActivity.RESULT_SUCCESS) {
-                 //placeOrderWithCard()
+                //placeOrderWithCard()
 
                 //Toast.makeText(this, "SUCCESS " + message, Toast.LENGTH_SHORT).show();
             } else if (resultCode == RavePayActivity.RESULT_ERROR) {
@@ -218,8 +218,8 @@ class CheckoutFragment : Fragment() {
                     Toast.makeText(context, "Sending request", Toast.LENGTH_SHORT).show()
                     accessToken= it.data?.mpesaTokenData?.token.toString()
 
-                    viewModel.createStkpush("1",//netTotalAmount.toString(),
-                         sanitizePhoneNumber(billingPhone), orderId.toString(),
+                    viewModel.createStkpush(netTotalAmount.toString(),
+                        sanitizePhoneNumber(billingPhone), orderId.toString(),
                         accessToken
                     )
                 }

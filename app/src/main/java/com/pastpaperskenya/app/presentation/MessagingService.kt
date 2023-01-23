@@ -60,7 +60,7 @@ class MessagingService : FirebaseMessagingService() {
         val defaultSound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val intent = Intent(this, MainActivity::class.java)
-        intent.flags= Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intent.flags= Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val pendingIntent= PendingIntent.getActivity(applicationContext,
             0,intent, PendingIntent.FLAG_UPDATE_CURRENT)

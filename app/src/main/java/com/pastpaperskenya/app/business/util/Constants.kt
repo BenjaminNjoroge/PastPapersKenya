@@ -12,7 +12,6 @@ object Constants {
     private const val API_URL = "wp-json/wc/v3/"
     const val BASE_URL = SITE_URL + API_URL
     private const val BASE_AUTH = "?consumer_key=$CONSUMER_KEY&consumer_secret=$CONSUMER_SECRET"
-    const val PAYMENTS_URL = "https://us-central1-pastpaperskenya.cloudfunctions.net/payments/"
     const val RC_GOOGLE_IN = 9002
 
     //KEY CONSTANT
@@ -113,6 +112,7 @@ object Constants {
 
     //CARD PAYMENTS
     const val FLUTTER_PUBLIC_KEY = "FLWPUBK-0ff040c1844abe453dea0eb666b5ee27-X"
+    const val FLUTTER_SECRET_KEY = "FLWSECK-4b6869c753de2ea4624d5fea4feb111e-X"
     const val FLUTTER_ENCRYPTION_KEY = "4b6869c753dee7d6cc7cf187"
 
     const val NOTIFICATION_CHANNEL= "pastpapers_channel"

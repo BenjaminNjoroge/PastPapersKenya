@@ -91,7 +91,7 @@ class CheckoutViewModel @Inject constructor(
         }
     }
 
-     fun createOrder(order: CreateOrder)= viewModelScope.launch{
+    fun createOrder(order: CreateOrder)= viewModelScope.launch{
         _orderResponse.value= orderRepository.createOrder(order)
     }
 
@@ -110,13 +110,16 @@ class CheckoutViewModel @Inject constructor(
     }
 
 
+    fun updateOrder(id:Int, status: Boolean, customerId: Int)= viewModelScope.launch {
+        orderRepository.updateOrder(id, status, customerId)
+    }
     private suspend fun getCartItems(){
         cartRepository.getCartItems().collect{
             _cartResponse.postValue(it)
         }
     }
 
-     fun deleteAllCart()= viewModelScope.launch{
+    fun deleteAllCart()= viewModelScope.launch{
         cartRepository.deleteAllCart()
     }
 
