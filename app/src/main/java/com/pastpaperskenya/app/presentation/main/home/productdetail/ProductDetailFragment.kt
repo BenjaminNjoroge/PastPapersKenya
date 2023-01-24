@@ -212,6 +212,7 @@ class ProductDetailFragment : Fragment() {
             findNavController().navigate(R.id.action_productDetailFragment_to_productUserAddressFragment)
         }
 
+        binding.linLayout6.visibility= View.VISIBLE
     }
 
     private fun registerObservers() {

@@ -424,7 +424,8 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/size_10dp"
         android:layout_marginBottom="@dimen/size_50dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             style="text-decoration: underline"
