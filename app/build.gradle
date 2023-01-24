@@ -12,18 +12,34 @@ plugins {
 
 android {
 
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\Benja\\Documents\\jks.jks')
+            storePassword 'benja.123'
+            keyAlias 'key0'
+            keyPassword 'benja.123'
+        }
+        release {
+            storeFile file('C:\\Users\\Benja\\Documents\\jks.jks')
+            storePassword 'benja.123'
+            keyAlias 'key0'
+            keyPassword 'benja.123'
+        }
+    }
     compileSdk 33
 
     buildFeatures {
         viewBinding = true
     }
 
+
+
     defaultConfig {
         applicationId "com.pastpaperskenya.app"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 7
+        versionName "1.0.3"
 
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true

@@ -410,7 +410,6 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-
             </RelativeLayout>
 
         </androidx.core.widget.NestedScrollView>
