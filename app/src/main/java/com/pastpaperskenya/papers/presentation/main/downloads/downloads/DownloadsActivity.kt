@@ -140,7 +140,7 @@ class DownloadsActivity : AppCompatActivity() {
         binding.textEmpty.visibility= View.GONE
         binding.downloadShimmer.shimmerCategoryLayout.visibility= View.GONE
 
-        binding.recyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
         binding.recyclerview.adapter = downloadsAdapter
         downloadsAdapter.setItemClickListener(ViewItemListener { path ->
             val dirPath: String = DownloadUtils.getRootDirPath(this.applicationContext)
