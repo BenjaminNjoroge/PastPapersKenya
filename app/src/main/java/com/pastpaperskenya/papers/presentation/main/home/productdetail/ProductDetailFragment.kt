@@ -1,4 +1,4 @@
-package com.pastpaperskenya.app.presentation.main.home.productdetail
+package com.pastpaperskenya.papers.presentation.main.home.productdetail
 
 import android.os.Bundle
 import android.util.Log
@@ -16,19 +16,19 @@ import com.flutterwave.raveandroid.RaveUiManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.pastpaperskenya.app.R
-import com.pastpaperskenya.app.business.model.mpesa.MpesaStatus
-import com.pastpaperskenya.app.business.model.mpesa.Payment
-import com.pastpaperskenya.app.business.model.orders.CreateOrder
-import com.pastpaperskenya.app.business.model.orders.OrderBillingProperties
-import com.pastpaperskenya.app.business.model.orders.OrderLineItems
-import com.pastpaperskenya.app.business.model.product.Product
-import com.pastpaperskenya.app.business.model.wishlist.WishList
-import com.pastpaperskenya.app.business.util.Constants
-import com.pastpaperskenya.app.business.util.convertIntoNumeric
-import com.pastpaperskenya.app.business.util.sanitizePhoneNumber
-import com.pastpaperskenya.app.business.util.sealed.NetworkResult
-import com.pastpaperskenya.app.databinding.FragmentProductDetailBinding
+import com.pastpaperskenya.papers.R
+import com.pastpaperskenya.papers.business.model.mpesa.MpesaStatus
+import com.pastpaperskenya.papers.business.model.mpesa.Payment
+import com.pastpaperskenya.papers.business.model.orders.CreateOrder
+import com.pastpaperskenya.papers.business.model.orders.OrderBillingProperties
+import com.pastpaperskenya.papers.business.model.orders.OrderLineItems
+import com.pastpaperskenya.papers.business.model.product.Product
+import com.pastpaperskenya.papers.business.model.wishlist.WishList
+import com.pastpaperskenya.papers.business.util.Constants
+import com.pastpaperskenya.papers.business.util.convertIntoNumeric
+import com.pastpaperskenya.papers.business.util.sanitizePhoneNumber
+import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
+import com.pastpaperskenya.papers.databinding.FragmentProductDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -148,8 +148,6 @@ class ProductDetailFragment : Fragment() {
         }
 
     }
-
-
 
     private fun bindDetails(product: Product?){
         if (product != null) {
