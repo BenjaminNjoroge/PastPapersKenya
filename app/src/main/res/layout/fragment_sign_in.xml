@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
         android:id="@+id/skip_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_launcher" />
 
-        <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+        <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10dp"
@@ -168,7 +168,7 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:id="@+id/txt_forgot_password"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -200,7 +200,7 @@
 
             </LinearLayout>
 
-            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+            <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                 android:id="@+id/txt_create_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

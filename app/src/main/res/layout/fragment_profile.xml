@@ -153,7 +153,7 @@
                     android:textSize="16sp"
                     android:layout_weight="1"/>
 
-                <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                     android:id="@+id/tvCountry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                     android:textStyle="bold"
                     android:layout_weight="1"/>
 
-                <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                     android:id="@+id/tvCounty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

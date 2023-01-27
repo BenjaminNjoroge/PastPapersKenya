@@ -46,7 +46,7 @@
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/empty_cart"/>
 
-            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                 android:id="@+id/text_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                 android:textColor="@color/black"
                 android:text="Your cart is empty"/>
 
-            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                 android:id="@+id/text_empty_hints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             android:background="@drawable/bg_cart_checkout"
             android:visibility="visible">
 
-            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+            <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                 android:id="@+id/cart_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

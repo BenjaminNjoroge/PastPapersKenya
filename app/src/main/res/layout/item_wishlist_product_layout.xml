@@ -29,7 +29,7 @@
                 android:scaleType="centerCrop"
                 android:src="@color/placeholder" />
 
-            <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+            <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                 android:id="@+id/product_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:orientation="horizontal"
                 android:visibility="visible">
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:id="@+id/product_regular_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                     android:textSize="@dimen/text_13sp"
                     android:visibility="gone" />
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:id="@+id/product_sale_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

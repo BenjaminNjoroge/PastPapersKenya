@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/downloadsFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.downloads.downloads.DownloadsFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.downloads.downloads.DownloadsFragment"
         android:label="Downloads"
         tools:layout="@layout/fragment_downloads" >
 

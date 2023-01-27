@@ -1,78 +1,41 @@
 {
   "project_info": {
-    "project_number": "346798231053",
-    "firebase_url": "https://pastpaperskenya-default-rtdb.firebaseio.com",
-    "project_id": "pastpaperskenya",
-    "storage_bucket": "pastpaperskenya.appspot.com"
+    "project_number": "871626339993",
+    "project_id": "pastpaperskenya-f63ad",
+    "storage_bucket": "pastpaperskenya-f63ad.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:346798231053:android:839a7defffa070ad2e4f44",
+        "mobilesdk_app_id": "1:871626339993:android:0d937efa87446f14e7aa08",
         "android_client_info": {
-          "package_name": "com.pastpaperskenya.app"
+          "package_name": "com.pastpaperskenya.papers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "346798231053-1enfhg8oeu8toko1o2huikhjtnlt40bc.apps.googleusercontent.com",
+          "client_id": "871626339993-ukgo7ffnctoo1ue649217jmeicldb8ov.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.pastpaperskenya.app",
-            "certificate_hash": "8ff6285f7f957ad50677cb58452c5dd5b5846179"
+            "package_name": "com.pastpaperskenya.papers",
+            "certificate_hash": "4b9350caad97d416c3fbde9e630d509397cc6a80"
           }
         },
         {
-          "client_id": "346798231053-q9pqilggtapm8udid46ccdk6mvfle3f4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pastpaperskenya.app",
-            "certificate_hash": "d8899cab8171fbb635dc18422c7bf97ea487bfe8"
-          }
-        },
-        {
-          "client_id": "346798231053-s0n8nr0r5vq9e26i96q5herhoum3idjv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pastpaperskenya.app",
-            "certificate_hash": "5492288f171d51e80888c3895ea9263827555874"
-          }
+          "client_id": "871626339993-75n9742447kj9qo5kgitg93ueq7u57cr.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXx44xxym1JeF5E-7piLxsqgUdX-wEezY"
+          "current_key": "AIzaSyBIpESfNTjh2n1Qk5uHPxW16R8_M2OGO1w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "346798231053-c8b8uepp9tes54v99qj2brhegf6c9mc0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:346798231053:android:8382a4d52fd007d72e4f44",
-        "android_client_info": {
-          "package_name": "com.pastpaperskenya.mpesa"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAXx44xxym1JeF5E-7piLxsqgUdX-wEezY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "346798231053-c8b8uepp9tes54v99qj2brhegf6c9mc0.apps.googleusercontent.com",
+              "client_id": "871626339993-75n9742447kj9qo5kgitg93ueq7u57cr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -40,7 +40,7 @@
                 app:civ_border_color="@color/colorPrimary2"
                 app:civ_border_width="2dp" />
 
-            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -52,7 +52,7 @@
                 android:textSize="@dimen/text_20sp"
                 android:textStyle="bold" />
 
-            <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+            <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

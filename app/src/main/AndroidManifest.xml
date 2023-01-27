@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.pastpaperskenya.app.presentation.BaseApplication"
+        android:name="com.pastpaperskenya.papers.presentation.BaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -25,13 +26,13 @@
             android:name=".presentation.main.downloads.viewpdf.ViewPfdActivity"
             android:exported="false" />
         <activity
-            android:name="com.pastpaperskenya.app.presentation.auth.AuthActivity"
+            android:name="com.pastpaperskenya.papers.presentation.auth.AuthActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.pastpaperskenya.app.presentation.splash.SplashScreenActivity"
+            android:name="com.pastpaperskenya.papers.presentation.splash.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -66,7 +67,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.pastpaperskenya.app"
+            android:authorities="com.pastpaperskenya.papers"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

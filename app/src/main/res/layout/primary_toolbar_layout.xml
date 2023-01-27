@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:weightSum="1">
 
-    <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+    <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
         android:id="@+id/toolbar_title"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"

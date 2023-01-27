@@ -167,7 +167,7 @@
                 android:orientation="vertical">
 
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -211,7 +211,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -254,7 +254,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -298,7 +298,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -342,7 +342,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -396,7 +396,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/size_5dp"
@@ -452,7 +452,7 @@
 
                 </RelativeLayout>
 
-                <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                     android:id="@+id/save_address"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/size_45dp"

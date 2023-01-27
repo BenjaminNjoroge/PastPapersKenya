@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.home.dashboard.HomeFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.home.dashboard.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/subCategoryFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.home.subcategory.SubCategoryFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.home.subcategory.SubCategoryFragment"
         android:label="SubCategory"
         tools:layout="@layout/fragment_sub_category" >
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.home.products.ProductsFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.home.products.ProductsFragment"
         android:label="Products"
         tools:layout="@layout/fragment_products" >
 
@@ -64,7 +64,7 @@
 
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductDetailFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.home.productdetail.ProductDetailFragment"
         android:label="Products Detail"
         tools:layout="@layout/fragment_product_detail">
 
@@ -90,7 +90,7 @@
     </fragment>
     <fragment
         android:id="@+id/productUserAddressFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.home.productdetail.ProductUserAddressFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.home.productdetail.ProductUserAddressFragment"
         android:label="UserAddress"
         tools:layout="@layout/fragment_user_address">
         <action
@@ -103,12 +103,12 @@
     </fragment>
     <fragment
         android:id="@+id/orderFailedFragment2"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.orderfailed.OrderFailedFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.orderfailed.OrderFailedFragment"
         android:label="OrderFailedFragment"
         tools:layout="@layout/fragment_order_failed"/>
     <fragment
         android:id="@+id/orderConfirmedFragment2"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.orderconfirmed.OrderConfirmedFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.orderconfirmed.OrderConfirmedFragment"
         android:label="OrderConfirmedFragment"
         tools:layout="@layout/fragment_order_confirmed"/>
 </navigation>

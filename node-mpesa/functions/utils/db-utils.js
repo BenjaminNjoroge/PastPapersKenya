@@ -4,7 +4,7 @@ var serviceAccount= require("../config.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://pastpaperskenya-default-rtdb.firebaseio.com"
+    //databaseURL: "https://pastpaperskenya-default-rtdb.firebaseio.com"
   });
 
 const moment= require("moment");

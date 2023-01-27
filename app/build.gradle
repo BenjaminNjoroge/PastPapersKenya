@@ -35,7 +35,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.pastpaperskenya.app"
+        applicationId "com.pastpaperskenya.papers"
         minSdk 21
         targetSdk 33
         versionCode 7
@@ -71,7 +71,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    namespace 'com.pastpaperskenya.app'
+    namespace 'com.pastpaperskenya.papers'
 }
 
 dependencies {

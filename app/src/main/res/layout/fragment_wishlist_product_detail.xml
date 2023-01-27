@@ -81,7 +81,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/size_5dp"
@@ -132,7 +132,7 @@
                     android:weightSum="1">
 
 
-                    <com.pastpaperskenya.app.business.util.customview.NeoSansProTextView
+                    <com.pastpaperskenya.papers.business.util.customview.NeoSansProTextView
                         android:id="@+id/product_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                         android:textSize="@dimen/text_17sp"
                         android:textStyle="bold" />
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:id="@+id/product_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                     android:layout_marginBottom="@dimen/size_10dp"
                     android:weightSum="3">
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:id="@+id/product_rating_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                         android:textStyle="bold"
                         android:layout_weight="1"/>
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:id="@+id/rating_review"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                         android:textSize="@dimen/text_12sp"
                         android:layout_weight="1"/>
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:id="@+id/product_review_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/size_20dp"
@@ -229,7 +229,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:id="@+id/product_regular_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -248,7 +248,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/size_20dp"
@@ -257,7 +257,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:id="@+id/product_sale_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -275,7 +275,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/size_20dp"
@@ -284,7 +284,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold" />
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:id="@+id/product_discount_percent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -316,7 +316,7 @@
                         android:layout_height="@dimen/size_1dp"
                         android:background="?attr/dividerHorizontal" />
 
-                    <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                    <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                         android:id="@+id/product_short_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -344,7 +344,7 @@
                         android:background="@color/grayExtraLight"
                         android:weightSum="2">
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/size_2dp"
@@ -383,7 +383,7 @@
                         android:orientation="horizontal"
                         android:weightSum="1">
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/size_10dp"
@@ -393,7 +393,7 @@
                             android:textSize="@dimen/text_14sp"
                             android:textStyle="bold" />
 
-                        <com.pastpaperskenya.app.business.util.customview.RobotoTextView
+                        <com.pastpaperskenya.papers.business.util.customview.RobotoTextView
                             android:id="@+id/payment_total_price"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

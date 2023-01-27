@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.profile.profile.ProfileFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.profile.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.profile.editprofile.EditProfileFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.profile.editprofile.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" >
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.profile.reset.ChangePasswordFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.profile.reset.ChangePasswordFragment"
         android:label="Reset Password"
         tools:layout="@layout/fragment_change_password" >
     </fragment>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.cart.CartFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.cart.CartFragment"
         android:label="Cart"
         tools:layout="@layout/fragment_cart" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.checkout.CheckoutFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.checkout.CheckoutFragment"
         android:label="Place Order"
         tools:layout="@layout/fragment_checkout" >
         <action
@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/userAddressFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.useraddress.UserAddressFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.useraddress.UserAddressFragment"
         android:label="UserAddress"
         tools:layout="@layout/fragment_user_address">
         <action
@@ -56,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderConfirmedFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.orderconfirmed.OrderConfirmedFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.orderconfirmed.OrderConfirmedFragment"
         android:label="Order Confirmed"
         tools:layout="@layout/fragment_order_confirmed">
         <action
@@ -71,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderFailedFragment"
-        android:name="com.pastpaperskenya.app.presentation.main.cart.orderfailed.OrderFailedFragment"
+        android:name="com.pastpaperskenya.papers.presentation.main.cart.orderfailed.OrderFailedFragment"
         android:label="OrderFailedFragment"
         tools:layout="@layout/fragment_order_failed">
         <action
