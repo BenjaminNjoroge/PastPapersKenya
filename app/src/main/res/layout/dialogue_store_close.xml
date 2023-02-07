@@ -23,7 +23,7 @@
             style="@style/ToolbarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Close For now" />
+            android:text="Closed For now" />
 
         <TextView
             android:id="@+id/close_message"

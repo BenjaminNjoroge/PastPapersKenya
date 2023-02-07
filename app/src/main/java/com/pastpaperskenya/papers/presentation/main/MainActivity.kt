@@ -39,9 +39,7 @@ class MainActivity : AppCompatActivity(), FirebaseAuth.AuthStateListener {
         setupActionBar()
         binding.bottomNavigationView.setupWithNavController(navHostController)
 
-        if (!StoreTimeHelper.isStoreOpen()) {
-            StoreTimeHelper.showCloseDialogue(this)
-        }
+
     }
 
     private fun setupActionBar(){

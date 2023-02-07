@@ -39,7 +39,7 @@ public class StoreTimeHelper {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         Button dialogBtn_cancel = dialog.findViewById(R.id.close_button);
-        dialogBtn_cancel.setOnClickListener(v -> dialog.dismiss());
+        dialogBtn_cancel.setOnClickListener(v -> dialog.show());
         dialog.show();
     }
 }

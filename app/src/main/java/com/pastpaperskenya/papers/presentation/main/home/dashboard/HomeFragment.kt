@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pastpaperskenya.papers.R
 import com.pastpaperskenya.papers.business.model.category.SliderCategory
+import com.pastpaperskenya.papers.business.util.StoreTimeHelper
 import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
 import com.pastpaperskenya.papers.databinding.FragmentHomeBinding
 import com.pastpaperskenya.papers.presentation.main.MainActivity
@@ -48,12 +49,17 @@ class HomeFragment : Fragment(), HomeAdapter.ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeAdapter= HomeAdapter(this)
-        val gridLayoutManager= GridLayoutManager(requireContext(), 3, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerview.layoutManager= gridLayoutManager
-        binding.recyclerview.adapter= homeAdapter
+        if (!StoreTimeHelper.isStoreOpen()) {
+            StoreTimeHelper.showCloseDialogue(requireContext())
+        } else {
+            homeAdapter = HomeAdapter(this)
+            val gridLayoutManager =
+                GridLayoutManager(requireContext(), 3, LinearLayoutManager.VERTICAL, false)
+            binding.recyclerview.layoutManager = gridLayoutManager
+            binding.recyclerview.adapter = homeAdapter
 
-        setupObservers()
+            setupObservers()
+        }
     }
 
     private fun setupObservers() {
