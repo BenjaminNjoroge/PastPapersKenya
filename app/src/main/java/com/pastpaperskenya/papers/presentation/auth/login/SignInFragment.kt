@@ -37,6 +37,8 @@ import java.util.*
 import com.pastpaperskenya.papers.R
 import com.pastpaperskenya.papers.presentation.BaseApplication.app
 import io.realm.mongodb.Credentials
+import io.realm.mongodb.auth.GoogleAuthType
+import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
@@ -68,17 +70,22 @@ class SignInFragment : Fragment() {
                     // Got an ID token from Google. Use it to authenticate
                     // with your backend.
                     val msg = "idToken: $idToken"
-                    // Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_INDEFINITE).show()
+                    Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
                     Log.d("one tap", msg)
-                    val googleCredentials= Credentials.google(idToken)
-                    app.loginAsync(googleCredentials){
-                        if(it.isSuccess){
-                            Log.d("MainActivity", "Successfully authenticated using Google OAuth")
-                            launchActivity()
-                        } else{
-                            Log.d("MainActivity", "Failed to Log in to MongoDB Realm: ${it.error.errorMessage}")
+
+                    runBlocking {
+                        app.loginAsync(Credentials.google(idToken, GoogleAuthType.ID_TOKEN)){ user->
+                            if(user.isSuccess){
+                                Snackbar.make(binding!!.root, user.get().id.toString(), Snackbar.LENGTH_INDEFINITE).show()
+                                Log.d("MainActivity", "Successfully authenticated using Google OAuth")
+                                launchActivity()
+                            } else{
+                                Log.d("MainActivity", "Failed to Log in to MongoDB Realm: ${user.error.errorMessage}")
+                                Snackbar.make(binding!!.root, user.error.errorMessage.toString(), Snackbar.LENGTH_INDEFINITE).show()
+                            }
                         }
                     }
+
                 }
                 else -> {
                     // Shouldn't happen.
