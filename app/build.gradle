@@ -8,9 +8,16 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id  'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
+    id 'realm-android'
+
+
 }
 
 android {
+
+    realm {
+        syncEnabled = true
+    }
 
     signingConfigs {
         debug {
@@ -46,6 +53,7 @@ android {
 
         buildConfigField("String", "CONSUMER_KEY", CONSUMER_KEY)
         buildConfigField("String", "CONSUMER_SECRET",CONSUMER_SECRET)
+        buildConfigField("String", "WEB_CLIENT_ID", WEB_CLIENT_ID)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -79,6 +87,7 @@ dependencies {
     // Payment gateway
     implementation 'com.github.flutterwave.rave-android:rave_android:2.1.39'
 
+
     //design
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.5.0'
@@ -97,7 +106,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.0-alpha03"
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt "androidx.lifecycle:lifecycle-compiler:2.6.0-alpha03"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
