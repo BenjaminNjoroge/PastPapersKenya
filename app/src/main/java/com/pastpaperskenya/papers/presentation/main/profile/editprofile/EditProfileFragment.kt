@@ -155,12 +155,6 @@ class EditProfileFragment : Fragment() {
 
             btnLogout.setOnClickListener{
                 rotateProgress.isVisible= true
-                val user= app.currentUser()
-                user?.logOutAsync {
-                    if (it.isSuccess){
-                        launchActivity()
-                    }
-                }
                 viewModel.logout()
             }
 

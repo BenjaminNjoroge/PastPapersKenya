@@ -95,7 +95,6 @@ class SignInViewModel @Inject constructor
                 try {
                     val response= serverRepository.updatePassword(userServerId, password)
                     if (response.isSuccessful) {
-
                         _firebaseUser.postValue(it)
                         eventsChannel.send(AuthEvents.Message("Login Success"))
                     } else{

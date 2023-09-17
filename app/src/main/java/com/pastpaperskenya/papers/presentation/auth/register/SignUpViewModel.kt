@@ -15,6 +15,7 @@ import com.pastpaperskenya.papers.business.usecases.FirestoreUserService
 import com.pastpaperskenya.papers.business.usecases.LocalUserService
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.realm.mongodb.Credentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -95,6 +96,7 @@ class SignUpViewModel @Inject constructor
             user?.let{
                 _firebaseUser.postValue(it)
                 eventsChannel.send(AuthEvents.Message("User Registered Successfully"))
+
                 val userIds= user.uid
 
                 firestoreUserService.saveUserDetails(UserDetails(userIds, email, phone, firstname, lastname, country, county, userServerId!!))

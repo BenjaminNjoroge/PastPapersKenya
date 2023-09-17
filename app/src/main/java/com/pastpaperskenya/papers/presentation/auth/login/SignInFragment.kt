@@ -55,64 +55,14 @@ class SignInFragment : Fragment() {
     private lateinit var email: String
     private lateinit var password: String
 
-    private var oneTapClient: SignInClient? = null
+    private lateinit var signInClient: SignInClient
     private var signUpRequest: BeginSignInRequest? = null
     private var signInRequest: BeginSignInRequest? = null
 
-    private val oneTapResult = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()){ result ->
-        try {
-            val credential = oneTapClient?.getSignInCredentialFromIntent(result.data)
-            val idToken = credential?.googleIdToken
-            when {
-                idToken != null -> {
-                    // Got an ID token from Google. Use it to authenticate
-                    // with your backend.
-                    val msg = "idToken: $idToken"
-                    //Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
-                    Log.d(TAG,"one tap ${msg}")
-                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                    viewModel.actualGoogleSignIn(firebaseCredential)
+    private lateinit var auth: FirebaseAuth
 
-                    runBlocking {
-                        app.loginAsync(Credentials.google(idToken, GoogleAuthType.ID_TOKEN)){ user->
-                            if(user.isSuccess){
-                                Toast.makeText(requireContext(), "Successfully authenticated using Google OAuth", Toast.LENGTH_SHORT).show()
-                                Log.d("MainActivity", "Successfully authenticated using Google OAuth")
-                                launchActivity()
-                            } else{
-                                Log.d("MainActivity", "Failed to Log in to MongoDB Realm: ${user.error.errorMessage}")
-                                Snackbar.make(binding!!.root, user.error.errorMessage.toString(), Snackbar.LENGTH_INDEFINITE).show()
-                            }
-                        }
-                    }
-
-                }
-                else -> {
-                    // Shouldn't happen.
-                    Log.d(TAG, "No ID token!")
-                    Snackbar.make(binding!!.root, "No ID token!", Snackbar.LENGTH_INDEFINITE).show()
-                }
-            }
-        } catch (e: ApiException) {
-            when (e.statusCode) {
-                CommonStatusCodes.CANCELED -> {
-                    Log.d(TAG, "One-tap dialog was closed.")
-                    // Don't re-prompt the user.
-                    Snackbar.make(binding!!.root, "One-tap dialog was closed.", Snackbar.LENGTH_INDEFINITE).show()
-                }
-                CommonStatusCodes.NETWORK_ERROR -> {
-                    Log.d(TAG, "One-tap encountered a network error.")
-                    // Try again or just ignore.
-                    Snackbar.make(binding!!.root, "One-tap encountered a network error.", Snackbar.LENGTH_INDEFINITE).show()
-                }
-                else -> {
-                    Log.d(TAG, "Couldn't get credential from result." +
-                            " (${e.localizedMessage})")
-                    Snackbar.make(binding!!.root, "Couldn't get credential from result.\" +\n" +
-                            " (${e.localizedMessage})", Snackbar.LENGTH_INDEFINITE).show()
-                }
-            }
-        }
+    companion object {
+        private const val GOOGLE_ONE_TAP= 500
     }
 
     override fun onCreateView(
@@ -120,7 +70,9 @@ class SignInFragment : Fragment() {
     ): View? {
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
 
-        oneTapClient = Identity.getSignInClient(requireActivity())
+        signInClient = Identity.getSignInClient(requireActivity())
+        auth = FirebaseAuth.getInstance()
+
         signUpRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -129,6 +81,7 @@ class SignInFragment : Fragment() {
                     .setFilterByAuthorizedAccounts(false)
                     .build())
             .build()
+
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
@@ -182,17 +135,17 @@ class SignInFragment : Fragment() {
     }
 
     private fun displaySignIn(){
-        oneTapClient?.beginSignIn(signInRequest!!)
-            ?.addOnSuccessListener(requireActivity()) { result ->
+        signInClient.beginSignIn(signInRequest!!).addOnSuccessListener(requireActivity()) { result ->
                 try {
                     binding?.progressBar?.visibility= View.GONE
-                    val ib = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
-                    oneTapResult.launch(ib)
+                    val pendingIntent= result.pendingIntent
+                    startIntentSenderForResult(pendingIntent.intentSender,
+                        GOOGLE_ONE_TAP, null, 0, 0, 0, null)
+
                 } catch (e: IntentSender.SendIntentException) {
                     Log.e("btn click", "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
-            }
-            ?.addOnFailureListener(requireActivity()) { e ->
+            } .addOnFailureListener(requireActivity()) { e ->
                 // No Google Accounts found. Just continue presenting the signed-out UI.
                 displaySignUp()
                 Log.d("btn click", e.localizedMessage!!)
@@ -200,20 +153,22 @@ class SignInFragment : Fragment() {
     }
 
     private fun displaySignUp() {
-        oneTapClient?.beginSignIn(signUpRequest!!)
-            ?.addOnSuccessListener(requireActivity()) { result ->
+        signInClient.beginSignIn(signUpRequest!!)
+            .addOnSuccessListener(requireActivity()) { result ->
                 try {
                     binding?.progressBar?.visibility= View.GONE
-                    val ib = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
-                    oneTapResult.launch(ib)
+                    val pendingIntent= result.pendingIntent
+                    startIntentSenderForResult(pendingIntent.intentSender,
+                        GOOGLE_ONE_TAP, null, 0, 0, 0, null)
+
                 } catch (e: IntentSender.SendIntentException) {
                     Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
-            ?.addOnFailureListener(requireActivity()) { e ->
+            .addOnFailureListener(requireActivity()) { e ->
                 // No Google Accounts found. Just continue presenting the signed-out UI.
                 displaySignUp()
-                Log.d("btn click", e.localizedMessage!!)
+                Log.d(TAG,"btn click ${e.localizedMessage!!}")
             }
     }
 
@@ -293,12 +248,83 @@ class SignInFragment : Fragment() {
             }
         }
 
-
         viewModel.currentUser.observe(viewLifecycleOwner) { user ->
             user?.let {
                 launchActivity()
             }
         }
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+        try {
+            val credential = signInClient.getSignInCredentialFromIntent(data)
+            val idToken = credential.googleIdToken
+            when {
+                idToken != null -> {
+                    // Got an ID token from Google. Use it to authenticate
+                    // with your backend.
+                    val msg = "idToken: $idToken"
+                    //Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
+                    Log.d(TAG, "one tap ${msg}")
+                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                    auth.signInWithCredential(firebaseCredential)
+                        .addOnCompleteListener { task->
+                             if(task.isSuccessful){
+                                  if (auth.currentUser !=null){
+                                      Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                                     launchActivity()
+                                  }
+                             }
+                        }
+
+                }
+
+                else -> {
+                    // Shouldn't happen.
+                    Log.d(TAG, "No ID token!")
+                    Snackbar.make(binding!!.root, "No ID token!", Snackbar.LENGTH_INDEFINITE).show()
+                }
+
+            }
+        } catch (e: ApiException) {
+            when (e.statusCode) {
+                CommonStatusCodes.CANCELED -> {
+                    Log.d(TAG, "One-tap dialog was closed.")
+                    // Don't re-prompt the user.
+                    Snackbar.make(
+                        binding!!.root,
+                        "One-tap dialog was closed.",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).show()
+                }
+
+                CommonStatusCodes.NETWORK_ERROR -> {
+                    Log.d(TAG, "One-tap encountered a network error.")
+                    // Try again or just ignore.
+                    Snackbar.make(
+                        binding!!.root,
+                        "One-tap encountered a network error.",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).show()
+                }
+
+                else -> {
+                    Log.d(
+                        TAG, "Couldn't get credential from result." +
+                                " (${e.localizedMessage})"
+                    )
+                    Snackbar.make(
+                        binding!!.root, "Couldn't get credential from result.\" +\n" +
+                                " (${e.localizedMessage})", Snackbar.LENGTH_INDEFINITE
+                    ).show()
+                }
+            }
+        }
+
     }
 
     private fun launchActivity() {
@@ -311,4 +337,5 @@ class SignInFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }
