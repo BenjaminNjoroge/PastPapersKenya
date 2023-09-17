@@ -33,6 +33,7 @@ import com.pastpaperskenya.papers.business.util.convertIntoNumeric
 import com.pastpaperskenya.papers.business.util.getFileName
 import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
 import com.pastpaperskenya.papers.databinding.FragmentEditProfileBinding
+import com.pastpaperskenya.papers.presentation.BaseApplication.app
 import com.pastpaperskenya.papers.presentation.auth.AuthActivity
 import com.pastpaperskenya.papers.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -154,6 +155,12 @@ class EditProfileFragment : Fragment() {
 
             btnLogout.setOnClickListener{
                 rotateProgress.isVisible= true
+                val user= app.currentUser()
+                user?.logOutAsync {
+                    if (it.isSuccess){
+                        launchActivity()
+                    }
+                }
                 viewModel.logout()
             }
 

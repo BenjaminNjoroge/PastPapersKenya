@@ -111,6 +111,28 @@ class SignInViewModel @Inject constructor
         }
     }
 
+    fun actualGoogleSignIn(credential:AuthCredential) = viewModelScope.launch {
+        try {
+            val user = repository.signInWithGoogle(credential)
+
+            user.let {
+                try {
+                    if (it.isSuccessful) {
+                        _firebaseUser.postValue(it.result.user)
+                        eventsChannel.send(AuthEvents.Message("Login Success"))
+                    } else{
+                        eventsChannel.send(AuthEvents.Error(it.exception?.localizedMessage.toString()))
+                    }
+                } catch (e: IOException){
+                    eventsChannel.send(AuthEvents.Error("$e Opps.. an error occured"))
+                }
+            }
+
+        } catch (e: Exception) {
+            eventsChannel.send(AuthEvents.Error(e.message.toString()))
+        }
+    }
+
 
     fun insertUserDetails(user: UserDetails){
         viewModelScope.launch(Dispatchers.IO) {

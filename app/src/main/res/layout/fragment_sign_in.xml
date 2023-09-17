@@ -264,7 +264,8 @@
                 android:paddingBottom="@dimen/size_12dp"
                 android:textSize="@dimen/text_12sp"
                 app:com_facebook_login_text="@string/facebook_cap"
-                app:com_facebook_logout_text="@string/sign_out" />
+                app:com_facebook_logout_text="@string/sign_out"
+                android:visibility="gone"/>
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/gp_login_btn"

@@ -1,5 +1,8 @@
 package com.pastpaperskenya.papers.business.datasources.remote.services.auth
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -29,6 +32,10 @@ class AuthenticatorImpl: BaseAuthenticator {
 
     override fun getCurrentUser(): FirebaseUser? {
         return Firebase.auth.currentUser
+    }
+
+    override suspend fun signInWithGoogle(credential: AuthCredential): Task<AuthResult> {
+        return Firebase.auth.signInWithCredential(credential)
     }
 
 }

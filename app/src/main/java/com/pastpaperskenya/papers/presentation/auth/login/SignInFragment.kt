@@ -23,6 +23,8 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.pastpaperskenya.papers.BuildConfig
 import com.pastpaperskenya.papers.business.model.user.UserDetails
 import com.pastpaperskenya.papers.business.util.AuthEvents
@@ -53,10 +55,6 @@ class SignInFragment : Fragment() {
     private lateinit var email: String
     private lateinit var password: String
 
-    private lateinit var fbemail: String
-    private lateinit var fbUsername: String
-    private lateinit var fbProfilePhoto: String
-
     private var oneTapClient: SignInClient? = null
     private var signUpRequest: BeginSignInRequest? = null
     private var signInRequest: BeginSignInRequest? = null
@@ -70,13 +68,15 @@ class SignInFragment : Fragment() {
                     // Got an ID token from Google. Use it to authenticate
                     // with your backend.
                     val msg = "idToken: $idToken"
-                    Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
-                    Log.d("one tap", msg)
+                    //Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
+                    Log.d(TAG,"one tap ${msg}")
+                    val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                    viewModel.actualGoogleSignIn(firebaseCredential)
 
                     runBlocking {
                         app.loginAsync(Credentials.google(idToken, GoogleAuthType.ID_TOKEN)){ user->
                             if(user.isSuccess){
-                                Snackbar.make(binding!!.root, user.get().id.toString(), Snackbar.LENGTH_INDEFINITE).show()
+                                Toast.makeText(requireContext(), "Successfully authenticated using Google OAuth", Toast.LENGTH_SHORT).show()
                                 Log.d("MainActivity", "Successfully authenticated using Google OAuth")
                                 launchActivity()
                             } else{
@@ -89,35 +89,30 @@ class SignInFragment : Fragment() {
                 }
                 else -> {
                     // Shouldn't happen.
-                    Log.d("one tap", "No ID token!")
+                    Log.d(TAG, "No ID token!")
                     Snackbar.make(binding!!.root, "No ID token!", Snackbar.LENGTH_INDEFINITE).show()
                 }
             }
         } catch (e: ApiException) {
             when (e.statusCode) {
                 CommonStatusCodes.CANCELED -> {
-                    Log.d("one tap", "One-tap dialog was closed.")
+                    Log.d(TAG, "One-tap dialog was closed.")
                     // Don't re-prompt the user.
                     Snackbar.make(binding!!.root, "One-tap dialog was closed.", Snackbar.LENGTH_INDEFINITE).show()
                 }
                 CommonStatusCodes.NETWORK_ERROR -> {
-                    Log.d("one tap", "One-tap encountered a network error.")
+                    Log.d(TAG, "One-tap encountered a network error.")
                     // Try again or just ignore.
                     Snackbar.make(binding!!.root, "One-tap encountered a network error.", Snackbar.LENGTH_INDEFINITE).show()
                 }
                 else -> {
-                    Log.d("one tap", "Couldn't get credential from result." +
+                    Log.d(TAG, "Couldn't get credential from result." +
                             " (${e.localizedMessage})")
                     Snackbar.make(binding!!.root, "Couldn't get credential from result.\" +\n" +
                             " (${e.localizedMessage})", Snackbar.LENGTH_INDEFINITE).show()
                 }
             }
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        FacebookSdk.sdkInitialize(requireActivity());
     }
 
     override fun onCreateView(
@@ -130,9 +125,7 @@ class SignInFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
                     .setServerClientId(BuildConfig.WEB_CLIENT_ID)
-                    // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(false)
                     .build())
             .build()
@@ -140,9 +133,7 @@ class SignInFragment : Fragment() {
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
-                    // Your server's client ID, not your Android client ID.
                     .setServerClientId(BuildConfig.WEB_CLIENT_ID)
-                    // Show all accounts on the device.
                     .setFilterByAuthorizedAccounts(true)
                     .build())
             .build()
@@ -183,6 +174,7 @@ class SignInFragment : Fragment() {
             }
 
             gpLoginBtn.setOnClickListener {
+                binding?.progressBar?.visibility= View.VISIBLE
                 displaySignIn()
             }
 
@@ -193,6 +185,7 @@ class SignInFragment : Fragment() {
         oneTapClient?.beginSignIn(signInRequest!!)
             ?.addOnSuccessListener(requireActivity()) { result ->
                 try {
+                    binding?.progressBar?.visibility= View.GONE
                     val ib = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
                     oneTapResult.launch(ib)
                 } catch (e: IntentSender.SendIntentException) {
@@ -210,10 +203,11 @@ class SignInFragment : Fragment() {
         oneTapClient?.beginSignIn(signUpRequest!!)
             ?.addOnSuccessListener(requireActivity()) { result ->
                 try {
+                    binding?.progressBar?.visibility= View.GONE
                     val ib = IntentSenderRequest.Builder(result.pendingIntent.intentSender).build()
                     oneTapResult.launch(ib)
                 } catch (e: IntentSender.SendIntentException) {
-                    Log.e("btn click", "Couldn't start One Tap UI: ${e.localizedMessage}")
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
                 }
             }
             ?.addOnFailureListener(requireActivity()) { e ->
