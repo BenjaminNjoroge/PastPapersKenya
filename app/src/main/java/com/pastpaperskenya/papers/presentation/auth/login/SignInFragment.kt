@@ -37,9 +37,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
 import com.pastpaperskenya.papers.R
-import com.pastpaperskenya.papers.presentation.BaseApplication.app
-import io.realm.mongodb.Credentials
-import io.realm.mongodb.auth.GoogleAuthType
 import kotlinx.coroutines.runBlocking
 
 

@@ -14,7 +14,6 @@ class PaymentRepository @Inject constructor(
     private val firestoreUserService: FirestoreUserService,
 ): BaseDataSource() {
 
-
     suspend fun getMpesaToken(): NetworkResult<MpesaTokenResponse> {
         return safeApiCall { retrofitApiService.getMpesaToken() }
     }

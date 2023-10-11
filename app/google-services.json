@@ -14,28 +14,24 @@
       },
       "oauth_client": [
         {
-          "client_id": "871626339993-ukgo7ffnctoo1ue649217jmeicldb8ov.apps.googleusercontent.com",
+          "client_id": "871626339993-okpmk96sko4vu7b6s216f94kvpdaun97.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pastpaperskenya.papers",
-            "certificate_hash": "4b9350caad97d416c3fbde9e630d509397cc6a80"
+            "certificate_hash": "484ed1e84557d314ab204cbebde2141980bc5d16"
           }
-        },
-        {
-          "client_id": "871626339993-75n9742447kj9qo5kgitg93ueq7u57cr.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIpESfNTjh2n1Qk5uHPxW16R8_M2OGO1w"
+          "current_key": "AIzaSyApZK9o7PSL0mBOTTNAI_M9dNkMquWVAGU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "871626339993-75n9742447kj9qo5kgitg93ueq7u57cr.apps.googleusercontent.com",
+              "client_id": "871626339993-5gr46gha3l0tv58npdqpfeqi7hekdt6n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

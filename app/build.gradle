@@ -8,16 +8,10 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id  'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
-    id 'realm-android'
-
 
 }
 
 android {
-
-    realm {
-        syncEnabled = true
-    }
 
     signingConfigs {
         debug {
