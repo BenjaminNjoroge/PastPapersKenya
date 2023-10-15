@@ -103,10 +103,14 @@ class ProductDetailViewModel @Inject constructor(
         _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
     }
 
-    fun savePendingPaymentFirestore(paymentDetails: Payment)= viewModelScope.launch {
-        paymentRepository.savePendingPaymentFirebase(paymentDetails)
+    fun savePaymentToFirestore(paymentDetails: Payment)= viewModelScope.launch {
+        paymentRepository.savePaymentToFirebase(paymentDetails)
 
-        FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.CheckoutRequestID.toString())
+        FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.checkout_request_id!!)
     }
 
+    fun savePendingPaymentToDatabase(paymentDetails: Payment)= viewModelScope.launch {
+
+        paymentRepository.savePendingPaymentToServer(paymentDetails)
+    }
 }

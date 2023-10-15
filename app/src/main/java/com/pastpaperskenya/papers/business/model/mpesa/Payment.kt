@@ -1,16 +1,19 @@
 package com.pastpaperskenya.papers.business.model.mpesa
 
+
 data class Payment(
-    val CheckoutRequestID: String?=null,
-    val CustomerId: String?=null,
-    val Date: Long?=null,
-    val MerchantRequestID: String?=null,
-    val OrderId: String?=null,
-    val ResultDesc: String?=null,
-    val Status: String?=null,
-    val MpesaReceiptNumber: String?=null,
-    val PhoneNumber: String?=null,
-    val CustomerFirebaseID: String?=null,
+    val checkout_request_id: String?=null,
+    val merchant_request_id: String?=null,
+    val customer_id: Int?=null,
+    val date: String?=null,
+    val order_id: Int?=null,
+    val amount: Double?= null,
+    val result_desc: String?=null,
+    val result_code: Int?=null,
+    val status: String?=null,
+    val mpesa_receipt_number: String?=null,
+    val phone_number: String?=null,
+    val customer_firebase_id: String?=null,
     val email: String?=null
 )
 

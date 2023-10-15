@@ -22,7 +22,10 @@ class PaymentRepository @Inject constructor(
         return safeApiCall { retrofitApiService.stkPushRequest(total, phone, order_id, accesstoken) }
     }
 
-    suspend fun savePendingPaymentFirebase(paymentDetails: Payment)=
-        firestoreUserService.savePendingPaymentFirebase(paymentDetails)
+    suspend fun savePaymentToFirebase(paymentDetails: Payment)=
+        firestoreUserService.savePaymentToFirebase(paymentDetails)
+
+    suspend fun savePendingPaymentToServer(payment: Payment)=
+        retrofitApiService.sendOrderData(payment)
 
 }

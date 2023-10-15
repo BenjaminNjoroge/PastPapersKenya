@@ -109,6 +109,7 @@ object Constants {
     const val MPESA_TOKEN = BASE_URL + "generateToken"
     const val MPESA_STK_REQUEST = BASE_URL + "generateStkPush/"
     const val CHECK_PAYMENT_STATUS = BASE_URL + "getPaymentStatus/"
+    const val SEND_ORDER_DATA = BASE_URL + "sendOrderData/"
 
     //CARD PAYMENTS
     const val FLUTTER_PUBLIC_KEY = "FLWPUBK-0ff040c1844abe453dea0eb666b5ee27-X"

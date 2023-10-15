@@ -79,6 +79,8 @@ class CheckoutFragment : Fragment() {
     private var paymentError: String?= null
     private var checkout_id: String?=null
 
+    private val TAG = "CheckoutFragment"
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -246,10 +248,11 @@ class CheckoutFragment : Fragment() {
 
                     checkout_id= checkoutId
 
-                    val firestoreDetails= Payment(checkoutId, customerId.toString(), null, merchantRequestId,
-                        orderId.toString(), null, null, null, null, firebaseId, email)
+                    val details= Payment(
+                        checkoutId,merchantRequestId, customerId, null,
+                        orderId, -1.0, null ,-1, null, null, sanitizePhoneNumber(billingPhone), firebaseId, email)
 
-                    viewModel.savePendingPaymentFirestore(firestoreDetails)
+                    viewModel.savePendingPaymentToDatabase(details)
 
                 }
                 NetworkResult.Status.ERROR->{

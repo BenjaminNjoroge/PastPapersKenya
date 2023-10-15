@@ -7,6 +7,7 @@ import com.pastpaperskenya.papers.business.model.user.Customer
 import com.pastpaperskenya.papers.business.model.category.SubCategory
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaTokenResponse
+import com.pastpaperskenya.papers.business.model.mpesa.Payment
 import com.pastpaperskenya.papers.business.model.orders.CreateOrder
 import com.pastpaperskenya.papers.business.model.orders.Orders
 import com.pastpaperskenya.papers.business.model.product.Product
@@ -26,6 +27,7 @@ import com.pastpaperskenya.papers.business.util.Constants.API_UPDATE_ORDER
 import com.pastpaperskenya.papers.business.util.Constants.KEY_ID
 import com.pastpaperskenya.papers.business.util.Constants.MPESA_STK_REQUEST
 import com.pastpaperskenya.papers.business.util.Constants.MPESA_TOKEN
+import com.pastpaperskenya.papers.business.util.Constants.SEND_ORDER_DATA
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -136,7 +138,6 @@ interface RetrofitApiService {
         @Field ("customer_id") customerId: Int
     ): Response<CreateOrder>
 
-
     @PUT(MPESA_TOKEN)
     suspend fun getMpesaToken(): Response<MpesaTokenResponse>
 
@@ -148,5 +149,8 @@ interface RetrofitApiService {
         @Field("order_id") order_id: String,
         @Field("accesstoken") accesstoken: String
     ): Response<MpesaPaymentReqResponse>
+
+    @POST(SEND_ORDER_DATA)
+    suspend fun sendOrderData(@Body payment: Payment): Response<Payment>
 
 }

@@ -103,12 +103,15 @@ class CheckoutViewModel @Inject constructor(
         _stkpushResponse.value= paymentRepository.createStkPush(total_amount, phone_number, order_id, accesstoken)
     }
 
-    fun savePendingPaymentFirestore(paymentDetails: Payment)= viewModelScope.launch {
-        paymentRepository.savePendingPaymentFirebase(paymentDetails)
+    fun savePaymentToFirestore(paymentDetails: Payment)= viewModelScope.launch {
+        paymentRepository.savePaymentToFirebase(paymentDetails)
 
-        FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.CheckoutRequestID.toString())
+        FirebaseMessaging.getInstance().subscribeToTopic(paymentDetails.checkout_request_id.toString())
     }
 
+    fun savePendingPaymentToDatabase(paymentDetails: Payment)= viewModelScope.launch {
+        paymentRepository.savePendingPaymentToServer(paymentDetails)
+    }
 
     fun updateOrder(id:Int, status: Boolean, customerId: Int)= viewModelScope.launch {
         orderRepository.updateOrder(id, status, customerId)
