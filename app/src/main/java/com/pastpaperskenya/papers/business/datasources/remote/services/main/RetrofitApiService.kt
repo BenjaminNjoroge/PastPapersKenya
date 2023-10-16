@@ -151,6 +151,7 @@ interface RetrofitApiService {
     ): Response<MpesaPaymentReqResponse>
 
     @POST(SEND_ORDER_DATA)
+    @Headers("Accept: application/json")
     suspend fun sendOrderData(@Body payment: Payment): Response<Payment>
 
 }

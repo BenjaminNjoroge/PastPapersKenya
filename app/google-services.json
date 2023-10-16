@@ -12,16 +12,7 @@
           "package_name": "com.pastpaperskenya.papers"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "871626339993-okpmk96sko4vu7b6s216f94kvpdaun97.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pastpaperskenya.papers",
-            "certificate_hash": "484ed1e84557d314ab204cbebde2141980bc5d16"
-          }
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyApZK9o7PSL0mBOTTNAI_M9dNkMquWVAGU"

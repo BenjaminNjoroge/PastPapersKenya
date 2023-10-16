@@ -33,6 +33,9 @@ android {
         viewBinding = true
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
 
 
     defaultConfig {
@@ -118,7 +121,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
     //firebase
-    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation platform('com.google.firebase:firebase-bom:32.2.0')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
