@@ -25,7 +25,8 @@ class PaymentRepository @Inject constructor(
     suspend fun savePaymentToFirebase(paymentDetails: Payment)=
         firestoreUserService.savePaymentToFirebase(paymentDetails)
 
-    suspend fun savePendingPaymentToServer(payment: Payment)=
-        retrofitApiService.sendOrderData(payment)
+    suspend fun savePendingPaymentToServer(payment: Payment): NetworkResult<Payment> {
+        return safeApiCall { retrofitApiService.sendOrderData(payment) }
+    }
 
 }
