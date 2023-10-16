@@ -5,7 +5,7 @@ data class Payment(
     val checkout_request_id: String?=null,
     val merchant_request_id: String?=null,
     val customer_id: Int?=null,
-    val date: String?=null,
+    val transaction_date: String?=null,
     val order_id: Int?=null,
     val amount: Double?= null,
     val result_desc: String?=null,

@@ -239,7 +239,7 @@ class CheckoutFragment : Fragment() {
                 }
                 NetworkResult.Status.SUCCESS->{
                     binding.pbLoading.visibility= View.GONE
-                    Toast.makeText(context, "Enter mpesa pin", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Enter Mpesa pin", Toast.LENGTH_SHORT).show()
 
                     val checkoutId= it.data?.mpesaPaymentReqResponseData?.checkoutRequestID
                     val merchantRequestId= it.data?.mpesaPaymentReqResponseData?.merchantRequestID
