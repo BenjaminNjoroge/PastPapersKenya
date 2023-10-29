@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.pastpaperskenya.papers.presentation.BaseApplication"
+        android:name=".presentation.BaseApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
-
+        <activity
+            android:name=".presentation.main.cart.orderconfirmed.OrderConfirmedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.main.cart.orderfailed.OrderFailedActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.main.downloads.downloads.DownloadsActivity"
             android:exported="false" />
@@ -26,13 +31,13 @@
             android:name=".presentation.main.downloads.viewpdf.ViewPfdActivity"
             android:exported="false" />
         <activity
-            android:name="com.pastpaperskenya.papers.presentation.auth.AuthActivity"
+            android:name=".presentation.auth.AuthActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.pastpaperskenya.papers.presentation.splash.SplashScreenActivity"
+            android:name=".presentation.splash.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
@@ -79,15 +84,17 @@
             android:name=".presentation.MessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/small_logo" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />

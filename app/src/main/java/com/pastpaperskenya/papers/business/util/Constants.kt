@@ -21,6 +21,7 @@ object Constants {
     const val FIREBASE_DATABASE_COLLECTION_IMAGES = "images"
     const val USER_SERVER_ID = "userServerId"
     const val KEY_ID = "id"
+    const val ORDER_ID= "order_id"
     const val KEY_EMAIL = "email"
     const val KEY_FIRSTNAME = "first_name"
     const val KEY_LASTNAME = "last_name"
@@ -108,7 +109,7 @@ object Constants {
     //mpesa
     const val MPESA_TOKEN = BASE_URL + "generateToken"
     const val MPESA_STK_REQUEST = BASE_URL + "generateStkPush/"
-    const val CHECK_PAYMENT_STATUS = BASE_URL + "getPaymentStatus/"
+    const val CHECK_PAYMENT_STATUS = BASE_URL + "order-payment/{" + ORDER_ID + "}"
     const val SEND_ORDER_DATA = BASE_URL + "sendOrderData/"
 
     //CARD PAYMENTS

@@ -3,6 +3,7 @@ package com.pastpaperskenya.papers.presentation.main.cart.checkout
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,8 @@ import com.pastpaperskenya.papers.business.util.Constants
 import com.pastpaperskenya.papers.business.util.sanitizePhoneNumber
 import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
 import com.pastpaperskenya.papers.databinding.FragmentCheckoutBinding
+import com.pastpaperskenya.papers.presentation.main.cart.orderconfirmed.OrderConfirmedFragment
+import com.pastpaperskenya.papers.presentation.main.cart.orderfailed.OrderFailedFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -81,6 +84,8 @@ class CheckoutFragment : Fragment() {
 
     private val TAG = "CheckoutFragment"
 
+    private val handler= Handler()
+    val delayMillis= 2000L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -254,12 +259,53 @@ class CheckoutFragment : Fragment() {
 
                     viewModel.savePendingPaymentToDatabase(details)
 
+                    handler.postDelayed({
+                        viewModel.getPaymentStatus(orderId)
+                    }, delayMillis)
+
                 }
                 NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
                 }
+            }
+        }
+
+        viewModel.paymentResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+
+                    if(! it.data.isNullOrEmpty()) {
+                        viewModel.getPaymentStatus(orderId)
+                        if (it.data[0].status == null){
+                            viewModel.getPaymentStatus(orderId)
+                        } else if (it.data[0].status =="completed"){
+                            val message = it.data[0].result_desc
+                            val bundle = Bundle()
+                            bundle.putString("completed_message", message)
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment, bundle)
+                        } else if(it.data[0].status== "failed"){
+                            val message = it.data[0].result_desc
+                            val bundle = Bundle()
+                            bundle.putString("failed_message", message)
+                            findNavController().navigate(R.id.action_checkoutFragment_to_orderFailedFragment, bundle)
+                        }
+                        }else{
+                            viewModel.getPaymentStatus(orderId)
+                        Toast.makeText(context, "Unable to process ${it.message.toString()}" , Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.pbLoading.visibility=View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                }
+
             }
         }
 

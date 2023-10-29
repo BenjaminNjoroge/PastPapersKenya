@@ -39,7 +39,11 @@
             app:popExitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_checkoutFragment_to_orderFailedFragment"
-            app:destination="@id/orderFailedFragment" />
+            app:destination="@id/orderFailedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/userAddressFragment"
@@ -76,6 +80,12 @@
         tools:layout="@layout/fragment_order_failed">
         <action
             android:id="@+id/action_orderFailedFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
+            app:destination="@id/cartFragment"
+            app:popUpTo="@id/cartFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 </navigation>

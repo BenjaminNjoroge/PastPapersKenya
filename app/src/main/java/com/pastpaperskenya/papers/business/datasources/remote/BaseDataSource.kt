@@ -37,7 +37,7 @@ abstract class BaseDataSource {
                 if (response.isSuccessful){
                     NetworkResult.success(data = response.body()!!)
                 } else{
-                    NetworkResult.error(message = "Something went wrong "+response.errorBody().toString(), null)
+                    NetworkResult.error(message = "Something went wrong "+response.toString(), null)
                 }
             } catch (e: HttpException){
                 //http exception
@@ -47,7 +47,7 @@ abstract class BaseDataSource {
                 NetworkResult.error(message = "Please check your network connection", null)
             } catch (e: Exception){
                 // of unknown error wrapped in Resource.Error
-                NetworkResult.error(message = "Something went wrong", null)
+                NetworkResult.error(message = "Something went wrong  ${e.message}", null)
             }
         }
     }

@@ -5,6 +5,7 @@ import com.pastpaperskenya.papers.business.datasources.remote.services.main.Retr
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.papers.business.model.mpesa.Payment
+import com.pastpaperskenya.papers.business.model.mpesa.PaymentStatus
 import com.pastpaperskenya.papers.business.usecases.FirestoreUserService
 import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
 import javax.inject.Inject
@@ -29,4 +30,7 @@ class PaymentRepository @Inject constructor(
         return safeApiCall { retrofitApiService.sendOrderData(payment) }
     }
 
+    suspend fun getPaymentStatus(orderId: Int): NetworkResult<List<PaymentStatus>> {
+        return safeApiCall { retrofitApiService.getPaymentStatus(orderId) }
+    }
 }

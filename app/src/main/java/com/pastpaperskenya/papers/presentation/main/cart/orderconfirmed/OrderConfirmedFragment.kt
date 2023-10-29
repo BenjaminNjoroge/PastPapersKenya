@@ -39,6 +39,11 @@ class OrderConfirmedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val customMessage = arguments?.getString("completed_message")
+        if (customMessage != null) {
+            binding.resultDesc.text= customMessage
+        }
+
         binding.checkDownloadsStatus.setOnClickListener {
             val intent= Intent(requireContext(), DownloadsActivity::class.java)
             intent.flags= Intent.FLAG_ACTIVITY_NEW_TASK

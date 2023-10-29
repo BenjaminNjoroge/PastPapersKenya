@@ -9,6 +9,7 @@ import com.pastpaperskenya.papers.business.model.cart.Cart
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.papers.business.model.mpesa.Payment
+import com.pastpaperskenya.papers.business.model.mpesa.PaymentStatus
 import com.pastpaperskenya.papers.business.model.orders.CreateOrder
 import com.pastpaperskenya.papers.business.model.user.UserDetails
 import com.pastpaperskenya.papers.business.repository.datastore.DataStoreRepository
@@ -57,6 +58,9 @@ class CheckoutViewModel @Inject constructor(
 
     private var _stkpushResponse= MutableLiveData<NetworkResult<MpesaPaymentReqResponse>>()
     val stkpushResponse: LiveData<NetworkResult<MpesaPaymentReqResponse>> = _stkpushResponse
+
+    private var _paymentResponse= MutableLiveData<NetworkResult<List<PaymentStatus>>>()
+    val paymentResponse: LiveData<NetworkResult<List<PaymentStatus>>> = _paymentResponse
 
     private var _updateResponse= MutableLiveData<NetworkResult<CreateOrder>>()
     val updateResponse: LiveData<NetworkResult<CreateOrder>> = _updateResponse
@@ -111,6 +115,10 @@ class CheckoutViewModel @Inject constructor(
 
     fun savePendingPaymentToDatabase(paymentDetails: Payment)= viewModelScope.launch {
         paymentRepository.savePendingPaymentToServer(paymentDetails)
+    }
+
+    fun getPaymentStatus(orderId: Int)= viewModelScope.launch {
+        _paymentResponse.value= paymentRepository.getPaymentStatus(orderId)
     }
 
     fun updateOrder(id:Int, status: Boolean, customerId: Int)= viewModelScope.launch {

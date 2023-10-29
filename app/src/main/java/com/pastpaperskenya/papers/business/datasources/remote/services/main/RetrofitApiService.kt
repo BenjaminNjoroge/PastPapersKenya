@@ -8,6 +8,7 @@ import com.pastpaperskenya.papers.business.model.category.SubCategory
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.papers.business.model.mpesa.Payment
+import com.pastpaperskenya.papers.business.model.mpesa.PaymentStatus
 import com.pastpaperskenya.papers.business.model.orders.CreateOrder
 import com.pastpaperskenya.papers.business.model.orders.Orders
 import com.pastpaperskenya.papers.business.model.product.Product
@@ -24,6 +25,7 @@ import com.pastpaperskenya.papers.business.util.Constants.API_PRODUCT_FILTER_TAG
 import com.pastpaperskenya.papers.business.util.Constants.API_PRODUCT_TAGS_ID
 import com.pastpaperskenya.papers.business.util.Constants.API_REQUEST_ORDER
 import com.pastpaperskenya.papers.business.util.Constants.API_UPDATE_ORDER
+import com.pastpaperskenya.papers.business.util.Constants.CHECK_PAYMENT_STATUS
 import com.pastpaperskenya.papers.business.util.Constants.KEY_ID
 import com.pastpaperskenya.papers.business.util.Constants.MPESA_STK_REQUEST
 import com.pastpaperskenya.papers.business.util.Constants.MPESA_TOKEN
@@ -153,5 +155,8 @@ interface RetrofitApiService {
     @POST(SEND_ORDER_DATA)
     @Headers("Accept: application/json")
     suspend fun sendOrderData(@Body payment: Payment): Response<Payment>
+
+    @GET(CHECK_PAYMENT_STATUS)
+    suspend fun getPaymentStatus(@Path("order_id") orderId: Int): Response<List<PaymentStatus>>
 
 }

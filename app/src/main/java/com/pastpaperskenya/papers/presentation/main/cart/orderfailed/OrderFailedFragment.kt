@@ -25,6 +25,11 @@ class OrderFailedFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val customMessage = arguments?.getString("failed_message")
+        if (customMessage != null) {
+            binding.resultDesc.text= customMessage
+        }
+
         binding.checkDownloadsStatus.setOnClickListener {
             activity?.fragmentManager?.popBackStack();
         }
