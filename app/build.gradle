@@ -27,7 +27,7 @@ android {
             keyPassword 'benja.123'
         }
     }
-    compileSdk 33
+    compileSdk 34
 
     buildFeatures {
         viewBinding = true
@@ -41,9 +41,9 @@ android {
     defaultConfig {
         applicationId "com.pastpaperskenya.papers"
         minSdk 21
-        targetSdk 33
-        versionCode 13
-        versionName "1.0.4"
+        targetSdk 34
+        versionCode 14
+        versionName "1.1.4"
 
         multiDexEnabled = true
         vectorDrawables.useSupportLibrary = true
