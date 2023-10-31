@@ -285,11 +285,13 @@ class CheckoutFragment : Fragment() {
                         if (it.data[0].status == null){
                             viewModel.getPaymentStatus(orderId)
                         } else if (it.data[0].status =="completed"){
+                            viewModel.deleteAllCart()
                             val message = it.data[0].result_desc
                             val bundle = Bundle()
                             bundle.putString("completed_message", message)
                             findNavController().navigate(R.id.action_checkoutFragment_to_orderConfirmedFragment, bundle)
                         } else if(it.data[0].status== "failed"){
+                            viewModel.deleteAllCart()
                             val message = it.data[0].result_desc
                             val bundle = Bundle()
                             bundle.putString("failed_message", message)
