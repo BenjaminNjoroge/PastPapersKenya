@@ -34,6 +34,7 @@ class SignInViewModel @Inject constructor
 
     private val TAG = "SignInViewModel"
 
+
     private val _localResponse= MutableLiveData<Long>()
     val localResponse: LiveData<Long> = _localResponse
 
@@ -42,6 +43,9 @@ class SignInViewModel @Inject constructor
 
     private var _userResponse: MutableLiveData<Response<List<Customer>>> = MutableLiveData()
     val userResponse: LiveData<Response<List<Customer>>> = _userResponse
+
+    private var _myUserResponse: MutableLiveData<Response<Customer>> = MutableLiveData()
+    val myUserResponse: LiveData<Response<Customer>> = _myUserResponse
 
     private var _firebaseUser = MutableLiveData<FirebaseUser?>()
     val currentUser get() = _firebaseUser
@@ -136,6 +140,18 @@ class SignInViewModel @Inject constructor
     fun insertUserDetails(user: UserDetails){
         viewModelScope.launch(Dispatchers.IO) {
             _localResponse.postValue(localUserService.insertUserToDatabase(user))
+        }
+    }
+
+     fun createUserInServer(email: String, firstname: String, lastname: String, password: String){
+        viewModelScope.launch {
+            try {
+                val response= serverRepository.createUser(email, firstname, lastname, password)
+                _myUserResponse.value= response
+            } catch (e: IOException){
+                eventsChannel.send(AuthEvents.Message("Unable to create user in server. Please check Internet bundles"))
+            }
+
         }
     }
 }

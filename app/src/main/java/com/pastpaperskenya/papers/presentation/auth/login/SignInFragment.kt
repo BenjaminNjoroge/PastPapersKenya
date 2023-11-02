@@ -1,5 +1,6 @@
 package com.pastpaperskenya.papers.presentation.auth.login
 
+import android.R.attr
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -8,24 +9,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.facebook.FacebookSdk
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.pastpaperskenya.papers.BuildConfig
+import com.pastpaperskenya.papers.R
 import com.pastpaperskenya.papers.business.model.user.UserDetails
 import com.pastpaperskenya.papers.business.util.AuthEvents
 import com.pastpaperskenya.papers.business.util.Constants
@@ -36,8 +37,6 @@ import com.pastpaperskenya.papers.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
-import com.pastpaperskenya.papers.R
-import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
@@ -260,6 +259,12 @@ class SignInFragment : Fragment() {
         try {
             val credential = signInClient.getSignInCredentialFromIntent(data)
             val idToken = credential.googleIdToken
+
+            val email= credential.id
+            val firstname= credential.givenName.toString()
+            val lastname= credential.familyName.toString()
+            val password= credential.password.toString()
+
             when {
                 idToken != null -> {
                     // Got an ID token from Google. Use it to authenticate
@@ -268,11 +273,13 @@ class SignInFragment : Fragment() {
                     //Snackbar.make(binding!!.root, msg, Snackbar.LENGTH_SHORT).show()
                     Log.d(TAG, "one tap ${msg}")
                     val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                    auth.signInWithCredential(firebaseCredential)
-                        .addOnCompleteListener { task->
+
+                    viewModel.createUserInServer(email, firstname, lastname, password)
+
+                    auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task->
                              if(task.isSuccessful){
                                   if (auth.currentUser !=null){
-                                      Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                                      Toast.makeText(requireContext(), "Login Success ${email}", Toast.LENGTH_SHORT).show()
                                      launchActivity()
                                   }
                              }
