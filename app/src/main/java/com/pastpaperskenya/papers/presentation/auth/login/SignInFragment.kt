@@ -1,6 +1,5 @@
 package com.pastpaperskenya.papers.presentation.auth.login
 
-import android.R.attr
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
@@ -18,8 +17,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.material.snackbar.Snackbar
@@ -36,7 +33,6 @@ import com.pastpaperskenya.papers.databinding.FragmentSignInBinding
 import com.pastpaperskenya.papers.presentation.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -259,7 +255,6 @@ class SignInFragment : Fragment() {
         try {
             val credential = signInClient.getSignInCredentialFromIntent(data)
             val idToken = credential.googleIdToken
-
             val email= credential.id
             val firstname= credential.givenName.toString()
             val lastname= credential.familyName.toString()
@@ -279,8 +274,19 @@ class SignInFragment : Fragment() {
                     auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task->
                              if(task.isSuccessful){
                                   if (auth.currentUser !=null){
-                                      Toast.makeText(requireContext(), "Login Success ${email}", Toast.LENGTH_SHORT).show()
-                                     launchActivity()
+
+                                      viewModel.myUserResponse.observe(viewLifecycleOwner){
+                                          val localuser= UserDetails("", email, it.body()?.billingAddress?.phone, firstname, lastname, it.body()?.billingAddress?.country, it.body()?.billingAddress?.state, it.body()?.id, null)
+                                          viewModel.writeToDataStore(Constants.USER_SERVER_ID, it.body()?.id.toString())
+
+                                          viewModel.saveToFirestore(email,
+                                              it.body()?.billingAddress?.phone.toString(), firstname, lastname,
+                                              it.body()?.billingAddress?.country.toString(),
+                                              it.body()?.billingAddress?.state.toString(), password, it.body()?.id)
+
+                                          viewModel.insertUserDetails(localuser)
+                                          launchActivity()
+                                      }
                                   }
                              }
                         }
@@ -333,6 +339,7 @@ class SignInFragment : Fragment() {
 
     private fun launchActivity() {
         val intent = Intent(context, MainActivity::class.java)
+        Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
         startActivity(intent)
         requireActivity().finish()
     }

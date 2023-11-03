@@ -12,6 +12,7 @@ import com.pastpaperskenya.papers.business.util.AuthEvents
 import com.pastpaperskenya.papers.business.repository.auth.FirebaseAuthRepository
 import com.pastpaperskenya.papers.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.papers.business.repository.main.user.ServerCrudRepository
+import com.pastpaperskenya.papers.business.usecases.FirestoreUserService
 import com.pastpaperskenya.papers.business.usecases.LocalUserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ class SignInViewModel @Inject constructor
     private val serverRepository: ServerCrudRepository,
     private val localUserService: LocalUserService,
     private val datastore: DataStoreRepository,
+    private val firestoreUserService: FirestoreUserService,
 
     ) : ViewModel() {
 
@@ -153,5 +155,9 @@ class SignInViewModel @Inject constructor
             }
 
         }
+    }
+
+    fun saveToFirestore(email: String, phone:String, firstname: String, lastname: String, country: String, county: String, password: String, userServerId: Int?)= viewModelScope.launch{
+        firestoreUserService.saveUserDetails(UserDetails("", email, phone, firstname, lastname, country, county, userServerId!!))
     }
 }
