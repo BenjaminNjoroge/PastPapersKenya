@@ -5,6 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaPaymentReqResponse
 import com.pastpaperskenya.papers.business.model.mpesa.MpesaTokenResponse
 import com.pastpaperskenya.papers.business.model.mpesa.Payment
+import com.pastpaperskenya.papers.business.model.mpesa.PaymentStatus
 import com.pastpaperskenya.papers.business.model.orders.CreateOrder
 import com.pastpaperskenya.papers.business.model.product.Product
 import com.pastpaperskenya.papers.business.model.user.UserDetails
@@ -51,6 +52,9 @@ class ProductDetailViewModel @Inject constructor(
     private var _userDetails= MutableLiveData<UserDetails>()
     val userDetails: LiveData<UserDetails> = _userDetails
 
+    private var _paymentResponse= MutableLiveData<NetworkResult<List<PaymentStatus>>>()
+    val paymentResponse: LiveData<NetworkResult<List<PaymentStatus>>> = _paymentResponse
+
     private var eventsChannel = Channel<AuthEvents>()
     val events = eventsChannel.receiveAsFlow()
 
@@ -76,6 +80,14 @@ class ProductDetailViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun getPaymentStatus(orderId: Int)= viewModelScope.launch {
+        _paymentResponse.value= paymentRepository.getPaymentStatus(orderId)
+    }
+
+    fun deleteAllCart()= viewModelScope.launch{
+        cartRepository.deleteAllCart()
     }
 
     private suspend fun getUserDetails(userId: Int){

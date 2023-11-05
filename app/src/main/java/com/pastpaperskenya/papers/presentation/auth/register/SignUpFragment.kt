@@ -91,14 +91,7 @@ class SignUpFragment : Fragment(R.layout.fragment_sign_up) {
             if(response.isSuccessful){
                 val userServerId= response.body()?.id
 
-                val localuser= UserDetails("", email, phone, firstname, lastname, country, county, userServerId, profileImage)
 
-                viewModel.writeToDataStore(Constants.USER_SERVER_ID, userServerId.toString())
-
-                viewModel.registerAndSaveToFirestore(email, phone, firstname, lastname, country, county, password, userServerId)
-
-
-                viewModel.insertUserDetails(localuser)
             } else{
                 Toast.makeText(requireContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show()
             }

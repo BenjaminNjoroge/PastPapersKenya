@@ -1,6 +1,7 @@
 package com.pastpaperskenya.papers.presentation.main.home.productdetail
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -72,6 +73,8 @@ class ProductDetailFragment : Fragment() {
     private var checkout_id: String?=null
     private val lineItems = ArrayList<OrderLineItems>()
 
+    private val handler= Handler()
+    val delayMillis= 2000L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -280,12 +283,54 @@ class ProductDetailFragment : Fragment() {
 
                     viewModel.savePendingPaymentToDatabase(details)
 
+                    handler.postDelayed({
+                        viewModel.getPaymentStatus(orderId)
+                    }, delayMillis)
+
                 }
                 NetworkResult.Status.ERROR->{
                     binding.pbLoading.visibility= View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
 
                 }
+            }
+        }
+        viewModel.paymentResponse.observe(viewLifecycleOwner){
+            when(it.status){
+                NetworkResult.Status.LOADING->{
+                    binding.pbLoading.visibility= View.VISIBLE
+                }
+                NetworkResult.Status.SUCCESS->{
+                    binding.pbLoading.visibility= View.GONE
+
+                    if(! it.data.isNullOrEmpty()) {
+                        viewModel.getPaymentStatus(orderId)
+                        if (it.data[0].status == null){
+                            viewModel.getPaymentStatus(orderId)
+                        } else if (it.data[0].status =="completed"){
+                            viewModel.deleteAllCart()
+                            val message = it.data[0].result_desc
+                            val bundle = Bundle()
+                            bundle.putString("completed_message", message)
+                            findNavController().navigate(R.id.action_productDetailFragment_to_orderConfirmedFragment2, bundle)
+                        } else if(it.data[0].status== "failed"){
+                            viewModel.deleteAllCart()
+                            val message = it.data[0].result_desc
+                            val bundle = Bundle()
+                            bundle.putString("failed_message", message)
+                            findNavController().navigate(R.id.action_productDetailFragment_to_orderFailedFragment2, bundle)
+                        }
+                    }else{
+                        viewModel.getPaymentStatus(orderId)
+                        Toast.makeText(context, "Unable to process ${it.message.toString()}" , Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+                NetworkResult.Status.ERROR->{
+                    binding.pbLoading.visibility=View.GONE
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                }
+
             }
         }
 
