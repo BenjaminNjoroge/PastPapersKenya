@@ -135,7 +135,7 @@ class CheckoutViewModel @Inject constructor(
     }
 
     private suspend fun getUserDetails(userId: Int){
-        profileRepository.getUserDetails(userId).collect{
+        profileRepository.getUserDetailsLocally(userId).collect{
             _userResponse.postValue(it)
         }
     }

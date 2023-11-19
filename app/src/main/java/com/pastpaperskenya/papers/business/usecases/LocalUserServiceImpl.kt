@@ -20,4 +20,7 @@ class LocalUserServiceImpl @Inject constructor(
         appDao.updateUserDetails(phone, firstname, lastname, country, county, userServerId, photo)
     }
 
+    override suspend fun deleteUserInLocalDatabase(userServerId: Int) = appDao.deleteUserInLocalDatabase(userServerId)
+
+
 }

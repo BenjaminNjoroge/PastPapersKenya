@@ -9,7 +9,7 @@ class ProfileRepositoryImpl @Inject constructor(
     private val localUserService: LocalUserService
 ) : ProfileRepository {
 
-    override suspend fun getUserDetails(userId: Int) :Flow<UserDetails> = localUserService.getUserFromDatabase(userId)
+    override suspend fun getUserDetailsLocally(userId: Int) :Flow<UserDetails> = localUserService.getUserFromDatabase(userId)
 
 
 }

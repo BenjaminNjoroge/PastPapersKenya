@@ -18,7 +18,8 @@ object AppModule {
     @Singleton
     fun providesDatabase(app: Application): AppDatabase =
          Room.databaseBuilder(app, AppDatabase::class.java, "pastpapers_db")
-            .build()
+             .fallbackToDestructiveMigration()
+             .allowMainThreadQueries().build()
 
 
     @Provides

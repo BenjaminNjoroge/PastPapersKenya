@@ -41,6 +41,10 @@ class EditProfileRepositoryImpl @Inject constructor(
         localUserService.updateUserInDatabase(phone, firstname, lastname, country, county, userServerId, photo)
     }
 
+    override suspend fun deleteLocalUser(userServerId: Int) {
+        localUserService.deleteUserInLocalDatabase(userServerId)
+    }
+
     override suspend fun uploadProfileImage(file:  MultipartBody.Part, preset: RequestBody) {
         safeApiCall { retrofitApiService.uploadProfileImage(file, preset) }
     }

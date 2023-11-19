@@ -94,4 +94,7 @@ interface AppDao {
     @Query("DELETE FROM cart")
     suspend fun deleteAllFromCart()
 
+    @Query("DELETE FROM users WHERE userServerId= :userServerId")
+    suspend fun deleteUserInLocalDatabase(userServerId: Int)
+
 }

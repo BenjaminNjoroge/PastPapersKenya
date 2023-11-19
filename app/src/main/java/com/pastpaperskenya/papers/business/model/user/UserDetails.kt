@@ -21,7 +21,7 @@ data class UserDetails(
     val country: String?=null,
     val county: String?=null,
     @PrimaryKey(autoGenerate = false)
-    val userServerId: Int?=null,
+    val userServerId: Int? = 0,
     val image: String?=null
 ) : Parcelable {
 
@@ -36,9 +36,9 @@ data class UserDetails(
                 val lastname= getString("lastname")
                 val country= getString("country")
                 val county= getString("county")
-                val userServerId= getString("userServerId")
+                val userServerId= getString("userServerId")?.toInt()
                 return UserDetails(userId!!, email, phone, firstname, lastname, country, county,
-                    userServerId?.toInt()
+                    userServerId, null
                 )
 
             } catch (e: Exception){

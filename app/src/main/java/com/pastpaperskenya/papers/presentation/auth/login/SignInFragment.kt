@@ -196,6 +196,7 @@ class SignInFragment : Fragment() {
         }
         viewModel.localResponse.observe(viewLifecycleOwner){
             Toast.makeText(context, "User data saved to database", Toast.LENGTH_SHORT).show()
+            launchActivity()
         }
     }
 
@@ -245,6 +246,29 @@ class SignInFragment : Fragment() {
                 launchActivity()
             }
         }
+
+        viewModel.getFetchResultLiveData().observe(viewLifecycleOwner){ userResult->
+            when(userResult){
+                is UserResult.Loading ->{
+                    binding?.progressBar?.visibility= View.VISIBLE
+                }
+                is UserResult.Success->{
+                    val user= userResult.user
+                    Toast.makeText(requireContext(), "Logged in as "+user.email, Toast.LENGTH_LONG).show()
+                }
+                is UserResult.Error->{
+                    val errorMessage= userResult.message
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.getSaveResultLiveData().observe(viewLifecycleOwner){ saved ->
+            if (saved){
+                launchActivity()
+            }
+        }
+
     }
 
 
@@ -269,23 +293,34 @@ class SignInFragment : Fragment() {
                     Log.d(TAG, "one tap ${msg}")
                     val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
 
+
                     viewModel.createUserInServer(email, firstname, lastname, password)
 
                     auth.signInWithCredential(firebaseCredential).addOnCompleteListener { task->
                              if(task.isSuccessful){
                                   if (auth.currentUser !=null){
 
-                                      viewModel.myUserResponse.observe(viewLifecycleOwner){
-                                          val localuser= UserDetails("", email, it.body()?.billingAddress?.phone, firstname, lastname, it.body()?.billingAddress?.country, it.body()?.billingAddress?.state, it.body()?.id, null)
-                                          viewModel.writeToDataStore(Constants.USER_SERVER_ID, it.body()?.id.toString())
+                                          viewModel.checkIfUserExistsByEmail(email){ exists->
+                                              if(exists){
+                                                  viewModel.getFirestoreDetails(email)
 
-                                          viewModel.saveToFirestore(email,
-                                              it.body()?.billingAddress?.phone.toString(), firstname, lastname,
-                                              it.body()?.billingAddress?.country.toString(),
-                                              it.body()?.billingAddress?.state.toString(), password, it.body()?.id)
+                                              } else{
+                                                  viewModel.myUserResponse.observe(viewLifecycleOwner){
+                                                      val localuser= UserDetails(auth.currentUser?.uid, it?.body()?.email, it?.body()?.billingAddress?.phone, it?.body()?.firstname, it?.body()?.lastname, it?.body()?.billingAddress?.country, it?.body()?.billingAddress?.state, it?.body()?.id, null)
+                                                      viewModel.insertUserDetails(localuser)
+                                                      viewModel.writeToDataStore(Constants.USER_SERVER_ID, it.body()?.id.toString())
+                                                      viewModel.saveToFirestore(
+                                                          auth.currentUser!!.uid, email,
+                                                          it.body()?.billingAddress?.phone.toString(), firstname, lastname,
+                                                          it.body()?.billingAddress?.country.toString(),
+                                                          it.body()?.billingAddress?.state.toString(), password, it.body()?.id)
+                                                      if(auth.currentUser != null){
+                                                          launchActivity()
+                                                      }
+                                                  }
 
-                                          viewModel.insertUserDetails(localuser)
-                                          launchActivity()
+                                              }
+
                                       }
                                   }
                              }

@@ -8,6 +8,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
     id  'com.google.gms.google-services'
     id 'androidx.navigation.safeargs'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 
 }
 
@@ -17,14 +18,14 @@ android {
         debug {
             storeFile file('C:\\Users\\Benja\\Documents\\jks.jks')
             storePassword 'benja.123'
-            keyAlias 'key0'
-            keyPassword 'benja.123'
+            keyAlias 'webnetwork'
+            keyPassword 'web.network'
         }
         release {
             storeFile file('C:\\Users\\Benja\\Documents\\jks.jks')
             storePassword 'benja.123'
-            keyAlias 'key0'
-            keyPassword 'benja.123'
+            keyAlias 'webnetwork'
+            keyPassword 'web.network'
         }
     }
     compileSdk 34
@@ -105,6 +106,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.0-alpha03"
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
     kapt "androidx.lifecycle:lifecycle-compiler:2.6.0-alpha03"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 

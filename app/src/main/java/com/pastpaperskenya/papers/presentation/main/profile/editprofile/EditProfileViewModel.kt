@@ -51,9 +51,12 @@ class EditProfileViewModel @Inject constructor(
     private var _addImageDatabaseResponse= MutableLiveData<NetworkResult<Boolean>>()
     val addImageDatabaseResponse: LiveData<NetworkResult<Boolean>> = _addImageDatabaseResponse
 
+    private lateinit var currentUserServerId: String
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val id = datastore.getValue(Constants.USER_SERVER_ID)
+            currentUserServerId= datastore.getValue(Constants.USER_SERVER_ID)!!
 
             try {
                 getUserDetails(convertIntoNumeric(id!!))
@@ -136,7 +139,10 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
+        val userServerId= currentUserServerId
         try {
+
+            editProfileRepository.deleteLocalUser(convertIntoNumeric(userServerId))
             val user = firebaseAuthRepository.signOut()
             user?.let {
                 eventsChannel.send(AuthEvents.Message("logout failure"))

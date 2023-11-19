@@ -14,6 +14,7 @@ interface EditProfileRepository {
 
     suspend fun updateUserToDatabase(phone: String, firstname: String, lastname: String, country: String, county: String, userServerId: Int, photo: String?)
 
+    suspend fun deleteLocalUser(userServerId: Int)
     suspend fun uploadProfileImage(file:  MultipartBody.Part, preset: RequestBody)
 
     suspend fun addImageToFirebaseStorage(imagename: String, imageUri: Uri): Flow<NetworkResult<Uri>>

@@ -1,5 +1,6 @@
 package com.pastpaperskenya.papers.business.usecases
 
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -12,7 +13,8 @@ import kotlinx.coroutines.tasks.await
 
 class FirestoreUserServiceImpl : FirestoreUserService {
 
-    private val db: FirebaseFirestore= FirebaseFirestore.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
+    private val usersCollection = firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_USER)
 
     override suspend fun saveUserDetails(userDetails: UserDetails) {
         userDetails.email?.let {
@@ -55,6 +57,12 @@ class FirestoreUserServiceImpl : FirestoreUserService {
          Firebase.firestore.collection(Constants.FIREBASE_DATABASE_COLLECTION_PAYMENTS)
             .document(paymentDetails.checkout_request_id!!)
              .set(paymentDetails).await()
+    }
+
+    override suspend fun checkIfUserExistsByEmail(email: String): Boolean {
+        val documentReference: DocumentReference= usersCollection.document(email)
+        val documentSnapshot= documentReference.get().await()
+        return documentSnapshot.exists()
     }
 
 }

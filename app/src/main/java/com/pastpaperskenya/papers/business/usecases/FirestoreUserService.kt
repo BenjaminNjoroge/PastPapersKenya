@@ -21,4 +21,5 @@ interface FirestoreUserService {
 
     suspend fun savePaymentToFirebase(paymentDetails: Payment)
 
+    suspend fun checkIfUserExistsByEmail(email: String): Boolean
 }

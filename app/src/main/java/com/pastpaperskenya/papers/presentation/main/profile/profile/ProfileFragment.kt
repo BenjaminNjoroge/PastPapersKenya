@@ -141,7 +141,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         viewModel.userProfile.observe(viewLifecycleOwner) {
-            binding.tvUserNameP.text = it.firstname + " " + it.lastname
+            binding.tvUserNameP.text = it?.firstname + " " + it?.lastname
             binding.tvEmailP.text = it.email
             binding.tvPhone.text = it.phone
             binding.tvLastname.text = it.lastname

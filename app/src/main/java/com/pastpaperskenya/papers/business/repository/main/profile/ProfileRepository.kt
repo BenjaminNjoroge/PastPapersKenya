@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
 
-    suspend fun getUserDetails(userId: Int): Flow<UserDetails?>
+    suspend fun getUserDetailsLocally(userId: Int): Flow<UserDetails?>
 }

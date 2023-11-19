@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.pastpaperskenya.papers.business.model.user.Customer
 import com.pastpaperskenya.papers.business.model.user.UserDetails
 import com.pastpaperskenya.papers.business.util.AuthEvents
@@ -14,15 +15,22 @@ import com.pastpaperskenya.papers.business.repository.datastore.DataStoreReposit
 import com.pastpaperskenya.papers.business.repository.main.user.ServerCrudRepository
 import com.pastpaperskenya.papers.business.usecases.FirestoreUserService
 import com.pastpaperskenya.papers.business.usecases.LocalUserService
+import com.pastpaperskenya.papers.business.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
+sealed class UserResult{
+    object Loading: UserResult()
+    data class Success(val user: UserDetails): UserResult()
+    data class Error(val message: String): UserResult()
+}
 @HiltViewModel
 class SignInViewModel @Inject constructor
     (
@@ -36,12 +44,16 @@ class SignInViewModel @Inject constructor
 
     private val TAG = "SignInViewModel"
 
+    private val firestore = FirebaseFirestore.getInstance()
 
     private val _localResponse= MutableLiveData<Long>()
     val localResponse: LiveData<Long> = _localResponse
 
-    private val _firestoreUserProfile = MutableLiveData<UserDetails>()
-    val firestoreUserProfile: LiveData<UserDetails> = _firestoreUserProfile
+    private val fetchResultLiveData: MutableLiveData<UserResult> = MutableLiveData()
+    private val saveResultLiveData: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun getFetchResultLiveData(): LiveData<UserResult> = fetchResultLiveData
+    fun getSaveResultLiveData(): LiveData<Boolean> = saveResultLiveData
 
     private var _userResponse: MutableLiveData<Response<List<Customer>>> = MutableLiveData()
     val userResponse: LiveData<Response<List<Customer>>> = _userResponse
@@ -86,6 +98,13 @@ class SignInViewModel @Inject constructor
         }
     }
 
+    fun checkIfUserExistsByEmail(email: String, onSuccess: (Boolean)-> Unit) {
+        viewModelScope.launch {
+            val exists = firestoreUserService.checkIfUserExistsByEmail(email)
+            onSuccess(exists)
+        }
+    }
+
 
     fun writeToDataStore(key:String ,serverId: String) = viewModelScope.launch {
         datastore.clear()
@@ -116,28 +135,6 @@ class SignInViewModel @Inject constructor
         }
     }
 
-    fun actualGoogleSignIn(credential:AuthCredential) = viewModelScope.launch {
-        try {
-            val user = repository.signInWithGoogle(credential)
-
-            user.let {
-                try {
-                    if (it.isSuccessful) {
-                        _firebaseUser.postValue(it.result.user)
-                        eventsChannel.send(AuthEvents.Message("Login Success"))
-                    } else{
-                        eventsChannel.send(AuthEvents.Error(it.exception?.localizedMessage.toString()))
-                    }
-                } catch (e: IOException){
-                    eventsChannel.send(AuthEvents.Error("$e Opps.. an error occured"))
-                }
-            }
-
-        } catch (e: Exception) {
-            eventsChannel.send(AuthEvents.Error(e.message.toString()))
-        }
-    }
-
 
     fun insertUserDetails(user: UserDetails){
         viewModelScope.launch(Dispatchers.IO) {
@@ -157,7 +154,32 @@ class SignInViewModel @Inject constructor
         }
     }
 
-    fun saveToFirestore(email: String, phone:String, firstname: String, lastname: String, country: String, county: String, password: String, userServerId: Int?)= viewModelScope.launch{
-        firestoreUserService.saveUserDetails(UserDetails("", email, phone, firstname, lastname, country, county, userServerId!!))
+    fun saveToFirestore(firebaseId:String, email: String, phone:String, firstname: String, lastname: String, country: String, county: String, password: String, userServerId: Int?)= viewModelScope.launch{
+
+        firestoreUserService.saveUserDetails(UserDetails(firebaseId, email, phone, firstname, lastname, country, county, userServerId))
+    }
+
+    fun getFirestoreDetails(email: String) {
+        fetchResultLiveData.value= UserResult.Loading
+
+        viewModelScope.launch {
+            try {
+                //fetch user data
+                val firestoreUser= fetchUserFromFirestore(email)
+                if (firestoreUser != null){
+                    localUserService.insertUserToDatabase(firestoreUser)
+                }
+                fetchResultLiveData.value = firestoreUser?.let { UserResult.Success(it) }
+                saveResultLiveData.postValue(true)
+
+            } catch (e: Exception){
+                fetchResultLiveData.value = UserResult.Error(e.message ?: "An error occurred")
+                saveResultLiveData.postValue(false)
+            }
+        }
+    }
+
+    private suspend fun fetchUserFromFirestore(email: String): UserDetails? {
+       return firestoreUserService.getFirestoreUserDetails(email)
     }
 }

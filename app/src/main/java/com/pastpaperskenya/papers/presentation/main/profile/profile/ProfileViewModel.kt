@@ -2,12 +2,16 @@ package com.pastpaperskenya.papers.presentation.main.profile.profile
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.pastpaperskenya.papers.business.model.user.UserDetails
 import com.pastpaperskenya.papers.business.repository.auth.FirebaseAuthRepository
 import com.pastpaperskenya.papers.business.util.AuthEvents
 import com.pastpaperskenya.papers.business.repository.datastore.DataStoreRepository
 import com.pastpaperskenya.papers.business.repository.main.profile.EditProfileRepository
 import com.pastpaperskenya.papers.business.repository.main.profile.ProfileRepository
+import com.pastpaperskenya.papers.business.usecases.FirestoreUserService
 import com.pastpaperskenya.papers.business.util.Constants
 import com.pastpaperskenya.papers.business.util.convertIntoNumeric
 import com.pastpaperskenya.papers.business.util.sealed.NetworkResult
@@ -26,7 +30,8 @@ class ProfileViewModel @Inject constructor
     private val profileRepository: ProfileRepository,
     private val datastore: DataStoreRepository,
     private val editProfileRepository: EditProfileRepository,
-    private val firebaseAuthRepository: FirebaseAuthRepository
+    private val firebaseAuthRepository: FirebaseAuthRepository,
+    private val firestoreUserService: FirestoreUserService,
 
     ) : ViewModel() {
 
@@ -41,12 +46,25 @@ class ProfileViewModel @Inject constructor
 
     init {
         viewModelScope.launch {
+            val auth= FirebaseAuth.getInstance()
+            val user= auth.currentUser
+            val email= user?.email.toString()
             val id = datastore.getValue(Constants.USER_SERVER_ID)
-            try {
-                getUserDetails(convertIntoNumeric(id!!))
-            } catch (e: Exception) {
-                eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
+            if (id== null){
+                val newId= firestoreUserService.getFirestoreUserDetails(email)?.userServerId
+                try {
+                    newId?.let { getUserDetails(it) }
+                } catch (e: Exception) {
+                    eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
+                }
+            } else{
+                try {
+                    getUserDetails(convertIntoNumeric(id))
+                } catch (e: Exception) {
+                    eventsChannel.send(AuthEvents.Error("Unable to get data $e"))
+                }
             }
+
         }
 
     }
@@ -61,7 +79,7 @@ class ProfileViewModel @Inject constructor
 
 
     private suspend fun getUserDetails(userServerId: Int) =
-        profileRepository.getUserDetails(userServerId).catch { e ->
+        profileRepository.getUserDetailsLocally(userServerId).catch { e ->
             Log.d(TAG, "getUserDetails: $e")
         }.collect {
             _userProfile.postValue(it)

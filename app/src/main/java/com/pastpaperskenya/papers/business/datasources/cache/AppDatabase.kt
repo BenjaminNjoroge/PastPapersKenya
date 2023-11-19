@@ -26,7 +26,7 @@ import com.pastpaperskenya.papers.business.model.wishlist.WishList
         UserDetails::class,
         WishList::class
     ],
-    version = 1, exportSchema = true
+    version = 2, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
